@@ -1,0 +1,40 @@
+{
+    "name": "linaresdev/dgii",
+    "description": "Api Corporativa DGII",
+    "keywords": ["laravel, core, api"],
+    "license": "MIT",
+    "type": "package",
+    "authors": [
+        {
+            "name": "Ing. Ramón A Linares Febles",
+            "email": "rlinares4381@gmail.com"
+        },
+        {
+            "name": "Juan Carlos Guillandeaux",
+            "email": "jguillandeax@deltacomercial.com.do"
+        }
+    ],
+    "require": {
+        "php": ">=7.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "DGII\\": "System/",
+            "DGII\\Http\\": "Http"        
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "DGII\\Providers\\DGIIServiceProvider"
+            ],
+            "aliases": {
+                "DGII": "DGII\\Facade\\Dgii"
+            }
+        }
+    },
+    "minimum-stability": "dev"
+}
