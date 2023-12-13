@@ -1,5 +1,5 @@
 <?php
-namespace DGII\Support\Path;
+namespace DGII\Support;
 
 /*
 *---------------------------------------------------------

@@ -13,5 +13,7 @@ use Illuminate\Support\ServiceProvider;
 class DGIIServiceProvider extends ServiceProvider {
     public function boot() {}
 
-    public function register() {}
+    public function register() {
+        $this->app->register(\DGII\Providers\RouteServiceProvider::class);
+    }
 }
