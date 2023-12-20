@@ -39,7 +39,7 @@ Dgii::addUrl([
 
 
 ## DRIVERS
-if( env("APP_INSTALLED", FALSE) )
+if( env("APP_START", FALSE) )
 {
     Dgii::app("load")->run(new \DGII\Driver());
     Dgii::app("load")->run(new \DGII\User\Driver());

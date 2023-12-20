@@ -42,6 +42,6 @@ class Driver
     public function alias() { return []; }
 
     public function install($app) { }
-    public function destroy($app) { }
+    public function destroy($app) {}
 
 }

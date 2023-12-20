@@ -25,10 +25,14 @@ class RouteServiceProvider extends ServiceProvider {
         });
 
         $this->routes(function () {
-            Route::middleware('api')
-                ->prefix('api')
-                ->group(__DIR__."/../../Http/Routes/Api.php");
+            // Route::middleware('api')
+            //     ->prefix('api')
+            //     ->group(__DIR__."/../../Http/Routes/Api.php");
 
+            ## API
+            Route::namespace("DGII\Http\Controllers")->group(__DIR__."/../../Http/Routes/Api.php");
+
+            ## WEB
             Route::middleware('web')
                 ->group(__DIR__."/../../Http/Routes/Web.php");
         });
