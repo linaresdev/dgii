@@ -1,6 +1,6 @@
 # DGII
 Api Corporativa para la DGII.
-Esta api es la intermediaria entre un punto de venta corporativo, la DGII y el Cliente.
+<div>Administra los procesos requeridos entre un punto de venta corporativo, la DGII y el Cliente.</div>
 
 ### INSTALACIÓN
 #### Instalación a traves de composer
@@ -15,14 +15,13 @@ composer require rlinaresdev/dgii
 php artisan db:seed --class="DGII\\Database\\Seeds\\DGIISeeds"
 ```
 
-### ENVIRONMENTS
+### AMBIENTE
 
 El ambiente de trabajo por defecto es testecf
 Estas variables deben agregarse en el archivo .env de Laravel 
 
 ```
 DGII_ENV=testecf
-DGII_AUTH_TIMEOUT=120
 ```
 
 ### END POINT
@@ -32,7 +31,6 @@ DGII_AUTH_TIMEOUT=120
 # curl -X 'GET' \
 #  'https://tudominio-aqui/testecf/emisorreceptor/fe/Autenticacion/api/Semilla' \
 #  -H 'accept: application/json'
-
 Route::get("{env}/emisorreceptor/fe/Autenticacion/api/Semilla","AuthController@getSeed");
 
 # Autenticación a travez de la Semilla firmada.
@@ -41,7 +39,6 @@ Route::get("{env}/emisorreceptor/fe/Autenticacion/api/Semilla","AuthController@g
 #  -H 'accept: application/json' \
 #  -H 'Content-Type: multipart/form-data' \
 #  -F 'xml=@SemillaSigned.xml;type=text/xml'
-
 Route::post("{env}/emisorreceptor/fe/Autenticacion/api/ValidacionCertificado","AuthController@postGuest");
 ```
 #### Emisión
@@ -58,14 +55,12 @@ Route::post("{env}/emisorreceptor/fe/Autenticacion/api/ValidacionCertificado","A
 #  "urlRecepcion": "string",
 #  "urlAutenticacion": "string"
 #}'
-
 Route::post("{env}/emisorreceptor/api/Emision/EmisionComprobantes","EnviarComprobanteController@index");
 
 # Consulta estado o acuse de recibo del eCF a partir del RNC, E-NCF
 #curl -X 'GET' \
 #  'https://tudominio-aqui/testecf/emisorreceptor/api/Emision/ConsultaAcuseRecibo?Rnc=ad&Encf=ad' \
 #  -H 'accept: application/json'
-
 Route::get("{env}/emisorreceptor/api/Emision/ConsultaAcuseRecibo?Rnc=ad&Encf=ad","ConsultaReciboController@index");
 
 # Envio de la Aprobación Comercial a la url de recepción del contribuyente.
@@ -80,7 +75,6 @@ Route::get("{env}/emisorreceptor/api/Emision/ConsultaAcuseRecibo?Rnc=ad&Encf=ad"
 #  "encf": "string",
 #  "estadoAprobacion": "string"
 #}'
-
 Route::post("{env}/emisorreceptor/api/Emision/EnvioAprobacionComercial","EnviarAprobacionComercialController@index");
 ```
 
@@ -93,7 +87,6 @@ Route::post("{env}/emisorreceptor/api/Emision/EnvioAprobacionComercial","EnviarA
 #  -H 'accept: */*' \
 #  -H 'Content-Type: multipart/form-data' \
 #  -F 'xml=@ECF.xml;type=text/xml'
-
 Route::post("{env}/emisorreceptor/fe/AprobacionComercial/api/ecf","RecepcionComprobanteController@index");
 
 # Recepción del comprobante o factura, enviada por el Emisor.
@@ -102,6 +95,5 @@ Route::post("{env}/emisorreceptor/fe/AprobacionComercial/api/ecf","RecepcionComp
 #  -H 'accept: */*' \
 #  -H 'Content-Type: multipart/form-data' \
 #  -F 'xml=@Certify(2).xml;type=text/xml'
-
 Route::get("{env}/emisorreceptor/fe/Recepcion/api/ecf","RecepcionECFController@index");
 ```
