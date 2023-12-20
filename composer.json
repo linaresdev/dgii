@@ -32,7 +32,7 @@
                 "DGII\\Providers\\DGIIServiceProvider"
             ],
             "aliases": {
-                "DGII": "DGII\\Facade\\Dgii"
+                "Dgii": "DGII\\Facade\\Dgii"
             }
         }
     },
