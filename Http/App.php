@@ -5,6 +5,17 @@ $this->loadMigrationsFrom( __path("{migrations}") );
 
 ## ENVIRONMENT
 if( env("APP_START") ):
+
+    ## PATH
+    Dgii::addPath([
+        "{cdn}"     => "{public}/cdn",
+        "{assets}"  => "{dgii}/System/Public"
+    ]);
+
+    ## URLS
+    Dgii::addUrl([
+
+    ]);
    
     ## MIDDLEWARE
     $this->loadMiddleware( new \DGII\Http\Middleware\Handler() );
@@ -15,5 +26,10 @@ if( env("APP_START") ):
 
     ## Views 
     $this->loadViewsFrom(__DIR__.'/Views', 'dgii');
+
+    ## Publishes
+    $this->publishes([
+        __path("{assets}") => __path("{public}"),
+    ], "dgii");
 
 endif;

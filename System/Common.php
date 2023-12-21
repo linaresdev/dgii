@@ -23,10 +23,11 @@ Dgii::app("agent", new \DGII\Support\Guard($this->app));
 require_once(__DIR__."/Support/Helpers.php");
 
 ## PATHS
+$DGII_BASE_DIR = env("DGII_BASE_DIR", "delta");
+
 Dgii::addPath([
     "{base}"        => base_path(),
-    "{private}"     => str_replace(base_path('/'), null, base_path("DGII")),
-    "{public}"      => str_replace(base_path('/'), null, base_path("public/app")),
+    "{public}"      => base_path("public/$DGII_BASE_DIR"),
     "{dgii}"        => realpath(__DIR__."/../"),
 
     "{migrations}"  => "{dgii}/System/Database/Migration",
@@ -34,7 +35,9 @@ Dgii::addPath([
 ]);
 
 ## URLS
-Dgii::addUrl([    
+Dgii::addUrl([
+    "{public}"  => $DGII_BASE_DIR,
+    "{cdn}"     => "{public}/cdn",  
 ]);
 
 

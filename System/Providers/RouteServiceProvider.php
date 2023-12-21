@@ -33,7 +33,7 @@ class RouteServiceProvider extends ServiceProvider {
             Route::namespace("DGII\Http\Controllers")->group(__DIR__."/../../Http/Routes/Api.php");
 
             ## WEB
-            Route::middleware('web')
+            Route::namespace("DGII\Http\Controllers\Admin")->middleware('web')
                 ->group(__DIR__."/../../Http/Routes/Web.php");
         });
     }

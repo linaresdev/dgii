@@ -1,5 +1,5 @@
 <?php
-namespace DGII\Http\Controllers;
+namespace DGII\Http\Controllers\Admin;
 
 /*
   *---------------------------------------------------------
@@ -19,7 +19,7 @@ class Controller extends BaseController {
 
     protected $app;
 
-    protected $path = "dgii::";
+    protected $path = "dgii::admin.";
 
     public function boot( $app=null, $data=[] ) {
         $this->app = $app;

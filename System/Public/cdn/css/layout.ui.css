@@ -1,0 +1,41 @@
+body{
+    background: #f7f7f7;
+}
+
+/*
+* CARD AUTH */
+
+[role=lighter] .navbar.navbar-lighter {
+    background: #fff;
+    border-bottom: 1px solid #f0f0f0;
+    border-radius: 0 0;
+    min-height: 40px;
+    padding: 0 15px;
+}
+[role=lighter] .navbar.navbar-lighter .navbar-brand {
+    height: 40px;
+    margin: 0 0;
+}
+[role=lighter] .navbar.navbar-lighter .navbar-toggler {
+    border: none;
+}
+[role=lighter] .navbar.navbar-lighter .navbar-toggler:focus {
+    box-shadow: none;
+}
+[role=lighter] .navbar.navbar-lighter .collapse {
+    border-top: 1px solid transparent;
+}
+[role=lighter] .navbar.navbar-lighter .collapse.show {
+    padding: 10px 10px;
+}
+[role=lighter] .navbar.navbar-lighter .nav .nav-link {
+    color: #777;
+}
+[role=lighter] .navbar.navbar-lighter .nav .nav-link [class*="mdi mdi-"] {
+    font-size: 20px;
+    line-height: 90%;
+    position: relative;
+    top: 2px;
+}
+
+

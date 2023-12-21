@@ -1,0 +1,1 @@
+@extends("dgii::admin.layout.master")
