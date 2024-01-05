@@ -23,6 +23,11 @@ class Controller extends BaseController {
 
     public function boot( $app=null, $data=[] ) {
         $this->app = $app;
+
+        $data["icon"] = '<span class="mdi mdi-text"></span>';
+        $data["title"] = 'Title Page';
+
+        $this->share($data);
     }
 
     public function share($data) {

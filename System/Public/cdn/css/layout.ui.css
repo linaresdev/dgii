@@ -1,10 +1,30 @@
 body{
-    background: #f7f7f7;
+    background: var(--light-grad-pink-blue, radial-gradient(ellipse at 40% 0%, #bf398910 0, transparent 75%), radial-gradient(ellipse at 60% 0%, #096bde10 0, transparent 75%));
+    background-size: cover;
+    height: 100vh;
+    padding-top: 65px;
+}
+.dropdown .btn {
+    border: none;
+    outline: none;
+}
+.dropdown .btn [class*="mdi mdi-"] {
+    font-size: 24px;
+}
+.dropdown.dropstart .btn::before {
+    margin-right: -4px;
+    margin-bottom: 4px;
+    display: none;
+}
+.dropdown.dropstart .btn.show::before {
+    display: inline-block;
+}
+
+[role=lighter] {
 }
 
 /*
-* CARD AUTH */
-
+* NAVBAR */
 [role=lighter] .navbar.navbar-lighter {
     background: #fff;
     border-bottom: 1px solid #f0f0f0;
@@ -38,4 +58,10 @@ body{
     top: 2px;
 }
 
+
+/*
+* CARD STYLE */
+.card.card-silveryMoon {
+    background: var(--light-grad-pink-blue, radial-gradient(ellipse at 40% 0%, #bf398910 0, transparent 75%), radial-gradient(ellipse at 60% 0%, #096bde10 0, transparent 75%));
+}
 

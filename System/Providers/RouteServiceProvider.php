@@ -20,6 +20,7 @@ class RouteServiceProvider extends ServiceProvider {
 
     public function boot(): void
     {
+
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
@@ -33,9 +34,8 @@ class RouteServiceProvider extends ServiceProvider {
             Route::namespace("DGII\Http\Controllers")->group(__DIR__."/../../Http/Routes/Api.php");
 
             ## WEB
-            Route::namespace("DGII\Http\Controllers\Admin")->middleware('web')
+            Route::namespace("DGII\Http\Controllers")->middleware('web')
                 ->group(__DIR__."/../../Http/Routes/Web.php");
         });
     }
-
 }

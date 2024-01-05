@@ -13,7 +13,7 @@ return new class extends Migration
             $table->bigIncrements("id");
 
             $table->unsignedInteger("hacienda_id");
-            $table->foreign('hacienda_id')->references('id')->on('haciendas')->onDelete('CASCADE')->onUpdate('CASCADE');
+            $table->foreign('hacienda_id')->references('id')->on('HACIENDAS')->onDelete('CASCADE')->onUpdate('CASCADE');
 
             $table->string("rnc");
             $table->string("tipoEncf");
@@ -29,7 +29,7 @@ return new class extends Migration
             $table->bigIncrements("id");
             
             $table->unsignedInteger("hacienda_id");
-            $table->foreign('hacienda_id')->references('id')->on('haciendas')->onDelete('CASCADE')->onUpdate('CASCADE');
+            $table->foreign('hacienda_id')->references('id')->on('HACIENDAS')->onDelete('CASCADE')->onUpdate('CASCADE');
 
             $table->string("rnc");
             $table->string("encf");
@@ -46,7 +46,7 @@ return new class extends Migration
             $table->bigIncrements("id");
 
             $table->unsignedInteger("hacienda_id");
-            $table->foreign('hacienda_id')->references('id')->on('haciendas')->onDelete('CASCADE')->onUpdate('CASCADE');
+            $table->foreign('hacienda_id')->references('id')->on('HACIENDAS')->onDelete('CASCADE')->onUpdate('CASCADE');
 
             $table->string("Version", 10);
             $table->string("RNCEmisor", 20);
@@ -68,7 +68,7 @@ return new class extends Migration
             $table->bigIncrements("id");
 
             $table->unsignedInteger("hacienda_id");
-            $table->foreign('hacienda_id')->references('id')->on('haciendas')->onDelete('CASCADE')->onUpdate('CASCADE');
+            $table->foreign('hacienda_id')->references('id')->on('HACIENDAS')->onDelete('CASCADE')->onUpdate('CASCADE');
 
             $table->string("rnc", 20);
             $table->string("tipoEncf", 20);

@@ -9,18 +9,22 @@ namespace DGII\Providers;
 */
 
 use DGII\Facade\Dgii;
+use Illuminate\Contracts\Http\Kernel;
+use Illuminate\Translation\Translator;
 use Illuminate\Support\ServiceProvider;
 
 class DGIIServiceProvider extends ServiceProvider {
-    public function boot() {
+
+    public function boot( Kernel $HTTP, Translator $LANG ) 
+    {
+        $this->http = $HTTP;
+        $this->lang = $LANG;
+
         require_once(__DIR__."/../../Http/App.php");
     }
 
     public function register() {
-
         require_once(__DIR__."/../Common.php");
-
-        //$this->app->register(\DGII\Providers\RouteServiceProvider::class);
     }
 
     public function loadMiddleware( $store )
@@ -46,6 +50,18 @@ class DGIIServiceProvider extends ServiceProvider {
         {
             foreach($routes as $route => $middleware ) {
                 $this->app["router"]->middleware( $route, $middleware );
+            }
+        }
+    }
+
+    public function loadGrammary($lang)
+    {
+        $this->app->setLocale($lang);
+
+        if( is_object(($locale = anonymous(__path("{locale}/$lang.php"))) ) )
+        {
+            if( !empty(($grammaries = $locale->body())) ) {
+                $this->lang->addLines($grammaries, $locale->header()["slug"]);
             }
         }
     }

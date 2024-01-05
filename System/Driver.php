@@ -7,6 +7,7 @@ namespace DGII;
 *---------------------------------------------------------
 */
 
+
 class Driver
 {
     public function info()
@@ -39,6 +40,7 @@ class Driver
             \DGII\Providers\RouteServiceProvider::class
         ];
     }
+    
     public function alias() { return []; }
 
     public function install($app) { }

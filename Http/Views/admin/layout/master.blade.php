@@ -10,7 +10,9 @@
 	<link href="{{__url('{cdn}/css/layout.ui.css')}}" rel="stylesheet">
 @show
 </head>
-<body>
+<body role="lighter">
+    @includeIF("dgii::admin.layout.partial.navbar")
+    
     @yield("body", "Content Body")
 
 @section("js")

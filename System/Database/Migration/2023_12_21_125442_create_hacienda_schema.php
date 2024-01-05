@@ -8,7 +8,7 @@ return new class extends Migration
 {    
     public function up(): void
     {
-        Schema::create("haciendas", function (Blueprint $table)
+        Schema::create("HACIENDAS", function (Blueprint $table)
         {
             $table->increments("id");
 
@@ -31,12 +31,12 @@ return new class extends Migration
             $table->timestamps();
         });
 
-         Schema::create('haciendas_meta', function (Blueprint $table) {
+         Schema::create('HACIENDAS_META', function (Blueprint $table) {
 
             $table->increments("id");
 
             $table->unsignedInteger("hacienda_id");
-            $table->foreign('hacienda_id')->references('id')->on('haciendas')->onDelete('CASCADE')->onUpdate('CASCADE');
+            $table->foreign('hacienda_id')->references('id')->on('HACIENDAS')->onDelete('CASCADE')->onUpdate('CASCADE');
             
             $table->string("type")->default("info");
 
@@ -49,7 +49,7 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('haciendas_meta');
-        Schema::dropIfExists('haciendas');
+        Schema::dropIfExists('HACIENDAS_META');
+        Schema::dropIfExists('HACIENDAS');
     }
 };

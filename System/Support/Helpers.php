@@ -55,3 +55,18 @@ if( !function_exists("__segment") ) {
         }
     }
 }
+
+## GET ANONYMAUS CLASS
+if( !function_exists("anonymous") )
+{
+    function anonymous($path)
+    {
+        if( app("files")->exists($path) )
+        {
+            if( is_object( ($class = app("files")->getRequire($path)) ) )
+            {
+                return $class;
+            }
+        }
+    }
+}

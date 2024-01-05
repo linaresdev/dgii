@@ -8,6 +8,7 @@ namespace DGII\User;
 */
 
 use DGII\Model\Term;
+use DGII\User\Model\Store;
 
 class Driver {
 
@@ -90,9 +91,10 @@ class Driver {
             "name"      => "Admin",
             "firstname" => "Web",
             "lastname"  => "Master",
+            "fullname"  => "Web Master",
             "user"      => "admin",
             "email"     => "admin@webmaster.lc",
-            "password"  => \Str::random(12),
+            "password"  => "\Str::random(12)",
             "activated" => 1
         ]);
 

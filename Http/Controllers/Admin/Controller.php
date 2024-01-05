@@ -22,7 +22,24 @@ class Controller extends BaseController {
     protected $path = "dgii::admin.";
 
     public function boot( $app=null, $data=[] ) {
+        
         $this->app = $app;
+
+        ## VAR LAYOUT
+        $data["icon"] = '<span class="mdi mdi-text"></span>';
+        $data["title"] = 'Title Page';
+
+        $this->share($data);
+
+        ## SET LAYOUT
+        if( method_exists($this, "setLayout") ) {
+            view()->share($this->setLayout());
+        }
+    }
+    public function setLayout() {
+        return [
+            "container" => "container"
+        ];
     }
 
     public function share($data) {
