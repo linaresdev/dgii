@@ -7,7 +7,7 @@ namespace DGII\User\Model;
 *---------------------------------------------------------
 */
 
-use XMalla\XCore\Model\Term;
+use DGII\Model\Term;
 
 class UserRol {
 

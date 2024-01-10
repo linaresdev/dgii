@@ -55,4 +55,10 @@ class EntityRequest extends FormRequest {
         $this->certify->move($path, $name);
     }
 
+    public function news($field, $message) {
+        $validate = $this->validatorInstance();
+        $validate->errors()->add($field, $message);
+        return back()->withErrors($validate)->withInput();
+    }
+
 }

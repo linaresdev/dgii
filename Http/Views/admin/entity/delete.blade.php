@@ -3,18 +3,47 @@
     @section("content")
         <article class="card border-0 mt-3">
             <section class="card-body">
-                <h5 class="card-title">
+                <h5 class="card-title mt-2">
                     {{__("business.delete.title")}}
                 </h5>
                 <p>{{__("business.delete.info")}}</p>
-                <ul>
+                <ol>
                     @foreach(__("business.delete.driving") as $row)
-                    <p>{{$row}}</p>
+                    <li>{{$row}}.</li>
                     @endforeach
-                </ul>
+                </ol>
 
-                <form action="#" class="border border-danger rounded p-4">
+                <form action="{{__url('{current}')}}"
+                    method="POST" 
+                    class="border border-danger rounded p-4">
+
+                    @if( $errors->any() )
+                    <div class="mb-1 ms-2 border-start border-3 border-danger ps-2 py-2 mb-3">
+                        @foreach($errors->all() as $error)
+                        <p class="m-0 text-danger fs-6">{{$error}}</p>
+                        @endforeach
+                    </div>
+                    @endif
+
                     @csrf
+
+                    <input type="text"
+                            name="name" 
+                            class="form-control form-control-lg mb-3 " 
+                            placeholder="{{__('entity.name')}}">
+                    
+
+                    <div class="form-check mb-3">
+                        <input type="checkbox" 
+                            name="delegate" 
+                            value="false" id="delegate" 
+                            @if(!empty(old('delegate'))) checked @ese unchecked @endif
+                            class="form-check-input">
+                        <label for="delegate" class="form-check-label">
+                            {{__("business.delete.delegate")}}.
+                        </label>
+                    </div>
+
                     <button type="submit" class="btn btn-danger">
                         <span class="mdi mdi-delete"></span>
                         {{__("words.delete")}}

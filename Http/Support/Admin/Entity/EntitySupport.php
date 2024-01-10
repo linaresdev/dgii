@@ -7,6 +7,7 @@ namespace DGII\Http\Support\Admin\Entity;
 *---------------------------------------------------------
 */
 
+use DGII\Model\Term;
 use DGII\Model\Hacienda;
 use DGII\Support\P12Certify;
 use DGII\User\Model\Store as User;
@@ -28,65 +29,62 @@ class EntitySupport {
         return (new Hacienda)->paginate($perpage);
     }
 
-    public function postEntityRegister( $request ) {
-
-        $YDate = now()->format('Y');
-        $V = $request->validatorInstance();
+    public function postEntityRegister( $request )
+    {     
+        if( !$request->user()->can("insert", "admin") ) {
+            return $request->news("rol", __("auth.rol.deny"));
+        } 
 
         if( openssl_pkcs12_read($request->getCertifyContent(), $data, $request->pwd) )
-        {
-            $certify = new P12Certify( $data );
-
-            $fields["name"]         = $request->name;
-            $fields["email"]        = $certify->email();
-            $fields["slug"]         = $certify->user();
-            $fields["certify"]      = $certify->fileName();
-            $fields["password"]     = $request->pwd;
-            
-            $ruls["email"]          = "required|unique:users,email";
-            $ruls["slug"]           = "required|unique:users,user";
-            $ruls["password"]       = "required";
-
-            $msg["email"]   = __("validation.has.entity");
-            $msg["slug"]    = __("validation.slug.entity");
-
-            if(($check = validator($fields, $ruls, $msg))->fails())
-            {
-                return back()->withErrors($check)->withInput(); 
-            }
-
-            if( (new Hacienda)->has($certify->user()) ) {
-
-                $account                = $fields;
-                $account["user"]        = $certify->user();
-                $account["type"]        = "entity";
-                $account["activated"]   = 1;
-
-                if( ($user = (new User)->create($account)) )
+        { 
+            if( ( $cert = (new P12Certify($data)) )->passes() ) 
+            {                
+                if( ($validate = $cert->dataValidate($request))->passes() )
                 {
-                    $directory = __path("{hacienda}/".$user->user."/$YDate/".env("DGII_ENV"));
+                    if( $cert->makeResources($request) ) {
+                        $entity = (new Hacienda)->create($cert->getData($request));
 
-                    if( (new Hacienda)->create($fields) ) {
-                        ## Creamos directorios base
-                        if( !app('files')->exists($directory) ) {
-                            app("files")->makeDirectory($directory, 0750, true);
-                        }
+                        ## CREAMOS EL GRUPO DE TRABAJO
+                        if( ($group = (new Term)->create($cert->workGroup(($name = $request->name)))) )
+                        { 
+                            ## CREAMOS LA CUENTA DE LA ENTIDAD
+                            if( ($user = (new User)->create($cert->accountData($name))) )
+                            {
+                                ## SYNC USER ENTITY 
+                                $user->syncGroup($group, [
+                                    "view"      => 1, 
+                                    "insert"    => 1, 
+                                    "update"    => 1, 
+                                    "delete"    => 0,
+                                ]);
 
-                        ## Movemos el certificado a su directorio
-                        $request->moveCertify(__path("{hacienda}/".$user->user), 'certify.p12');
+                                ## SYNG ADMIN USER
+                                $request->user()->syncGroup($group, [
+                                    "view"      => 1, 
+                                    "insert"    => 1, 
+                                    "update"    => 1, 
+                                    "delete"    => 1
+                                ]);
+
+                                return redirect('admin/entities');
+                            }
+                        }                        
                     }
-                    
-                    return redirect("admin/entities");
-                }
-            }
 
-            $V->errors()->add("certify", "Error al tratar de registrar la entidad");
-            return back()->withErrors($V)->withInput(); 
+                    $validate->errors()->add("certify", __("validation.entity.resources"));
+                }
+
+                //$validate->errors()->add("certify", "Error al tratar de registrar la entidad");
+                return back()->withErrors($validate)->withInput(); 
+            }
         }
 
+        $V = validator([],[]);
         $V->errors()->add("certify", __("validation.bad.certify"));
         return back()->withErrors($V)->withInput();
     }
+
+
 
     public function entity($ent)
     {
@@ -98,6 +96,13 @@ class EntitySupport {
     }
 
     public function postUpdateName($ent, $request) {
+
+        if( !$request->user()->can("update", "admin") ) {
+            $V = validator([],[]);
+            $V->errors()->add("rol", __("auth.rol.deny"));
+           return back()->withErrors($V)->withInput();
+        }
+
         $request->validate([
             "name" => "required|min:12"
         ]);
@@ -116,5 +121,35 @@ class EntitySupport {
         }
 
         return back();
+    }
+
+    public function delete($ent, $request)
+    {
+        if( !$request->user()->can("delete", "admin") ) {
+            $V = validator([],[]);
+            $V->errors()->add("rol", __("auth.rol.deny"));
+           return back()->withErrors($V)->withInput();
+        }
+
+        $attributes["name"]      = __("business.name");
+        $attributes["delegate"]  = __("business.delegate");
+
+        $validate = $request->validate([
+            "name"      => "required",
+            "delegate"  => "required"
+        ], [], $attributes);        
+
+        if( $ent->name == $request->name ) {
+            (new Term)->where("type", "user-group")->where("slug", $ent->slug)->delete();
+            $ent->user->delete();
+            $ent->delete();
+
+            return redirect("admin/entities");
+        }
+
+        $validate->errors()->add(__("business.name"), __("validate.bad.name"));
+        return back()->withErrors($validate)->withInput(); 
+
+        
     }
 }

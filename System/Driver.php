@@ -41,7 +41,11 @@ class Driver
         ];
     }
     
-    public function alias() { return []; }
+    public function alias() { 
+        return [
+            "Alert" => \DGII\Facade\Alert::class
+        ]; 
+    }
 
     public function install($app) { }
     public function destroy($app) {}

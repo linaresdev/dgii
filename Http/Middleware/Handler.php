@@ -25,7 +25,7 @@ class Handler
                 \Illuminate\View\Middleware\ShareErrorsFromSession::class,
                 \App\Http\Middleware\VerifyCsrfToken::class,
                 \Illuminate\Routing\Middleware\SubstituteBindings::class,
-                //\XMalla\Http\Middleware\WebMiddleware::class,
+                \DGII\Http\Middleware\Web\Login::class,
             ]
         ];
     }

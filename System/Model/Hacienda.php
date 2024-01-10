@@ -7,6 +7,8 @@ namespace DGII\Model;
 *---------------------------------------------------------
 */
 
+use DGII\Model\Term;
+use DGII\User\Model\Store;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -19,17 +21,16 @@ class Hacienda extends Model
     protected $fillable = [
         "id",
         "name",
+        "serial",
         "slug",
-        "token",
         "password",
-        "certify",
-        "counter_emisioncomprobante",
-        "counter_emisionaprobacioncomercial",
-        "counter_recepcionaprobacioncomercial",
-        "counter_recepcionacuserecibo",
         "xml",
         "meta",
         "activated",
+        "emision_comprobante",
+        "emision_aprobacion",
+        "recepcion_aprobacion",
+        "recepcion_acuserecibo",
         "created_at",
         "updated_at"
     ];
@@ -49,8 +50,16 @@ class Hacienda extends Model
         return $this->hasOne(\DGII\User\Model\Store::class, "user", "slug");
     }
 
-    // protected $timestamps = false;
+    public function users() {
+        return $this->belongsToMany(Term::class, "termstaxonomies", "term_id", "tax_id");
+    }
 
-    // protected $dateFormat = 'U'
+    // public function groups() {
+    //    return $this->belongsToMany(Term::class, "termstaxonomies", "term_id", "tax_id");
+    // }
 
+    ## QUERY
+    public function group($type, $slug) {
+        return (new Term)->where("type", $type)->where("slug", $slug)->first() ?? null;
+    }
 }

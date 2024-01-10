@@ -13,20 +13,19 @@ return new class extends Migration
             $table->increments("id");
 
             $table->string("name",150);
+            $table->string("slug",200);
             $table->string("slug",30);
-            $table->text("token");
             $table->string("password", 100);
-            $table->text("certify");
+            
+            $table->text("xml")->nullable();            
+            $table->text("meta")->nullable();
 
-            $table->integer("counter_emisioncomprobante")->default(0);
-            $table->integer("counter_emisionaprobacioncomercial")->default(0);
-            $table->integer("counter_recepcionaprobacioncomercial")->default(0);
-            $table->integer("counter_recepcionacuserecibo")->default(0);
-
-            $table->text("xml");
-
-            $table->text("meta");
             $table->char("activated")->default(1);
+            
+            $table->integer("emision_comprobante")->default(0);
+            $table->integer("emision_aprobacion")->default(0);
+            $table->integer("recepcion_aprobacion")->default(0);
+            $table->integer("recepcion_acuserecibo")->default(0);
 
             $table->timestamps();
         });

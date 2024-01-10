@@ -21,12 +21,6 @@ class EntityController extends Controller {
         ]);        
     }
 
-    // public function setContainer() {
-    //     app("view")->share([
-    //         "container" => "container"
-    //     ]);
-    // }
-
     public function index() {
         return $this->render('home', $this->app->home());
     }
@@ -52,5 +46,9 @@ class EntityController extends Controller {
 
     public function getDelete($ent) {
         return $this->render("delete", $this->app->entity($ent));
+    }
+
+    public function postDelete($ent, Request $request ) {
+        return $this->app->delete($ent, $request);
     }
 }

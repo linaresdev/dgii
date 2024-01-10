@@ -7,6 +7,7 @@ namespace DGII\Http\Support;
 *---------------------------------------------------------
 */
 
+use DGII\Facade\Alert;
 
 class Auth
 {
@@ -22,8 +23,36 @@ class Auth
     {
         $validator   = validator([],[]);
 
-        if( auth("web")->attempt($request->except('_token')) ) 
+        if( ($guard = auth("web"))->attempt($request->except('_token')) ) 
         {
+            $user = $guard->user();
+
+            for( $i=-0; $i<5; $i++) {
+                if( ($i != 1) && $user->activated == $i )
+                {
+                    $user->news("login", __("words.rejected"), [
+                        "message" => __("account.$i")
+                    ]);
+
+                    $guard->logout();
+                    $validator->errors()->add('login', __("account.$i"));
+                    return back()->withErrors($validator)->withInput();
+                }
+            }
+
+            if( $user->activated > 4 )
+            {
+                $user->news("login", "words.rejected", [
+                    "message"   => __("access.fishy").', '. __("account.".$user->activated)            
+                ]);
+
+                $guard->logout();
+
+                $validator->errors()->add('login', __("auth.bad"));
+                return back()->withErrors($validator)->withInput();
+            }
+
+            $user->news("login", "words.aprobed");
             return redirect("admin");
         }
 
@@ -34,12 +63,16 @@ class Auth
 
     public function webLogout($auth)
     {
-        $auth->logout();
+        $auth->user()->news("logout", "words.approved", [
+            "message" => "auth.logout"
+        ]);
+
+        $auth->logout();       
         
         return redirect("login");
     }
 
-    public function geuestAuth($request)
+    public function guestAuth($request)
     {
         dd($request->all());
     }

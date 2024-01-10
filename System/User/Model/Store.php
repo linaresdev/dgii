@@ -7,6 +7,8 @@ namespace DGII\User\Model;
 *---------------------------------------------------------
 */
 use DGII\Model\Term;
+use DGII\Support\Guard;
+use DGII\Model\TermTaxonomy;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Notifications\Notifiable;
@@ -67,19 +69,39 @@ class Store extends Authenticatable {
         return $this->belongsToMany(Term::class, "termstaxonomies", "tax_id", "term_id")->withPivot(
            "meta"
         )->using(\DGII\User\Model\UserGroupPivot::class);
-    }   
+    }
+    
+    public function stack() {
+        return $this->hasMany(UserStack::class, "user_id");
+    }
 
     /*
     * SYNCS */
     public function syncGroup($gID=0, $rols=null) {
-        if( is_numeric($gID) ) {
-            if($this->groups()->attach($gID, ["meta" => $rols])) {
-
+        if( is_numeric($gID) ) 
+        {
+            $this->groups()->attach($gID, ["meta" => $rols]);
+        }
+        elseif( is_string($gID) ) 
+        {            
+            if( !empty( ($group = $this->group($gID)) ) ) 
+            {
+                $this->groups()->attach($group->id, ["meta" => $rols]);
             }
         }
-        elseif( is_string($gID) && !empty( ($group = $this->group($gID)) ) ) {            
-            $this->groups()->attach($group->id, ["meta" => $rols]);
+        elseif( is_object($gID) )
+        {
+            $this->groups()->attach($gID->id, ["meta" => $rols]);
         }        
+    }
+
+    /*
+    * USERS TAXONOMIES */
+    public function tax()
+    {
+        return $this->belongsToMany(Term::class, "termstaxonomies", "tax_id", "term_id")->withPivot(
+            "meta"
+         )->using(\DGII\User\Model\UserGroupPivot::class);
     }
 
     /*
@@ -92,11 +114,17 @@ class Store extends Authenticatable {
     }
     
     public function group( $slug=null ) {
-        return (new Term)->tax("user-group", $slug);        
+        return $this->tax->where("slug", $slug)->first() ?? null;        
     }
 
-    public function rol($slug) {
-        return $this->groups->where("slug", $slug)->first();
+    public function rol($slug) 
+    {
+        $tax     = $this->tax->where("type", "user-group");
+        $group   = $tax->where("slug", $slug);        
+ 
+        if($group->count() > 0 ) {
+            return $group->first()->pivot->meta;
+        }
     }
 
     /*
@@ -106,17 +134,41 @@ class Store extends Authenticatable {
     }
 
     /*
+    * NEWS */
+    public function news($type, $header, $message=null)
+    {
+        return $this->stack()->create([
+            "type"      => $type,
+            "host"      => request()->ip(),
+            "header"    => $header,
+            "path"      => request()->path(),
+            "agent"     => request()->userAgent(),
+            "meta"      => $this->footerGuard($message)
+        ]);
+    }
+
+    /*
 	* GUARD */
+    public function footerGuard($data=null)
+    {
+        $data["ip"]        = request()->ip();
+        $data["device"]    = $this->currentDevice();
+        $data["platform"]  = $this->currentPlatform();
+        $data["browser"]   = $this->currentBrowser();
+        $data["robot"]     = $this->currentRobot();            
+    
+        return $data;
+    }
 	public function currentDevice() {
-		return xmalla("guard")->device(request()->userAgent());
+		return (new Guard)->device(request()->userAgent());
 	}
 	public function currentPlatform() {
-		return xmalla("guard")->getPlatform(request()->userAgent());
+		return (new Guard)->getPlatform(request()->userAgent());
 	}
 	public function currentBrowser() {
-		return xmalla("guard")->getBrowser(request()->userAgent());
+		return (new Guard)->getBrowser(request()->userAgent());
 	}
 	public function currentRobot() {
-		return xmalla("guard")->getRobot(request()->userAgent());
+		return (new Guard)->getRobot(request()->userAgent());
 	}
 }

@@ -32,6 +32,7 @@ Route::prefix("admin")->namespace("Admin")->group(function($route) {
             Route::get("set-state/{state}", "EntityController@setState");
 
             Route::get("delete", "EntityController@getDelete");
+            Route::post("delete", "EntityController@postDelete");
         });
 
     });

@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class TermTaxonomy extends Model {
 
-    protected $table = 'termtaxonomies';
+    protected $table = 'termstaxonomies';
 
     protected $fillable = [
         "id",
@@ -23,7 +23,7 @@ class TermTaxonomy extends Model {
     ];
 
     public function taxonomy() {
-        return $this->belongsToMany(Term::class, "taxonomies", "term_id", "tax_id")->withPivot(
+        return $this->belongsToMany(Term::class, "taxonomies", "term_id", "obj_id")->withPivot(
             "meta"
         );
     }

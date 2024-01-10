@@ -1,5 +1,10 @@
 <?php
 
+## IoC
+$this->app->bind("Alert", function($app) {
+    return new \DGII\Support\Alert($app);
+});
+
 ## GRAMMARIES
 $this->loadGrammary("es");
 
@@ -15,6 +20,11 @@ endif;
 
 ## ENVIRONMENT
 if( env("APP_START") ):
+
+    ## CONFIG ELOQUENT PROVIDERS
+    $this->app["config"]->set(
+        "auth.providers.users.model", \DGII\User\Model\Store::class
+    );
 
     ## PATH
     Dgii::addPath([
@@ -34,6 +44,18 @@ if( env("APP_START") ):
     ## Validations
     Validator::extend("isRnc", "\DGII\Http\Request\DgiiRequest@isRNC");
     Validator::extend("isEncf", "\DGII\Http\Request\DgiiRequest@isENCF");
+
+    ## Entities Policies
+    $entitiesPolicies = [
+        "owner", "view", "insert", "update", "delete",
+        "exceptOwner", 
+    ];
+
+    foreach($entitiesPolicies as $policy) {
+        \Gate::define($policy, [\DGII\Http\Policy\User::class, $policy]);
+        \Gate::define("ent-$policy", [\DGII\Http\Policy\Entity::class, $policy]);
+    }
+
 
     ## Views 
     $this->loadViewsFrom(__DIR__.'/Views', 'dgii');

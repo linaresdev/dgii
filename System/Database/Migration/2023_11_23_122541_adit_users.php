@@ -60,7 +60,7 @@ return new class extends Migration
             $table->text("agent")->nullable();
 
             $table->text("meta")->nullable();
-            $table->char("activated")->default(0);
+            $table->char("activated", 1)->default(0);
 
             $table->timestamps();
         });
