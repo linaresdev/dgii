@@ -14,8 +14,23 @@ Route::get("logout", "AuthController@getWebLogout");
 Route::get("auth", "AuthController@getWebAuth");
 Route::get("auth", "AuthController@postWebAuth");
 
-Route::prefix("admin")->namespace("Admin")->group(function($route) {
+Route::prefix("ACECF")->namespace("ACECF")->group(function($route)
+{
+    Route::get("/", "HomeController@index");
+});
+
+Route::prefix("admin")->namespace("Admin")->group(function($route)
+{
     Route::get("/", "DashboardController@index");
+
+    ## ACCOUNT
+    Route::prefix("users")->group(function($route) {
+        Route::get("/", "UserController@index");
+
+        Route::prefix("groups")->group(function(){
+            Route::get("/", "UserGroupController@index");
+        });
+    });
 
     ## ENTITIES
     Route::prefix("entities")->namespace("Entity")->group(function()

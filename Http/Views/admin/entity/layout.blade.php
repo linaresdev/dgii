@@ -2,7 +2,7 @@
     @section("body")
         <article class="container-fluid mb-3">
             <section class="{{$container}}">
-                <h4>{!! $icon !!} {!! $title !!}</h4>
+                <h4>{!! $icon !!} {!! $title !!}</h4>               
 
                 @yield("content", "Content")
             </section>

@@ -8,6 +8,7 @@ namespace DGII\Http\Middleware\Web;
 */
 
 use Closure;
+use DGII\Facade\Alert;
 use Illuminate\Support\Facades\Auth;
 
 class Login {
@@ -20,7 +21,11 @@ class Login {
     {
         if( ($AUTH = Auth::guard($guard))->guest() && !$this->isExert($request) )
         {
-            return redirect("login");
+            $errors = Alert::addErrors("warning", [
+                __("auth.required")
+            ]);
+            
+            return redirect("login")->withErrors($errors)->withInput();
         }
 
         return $next( $request );

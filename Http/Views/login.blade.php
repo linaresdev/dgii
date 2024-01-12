@@ -6,15 +6,13 @@
             <section class="col-lg-6 offset-lg-3 col-sm-10 offset-sm-1">
                 <div class="card">
                     <form class="card-body" method="POST">
-                        <h5 class="card-title">Login</h5>
-
-                        @if( $errors->any())
-                        <ul class="error">
-                            @foreach($errors->all() as $message)
-                            <li class="error-item">{{$message}}</li>
-                            @endforeach
-                        </ul>
-                        @endif
+                        <h5 class="card-title mb-3">
+                            <span class="mdi mdi-shield-account"></span>
+                            {{__("words.identify")}}
+                        </h5>
+                        {!! Alert::listen("system") !!}
+                        {!! Alert::form("login") !!}
+                        
                         <div class="mb-2">
                             <div class="form-floating">
                                 <input type="email"

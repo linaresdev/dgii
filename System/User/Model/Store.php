@@ -70,6 +70,9 @@ class Store extends Authenticatable {
            "meta"
         )->using(\DGII\User\Model\UserGroupPivot::class);
     }
+
+    public function entities(){}
+    public function entity($slug){}
     
     public function stack() {
         return $this->hasMany(UserStack::class, "user_id");

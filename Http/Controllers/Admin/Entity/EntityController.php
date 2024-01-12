@@ -7,6 +7,7 @@ namespace DGII\Http\Controllers\Admin\Entity;
 *---------------------------------------------------------
 */
 
+use DGII\Facade\Alert;
 use Illuminate\Http\Request;
 use DGII\Http\Request\Admin\EntityRequest;
 use DGII\Http\Support\Admin\Entity\EntitySupport;

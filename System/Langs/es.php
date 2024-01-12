@@ -16,6 +16,7 @@ return (new class {
             "auth.bad"          => "Credenciales incorrectas",
             "auth.logout"       => "Sesión cerrada",
             "auth.reject"       => "Autenticación rechazada",
+            "auth.required"     => "Identificase por favor",
 
             "auth.rol.deny"     => "Acción denegada, no posee los permisos requeridos",
             "auth.delete.deny"  => "Rechazada por falta de permisos",
@@ -28,39 +29,52 @@ return (new class {
             "account.4"         => "Cuenta en legales",
             "account.5"         => "Cuenta eliminada",
 
+            "account.type"      => "Tipo de cuenta",
+
             "business.certify"  => "Certificado de la empresa",
 
-            "business.delegate"     => "Estoy deacuerdo",
-            "business.delete.title"   => "Eliminar cuenta coporativa",
-            "business.delete.info"  => "Por motivo de seguridad, solo se autoriza destruir la entida, si y solo si, se cumple con los siguientes criterios",
+            "business.delegate"         => "Estoy deacuerdo",
+            "business.delete.title"     => "Eliminar cuenta coporativa",
+            "business.delete.info"      => "Por motivo de seguridad, solo se autoriza destruir la entida, si y solo si, se cumple con los siguientes criterios",
             
-            "business.delete.driving.0"     => "Debe terner los permisos pertinentes",
+            "business.delete.driving.0" => "Debe terner los permisos pertinentes",
             "business.delete.driving.1" => "La entidad debe estar bacía",
             "business.delete.driving.2" => "Debe proporcionar el nombre registrado de la entidad",
             
-            "business.delete.delegate" => "Agotado lo anterior, asume toda la responsabilidad y autoriza proceder",
+            "business.delete.delegate"  => "Agotado lo anterior, asume toda la responsabilidad y autoriza proceder",
 
-            "business.email"    => "Correo de la empresa",
-            "business.name"     => "Nombre de la empresa",
-            "business.register" => "Registro de entidades corporativas", 
+            "business.email"        => "Correo de la empresa",
+            "business.name"         => "Nombre de la empresa",
+            "business.register"     => "Registro de entidades corporativas", 
 
-            "business.update.name" => "Actualizar nombre corporativo",
+            "business.update.name"  => "Actualizar nombre corporativo",
 
             "confirm.password"  => "Confirmar contraseña",
             "command.unknown"   => "Comando o orden desconocida",
             "corporate.group"   => "Grupo corporativo",
+
+            "delete.successfully"   => "Datos elimininados correctamente",
+            "delete.errors"         => "Error al tratar de eliminar los datos",
+
             "entity.access"     => "Acceso empresarial",
             "entity.name"       => "Nombre de la entidad",
 
             "form.login"        => "Formulario de acceso",
             "form.entities"     => "Registro de entidades",
 
+            "identify.yourself"     => "Identificate",
             "install.description"   => "Instalación del aplicativo de soporte para DGII",
             "install.installed"     => "Aplicativo instalado",
+            "insert.successfully"   => "Registro realizado correctamente",
+
             "new.password"          => "Nueva contraseña",
 
             "update.account"        => "Actualizar cuenta",
+            "update.credentials"    => "Actualizar credenciales",
             "update.from.email"     => "Correo electrónico de la cuenta que desea actualizar",
+            "update.password"       => "actualizar contraseña",
+            "update.successfully"   => "Actualización realizada exitosamente",
+            "update.error"          => "Error al tratar de actualizar los datos",
 
             "rol.empty"             => "No posee los permisos requeridos para esta operación",
 
@@ -73,6 +87,7 @@ return (new class {
             "validator.name.business"       => "El :attribute existe en nuestros registros",
 
             "words.actions"         => "Acciones",
+            "words.accounts-users"        => "Cuentas de usuarios",
             "words.approved"        => "Aprobado",
             'words.account'         => "Cuenta",
             "words.auth"            => "Autenticar",
@@ -84,11 +99,16 @@ return (new class {
             "words.delete"          => "Eliminar",
             "words.entities"        => "Entidades",
             "words.email"           => "Correo Electrónico",
+            "words.identify"        => "Identificarse",
+            "words.filters"         => "Filtrar",
+            "words.groups"          => "Grupos",
             "words.login"           => "Acceder",
             "words.logout"          => "Salir",
             "words.users"           => "Usuarios",
             "words.update"          => "Actualizar",
             "words.name"            => "Nombre",
+
+            "words.new"             => "Nuevo",
             "words.password"        => "Contraseña",
             "words.rejected"        => "Rechazado",
             'words.serial'          => "Serial",

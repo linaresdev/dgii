@@ -8,14 +8,17 @@ namespace DGII\Http\Support\Admin\Entity;
 */
 
 use DGII\Model\Term;
+use DGII\Facade\Alert;
 use DGII\Model\Hacienda;
 use DGII\Support\P12Certify;
 use DGII\User\Model\Store as User;
 
 class EntitySupport {
 
-    public function home() {
-        
+    public function home() 
+    {
+        $user = request()->user();       
+
         $data['icon']   = '<span class="mdi mdi-bank"></span>';
         $data['title']  = __("words.entities");
 
@@ -66,6 +69,7 @@ class EntitySupport {
                                     "delete"    => 1
                                 ]);
 
+                                Alert::prefix("system")->success(__("insert.successfully"));
                                 return redirect('admin/entities');
                             }
                         }                        
@@ -108,7 +112,13 @@ class EntitySupport {
         ]);
 
         if( $ent->update($request->except("_token")) ) {
-            $ent->user->update($request->except("_token"));
+            if($ent->user->update($request->except("_token")))
+            {
+                Alert::prefix("update")->success(__("update.successfully"));
+            }
+        }
+        else{
+            Alert::prefix("update")->danger(__("update.error"));
         }
 
         return back();
@@ -125,10 +135,12 @@ class EntitySupport {
 
     public function delete($ent, $request)
     {
-        if( !$request->user()->can("delete", "admin") ) {
-            $V = validator([],[]);
-            $V->errors()->add("rol", __("auth.rol.deny"));
-           return back()->withErrors($V)->withInput();
+        if( !$request->user()->can("delete", "admin") )
+        {
+            $alert = Alert::addErrors(
+                "danger", __("auth.rol.deny")
+            );
+            return back()->withErrors($alert)->withInput();
         }
 
         $attributes["name"]      = __("business.name");
@@ -140,16 +152,17 @@ class EntitySupport {
         ], [], $attributes);        
 
         if( $ent->name == $request->name ) {
-            (new Term)->where("type", "user-group")->where("slug", $ent->slug)->delete();
+
+            (new Term)->deleteTax("user-group", $ent->slug);     
+
             $ent->user->delete();
             $ent->delete();
 
+            Alert::prefix("system")->success(__("delete.successfully"));
             return redirect("admin/entities");
         }
 
         $validate->errors()->add(__("business.name"), __("validate.bad.name"));
-        return back()->withErrors($validate)->withInput(); 
-
-        
+        return back()->withErrors($validate)->withInput();        
     }
 }

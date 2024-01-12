@@ -60,7 +60,16 @@ class Term extends Model {
     /*
     * QUERY */
     public function tax($type, $slug) {
-       return  $this->where("type", $type)->where("slug", $slug)->first();
+       return  $this->where("type", $type)->where("slug", $slug)->first() ?? null;
+    }
+
+    public function deleteTax($type, $slug) 
+    {
+        if( ($tax = $this->tax($type, $slug)) != null ) {
+            return $tax->delete();
+        }
+
+        return false;
     }
 
     public function meta() {

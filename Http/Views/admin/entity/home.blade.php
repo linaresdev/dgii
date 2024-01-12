@@ -2,10 +2,13 @@
 
     @section("content")
         <div class="py-2 mb-3">
-            <a href="{{__url('{entity}/register')}}" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+            <a href="{{__url('{entity}/register')}}" 
+                class="btn btn-sm btn-outline-primary rounded-pill px-3">
                 <span class="mdi mdi-plus-thick"></span> Nuevo
             </a>
-        </div>
+        </div>   
+
+        {!! Alert::listen("system", "dgii::alerts.simple") !!}
 
         <div class="card border-0">
             <div class="card-body">
@@ -31,7 +34,7 @@
                             <tr>
                                 <td>{{$entity->name}}</td>
                                 <td class="text-center"> 
-                                <div class="dropdown">
+                                    <div class="dropdown">
                                         <a href="#" class="btn btn-light rounded-pill btn-sm btn-dropdown dropdown-toggle px-3" 
                                             data-bs-toggle="dropdown"
                                             area-expanded="false">

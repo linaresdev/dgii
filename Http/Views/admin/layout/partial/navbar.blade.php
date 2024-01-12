@@ -36,14 +36,16 @@
             <ul class="nav ms-auto">
                 @if(auth("web")->check())                
                 <li class="nav-item">
-                    <a href="{{__url('logout')}}" class="nav-link">
+                    <a href="{{__url('logout')}}" 
+                        class="nav-link py-1 px-3 bg-success-subtle text-success rounded-pill">
                         <span class="mdi mdi-logout"></span>
                         {{__("words.logout")}}
                     </a>
                 </li>
                 @else
                 <li class="nav-item">
-                    <a href="{{__url('login')}}" class="nav-link">
+                    <a href="{{__url('login')}}" 
+                        class="nav-link bg-light rounded-pill px-3 py-1">
                         <span class="mdi mdi-login"></span>
                         {{__("words.login")}}
                     </a>

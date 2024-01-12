@@ -14,7 +14,7 @@ Route::prefix($env)->group(function($route)
 {
     ## AUTH
     Route::get("emisorreceptor/fe/Autenticacion/api/Semilla","AuthController@getSeed");
-    Route::post("{env}/emisorreceptor/fe/Autenticacion/api/ValidacionCertificado","AuthController@postGuest");
+    Route::post("emisorreceptor/fe/Autenticacion/api/ValidacionCertificado","AuthController@postGuest");
 
     ## Emision
     Route::post("emisorreceptor/api/Emision/EmisionComprobantes","EnviarComprobanteController@index");

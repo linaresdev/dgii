@@ -1,21 +1,11 @@
 @extends("dgii::admin.entity.layout")
     @section("content")
 
-    <div class="mb-3">
-        
-    </div>
-
     <article class="card border-0">
         <div class="card-body">  
             <h5 class="card-title">{{__('business.update.name')}}</h5>
             
-            @if( $errors->any() )
-            <div class="mb-1 ms-2 border-start border-3 border-danger ps-2 py-2 my-2">
-                @foreach($errors->all() as $error)
-                <p class="m-0 text-danger fs-6">{{$error}}</p>
-                @endforeach
-            </div>
-            @endif
+            {!! Alert::form("update") !!}
 
             <form action="{{__url('{current}')}}" method="POST">
                 <div class="form-floating mb-3">
