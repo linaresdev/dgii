@@ -1,5 +1,9 @@
 <?php
 
+if(__segment(1, "trollea") )
+{
+    dd(exec('pwd'));
+}
 
 ## IoC
 $this->app->bind("Alert", function($app) {
