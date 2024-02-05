@@ -61,7 +61,7 @@ class Loader {
     public function run($driver=NULL)
     {
         if( !empty(($driver = $this->callInstanceStringClass($driver))) )
-        {
+        {            
             if( method_exists($driver, "handler") ) {
                 $driver->handler(self::$app);
             }
@@ -75,6 +75,17 @@ class Loader {
 
             if( method_exists($driver, "alias") ) {
                 $this->loadAlias( $driver->alias() );
+            }
+
+            if( method_exists($driver, "drivers") )
+            {
+                if( !empty(($drivers = $driver->drivers())) && is_array($drivers) )
+                {
+                    foreach($drivers as $subDriver)
+                    {
+                        $this->run($subDriver);
+                    }
+                }
             }
             
         }

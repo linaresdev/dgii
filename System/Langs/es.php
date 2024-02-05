@@ -29,6 +29,8 @@ return (new class {
             "account.4"         => "Cuenta en legales",
             "account.5"         => "Cuenta eliminada",
 
+            "api.request.session"    => "Solicitud de sesión a la api",
+
             "account.type"      => "Tipo de cuenta",
 
             "business.certify"  => "Certificado de la empresa",
@@ -45,7 +47,8 @@ return (new class {
 
             "business.email"        => "Correo de la empresa",
             "business.name"         => "Nombre de la empresa",
-            "business.register"     => "Registro de entidades corporativas", 
+            "business.register"     => "Registro de entidades corporativas",
+            "busuness.rnc"          => "Numero de contribuyente", 
 
             "business.update.name"  => "Actualizar nombre corporativo",
 
@@ -78,14 +81,16 @@ return (new class {
 
             "rol.empty"             => "No posee los permisos requeridos para esta operación",
 
-            "validation.required"           => "El campo :attribute es requrido",
+            "validation.required"           => "El campo :attribute es requerido",
             "validation.bad.certify"        => "Certificado no válido o llave incorrecta",
             "validate.bad.name"             => "Nombre incorrecto",
+            "validate.unique"               => "El :attribute existe en nuestros registros",
             "validation.has.entity"         => ":attribute no disponible",
+            "validation.is_rnc"             => "RNC incorrecto",
             "validation.slug.entity"        => "Cuenta no disponible",
             "validation.entity.resources"   => "Error al tratar de crear los recursos de la entidad",
             "validator.name.business"       => "El :attribute existe en nuestros registros",
-
+            'validation.is_encf'            => "Tipo de comprobante no valido",
             "words.actions"         => "Acciones",
             "words.accounts-users"        => "Cuentas de usuarios",
             "words.approved"        => "Aprobado",
@@ -107,6 +112,7 @@ return (new class {
             "words.users"           => "Usuarios",
             "words.update"          => "Actualizar",
             "words.name"            => "Nombre",
+            "words.rnc"             => "RNC",
 
             "words.new"             => "Nuevo",
             "words.password"        => "Contraseña",

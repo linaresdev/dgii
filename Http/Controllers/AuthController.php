@@ -9,6 +9,7 @@ namespace DGII\Http\Controllers;
 
 
 use DGII\Http\Support\Auth;
+use Illuminate\Http\Request;
 use DGII\Http\Request\AuthRequest;
 use DGII\Http\Request\LoginRequest;
 
@@ -37,7 +38,16 @@ class AuthController extends Controller {
         return $this->app->geuestAuth($request);
     }
 
-    public function getSeed() {
-        return $this->app->getSeed();
+    public function getSeed( $ent ) {
+        return $this->app->getSeed($ent);
+    }
+
+    public function guestAuth( Request $request) {
+        return $this->app->guestAuth($request);
+    }
+
+    public function noLogin()
+    {
+        return response()->json("Autenticacion requerida", 401);
     }
 }

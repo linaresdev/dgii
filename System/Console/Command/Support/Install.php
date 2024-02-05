@@ -31,7 +31,11 @@ class Install {
 
     public function makeConfig(){}
 
-    public function runMigrate(){}
+    public function runMigrate(){
+        \Artisan::call("migrate");
+    }
 
-    public function runSeeds(){}
+    public function runSeeds(){
+        \Artisan::call("db:seed", ["--class" => \DGII\Database\Seeds\DGIISeeds::class]);
+    }
 }

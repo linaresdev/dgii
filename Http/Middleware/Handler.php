@@ -24,8 +24,14 @@ class Handler
                 \Illuminate\Session\Middleware\StartSession::class,
                 \Illuminate\View\Middleware\ShareErrorsFromSession::class,
                 \App\Http\Middleware\VerifyCsrfToken::class,
+                \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+                \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
                 \Illuminate\Routing\Middleware\SubstituteBindings::class,
                 \DGII\Http\Middleware\Web\Login::class,
+                \DGII\Http\Middleware\Api\AuthMiddleware::class,
+            ],
+            "dgii" => [
+                \DGII\Http\Middleware\Api\AuthMiddleware::class,
             ]
         ];
     }

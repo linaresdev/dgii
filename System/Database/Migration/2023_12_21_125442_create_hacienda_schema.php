@@ -11,13 +11,13 @@ return new class extends Migration
         Schema::create("HACIENDAS", function (Blueprint $table)
         {
             $table->increments("id");
-
+            $table->string("env")->default("testecf");
             $table->string("name",150);
-            $table->string("slug",200);
-            $table->string("slug",30);
-            $table->string("password", 100);
-            
-            $table->text("xml")->nullable();            
+            $table->string("rnc",20);
+
+            $table->text("p12")->nullable();
+            $table->text("password"); 
+                      
             $table->text("meta")->nullable();
 
             $table->char("activated")->default(1);

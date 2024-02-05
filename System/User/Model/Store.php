@@ -10,7 +10,9 @@ use DGII\Model\Term;
 use DGII\Support\Guard;
 use DGII\Model\TermTaxonomy;
 use Laravel\Sanctum\HasApiTokens;
+use Laravel\Sanctum\NewAccessToken;
 use Illuminate\Support\Facades\Crypt;
+use Laravel\Sanctum\PersonalAccessToken;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -19,7 +21,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Store extends Authenticatable {
 
+    use HasApiTokens, HasFactory, Notifiable;
+    
     protected $table = 'users';
+
+    protected $customToken;
 
     protected $fillable = [
         "type",
@@ -33,6 +39,7 @@ class Store extends Authenticatable {
         "email",
         "email_verified_at",
         "password",
+        "pem",
         "pystring",
         "birthday",
         "gender",
@@ -54,6 +61,36 @@ class Store extends Authenticatable {
     ];
 
     /*
+    * CUSTOM SANCTUM */
+    public function loadCustomToken($token)
+    {
+        $this->customToken = $token;
+    }
+    public function createToken(string $name, array $abilities = ['*'], DateTimeInterface $expiresAt = null)
+    {
+        $plainTextToken = sprintf(
+            '%s%s%s',
+            config('sanctum.token_prefix', ''),
+            $tokenEntropy = \Str::random(40),
+            hash('crc32b', $tokenEntropy)
+        );
+
+        if( $this->customToken != null ) 
+        {
+            $plainTextToken = $this->customToken; 
+        }
+
+        $token = $this->tokens()->create([
+            'name' => $name,
+            'token' => hash('sha256', $plainTextToken),
+            'abilities' => $abilities,
+            'expires_at' => $expiresAt,
+        ]);
+
+        return new NewAccessToken($token, $token->getKey().'|'.$plainTextToken);
+    }
+
+    /*
     * SETTINGS */
     public function setPasswordAttribute($value) {
         $value = trim($value);
@@ -71,11 +108,19 @@ class Store extends Authenticatable {
         )->using(\DGII\User\Model\UserGroupPivot::class);
     }
 
-    public function entities(){}
     public function entity($slug){}
     
     public function stack() {
         return $this->hasMany(UserStack::class, "user_id");
+    }
+
+    public function onPem($x509)
+    {
+        return $this->where("pem", $x509)->first() ?? null;
+    }
+
+    public function personalToken($token) {
+        return (new PersonalAccessToken)->where("token", $token)->first() ?? null;
     }
 
     /*
@@ -86,8 +131,8 @@ class Store extends Authenticatable {
             $this->groups()->attach($gID, ["meta" => $rols]);
         }
         elseif( is_string($gID) ) 
-        {            
-            if( !empty( ($group = $this->group($gID)) ) ) 
+        {  
+            if( ($group = (new Term)->getUserGroup($gID)) != null )
             {
                 $this->groups()->attach($group->id, ["meta" => $rols]);
             }
@@ -97,6 +142,7 @@ class Store extends Authenticatable {
             $this->groups()->attach($gID->id, ["meta" => $rols]);
         }        
     }
+
 
     /*
     * USERS TAXONOMIES */
@@ -109,6 +155,10 @@ class Store extends Authenticatable {
 
     /*
     * QUERY */
+    public function gID($slug)
+    {
+
+    }
     public function getFromUser($user) {
         return $this->where("user", $user)->first();
     }
@@ -128,6 +178,13 @@ class Store extends Authenticatable {
         if($group->count() > 0 ) {
             return $group->first()->pivot->meta;
         }
+
+        return (object) [
+            "view"      => 0,
+            "insert"    => 0,
+            "update"    => 0,
+            "delete"    => 0
+        ];
     }
 
     /*

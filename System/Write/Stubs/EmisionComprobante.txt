@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmisionComprobanteModel>
+    <rnc>{rnc}</rnc>
+    <tipoEncf>{tipoEncf}</tipoEncf>
+    <urlRecepcion>{urlRecepcion}</urlRecepcion>
+    <urlAutenticacion>{urlAutenticacion}</urlAutenticacion>
+</EmisionComprobanteModel>

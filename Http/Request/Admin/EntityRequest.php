@@ -18,7 +18,8 @@ class EntityRequest extends FormRequest {
     public function rules()
     {
         return [
-            "name"      => "required|unique:\DGII\Model\Hacienda,name",
+            "name"      => "required",
+            "rnc"       => "required|numeric|isRnc|unique:\DGII\Model\Hacienda,rnc",
             "certify"   => "required",
             "pwd"       => "required"
         ];
@@ -27,6 +28,7 @@ class EntityRequest extends FormRequest {
     public function attributes() {
         return [
             "name"  => __("business.name"),
+            "rnc"   => "RNC",
             "certify" => __("words.certify"),
             "pwd" => __("words.password")
         ];

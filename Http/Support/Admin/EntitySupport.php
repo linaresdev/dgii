@@ -1,5 +1,5 @@
 <?php
-namespace DGII\Http\Support\Admin\Entity;
+namespace DGII\Http\Support\Admin;
 
 /*
 *---------------------------------------------------------
@@ -12,6 +12,7 @@ use DGII\Facade\Alert;
 use DGII\Model\Hacienda;
 use DGII\Support\P12Certify;
 use DGII\User\Model\Store as User;
+use DGII\Write\Facade\Signer;
 
 class EntitySupport {
 
@@ -34,45 +35,32 @@ class EntitySupport {
 
     public function postEntityRegister( $request )
     {     
+        
         if( !$request->user()->can("insert", "admin") ) {
             return $request->news("rol", __("auth.rol.deny"));
-        } 
+        }        
 
         if( openssl_pkcs12_read($request->getCertifyContent(), $data, $request->pwd) )
         { 
             if( ( $cert = (new P12Certify($data)) )->passes() ) 
             {                
                 if( ($validate = $cert->dataValidate($request))->passes() )
-                {
-                    if( $cert->makeResources($request) ) {
-                        $entity = (new Hacienda)->create($cert->getData($request));
+                {                    
+                    
+                    if( ($entity = (new Hacienda)->create($cert->getData($request))) )
+                    {
+                        ## PREPARE SLUG ENTITY
+                        $entity->makeUniqueSlug();
 
-                        ## CREAMOS EL GRUPO DE TRABAJO
-                        if( ($group = (new Term)->create($cert->workGroup(($name = $request->name)))) )
-                        { 
-                            ## CREAMOS LA CUENTA DE LA ENTIDAD
-                            if( ($user = (new User)->create($cert->accountData($name))) )
+                        # Make resources
+                        if( $cert->makeResources($request, $entity) ) {    
+
+                            if((new Term)->create($cert->workGroup(($entity))))
                             {
-                                ## SYNC USER ENTITY 
-                                $user->syncGroup($group, [
-                                    "view"      => 1, 
-                                    "insert"    => 1, 
-                                    "update"    => 1, 
-                                    "delete"    => 0,
-                                ]);
-
-                                ## SYNG ADMIN USER
-                                $request->user()->syncGroup($group, [
-                                    "view"      => 1, 
-                                    "insert"    => 1, 
-                                    "update"    => 1, 
-                                    "delete"    => 1
-                                ]);
-
                                 Alert::prefix("system")->success(__("insert.successfully"));
                                 return redirect('admin/entities');
-                            }
-                        }                        
+                            }                        
+                        }
                     }
 
                     $validate->errors()->add("certify", __("validation.entity.resources"));
@@ -99,12 +87,12 @@ class EntitySupport {
         return $data;
     }
 
-    public function postUpdateName($ent, $request) {
-
+    public function postUpdateName($ent, $request)
+    {
         if( !$request->user()->can("update", "admin") ) {
             $V = validator([],[]);
             $V->errors()->add("rol", __("auth.rol.deny"));
-           return back()->withErrors($V)->withInput();
+            return back()->withErrors($V)->withInput();
         }
 
         $request->validate([
@@ -112,10 +100,7 @@ class EntitySupport {
         ]);
 
         if( $ent->update($request->except("_token")) ) {
-            if($ent->user->update($request->except("_token")))
-            {
-                Alert::prefix("update")->success(__("update.successfully"));
-            }
+            Alert::prefix("update")->success(__("update.successfully"));
         }
         else{
             Alert::prefix("update")->danger(__("update.error"));
@@ -141,28 +126,28 @@ class EntitySupport {
                 "danger", __("auth.rol.deny")
             );
             return back()->withErrors($alert)->withInput();
-        }
+        }       
 
         $attributes["name"]      = __("business.name");
         $attributes["delegate"]  = __("business.delegate");
 
-        $validate = $request->validate([
+        
+
+        $request->validate([
             "name"      => "required",
             "delegate"  => "required"
-        ], [], $attributes);        
+        ], [], $attributes);       
 
-        if( $ent->name == $request->name ) {
-
-            (new Term)->deleteTax("user-group", $ent->slug);     
-
-            $ent->user->delete();
+        if( $ent->name == $request->name )
+        {
+            (new Term)->deleteTax("user-group", $ent->rnc);     
             $ent->delete();
 
             Alert::prefix("system")->success(__("delete.successfully"));
             return redirect("admin/entities");
         }
-
-        $validate->errors()->add(__("business.name"), __("validate.bad.name"));
+        
+        ($validate = validator([],[]))->errors()->add("entity", "Error credenciales");
         return back()->withErrors($validate)->withInput();        
     }
 }

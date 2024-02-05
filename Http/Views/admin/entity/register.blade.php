@@ -25,6 +25,17 @@
                         <label for="name">{{__('business.name')}}</label>
                     </div>
                 </div>
+                <div class="mb-3 ms-2">
+                    <div class="form-floating">
+                        <input type="text"
+                            name="rnc"
+                            value="{{old('rnc')}}"
+                            id="rnc" 
+                            class="form-control"
+                            placeholder="{{__('words.rnc')}}">
+                        <label for="rnc">{{__('words.rnc')}}</label>
+                    </div>
+                </div>
 
                 <div class="mb-3 ms-2">
                     <div class="form-floating">

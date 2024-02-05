@@ -7,9 +7,25 @@ namespace DGII\Http\Support;
 *---------------------------------------------------------
 */
 
-class EnviarComprobante {
-
+class EnviarComprobante 
+{
     public function enviarComprobante($request) {
-        return "Enviar Comprobante";
+        
+        $ruls["rnc"]                = "required";
+        $ruls["tipoEncf"]           = "required";
+        $ruls["urlRecepcion"]       = "required";
+        //$ruls["urlAutenticcion"]    = "required";
+
+        $checkData = validator($request->all(), $ruls);
+
+        if( $checkData->errors()->any() )
+        {
+            return response()->json([
+                "Error Validation",
+                "messages" => $checkData->errors()->all()
+            ]);
+        }
+
+        dd($request->header("Content-Type"));
     }
 }

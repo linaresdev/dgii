@@ -1,5 +1,6 @@
 <?php
 
+
 ## IoC
 $this->app->bind("Alert", function($app) {
     return new \DGII\Support\Alert($app);
@@ -27,10 +28,17 @@ if( env("APP_START") ):
     );
 
     ## PATH
+    $entity = __segment(2);
+    $env    = env("DGII_ENV");
+    $year   = now()->format("Y");
+    $month  = now()->format("m");
+
     Dgii::addPath([
-        "{cdn}"     => "{public}/cdn",
-        "{assets}"  => "{dgii}/System/Public",
-        "{hacienda}" => "{base}/Hacienda/",
+        "{cdn}"                 => "{public}/cdn",
+        "{assets}"              => "{dgii}/System/Public",
+        "{hacienda}"            => "{base}/Hacienda/",
+        "{AprobacionComercial}" => "{hacienda}/$entity/$env/AprobacionComercial/$year/$month",
+        "{Recepcion}"           => "{hacienda}/$entity/$env/Recepcion/$year/$month",
     ]);
 
     ## URLS
@@ -43,7 +51,7 @@ if( env("APP_START") ):
 
     ## Validations
     Validator::extend("isRnc", "\DGII\Http\Request\DgiiRequest@isRNC");
-    Validator::extend("isEncf", "\DGII\Http\Request\DgiiRequest@isENCF");
+    Validator::extend("isEncf", "\DGII\Http\Request\DgiiRequest@isENCF");    
 
     ## Entities Policies
     $entitiesPolicies = [
@@ -56,6 +64,9 @@ if( env("APP_START") ):
         \Gate::define("ent-$policy", [\DGII\Http\Policy\Entity::class, $policy]);
     }
 
+    /*
+    * API POLICIES */
+    \Gate::define("isexpire", [\DGII\Http\Policy\EntityGuard::class, "isExpire"]);
 
     ## Views 
     $this->loadViewsFrom(__DIR__.'/Views', 'dgii');

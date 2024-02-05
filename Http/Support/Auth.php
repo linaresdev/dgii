@@ -8,25 +8,27 @@ namespace DGII\Http\Support;
 */
 
 use DGII\Facade\Alert;
+use DGII\User\Model\Store;
+use DGII\Write\Facade\Signer;
+use DGII\Write\Facade\XmlSeed;
+use DGII\Write\Support\XmlRead;
 
 class Auth
 {
-
-    public function webLogin() {
-
+    public function webLogin()
+    {
         $data["title"] = __("words.authentication");
-
         return $data;
     }
 
     public function guestLogin($request)
     {
         $validator   = validator([],[]);
-
+        
         if( ($guard = auth("web"))->attempt($request->except('_token')) ) 
         {
             $user = $guard->user();
-
+            
             for( $i=-0; $i<5; $i++) {
                 if( ($i != 1) && $user->activated == $i )
                 {
@@ -39,7 +41,7 @@ class Auth
                     return back()->withErrors($validator)->withInput();
                 }
             }
-
+            
             if( $user->activated > 4 )
             {
                 $user->news("login", "words.rejected", [
@@ -51,7 +53,7 @@ class Auth
                 $validator->errors()->add('login', __("auth.bad"));
                 return back()->withErrors($validator)->withInput();
             }
-
+            
             $user->news("login", "words.aprobed");
             return redirect("admin");
         }
@@ -72,12 +74,131 @@ class Auth
         return redirect("login");
     }
 
-    public function guestAuth($request)
+    public function verifyXmlSchema($xml, $xsd)
     {
-        dd($request->all());
+        if( !empty($xml) && !empty($xsd) )
+        {
+            @($dom = new \DOMDocument())->loadXML($xml);
+            return ($this->verifySchema = @$dom->schemaValidate($xsd));
+        }
+
+        return $this->verifySchema;
     }
 
-    public function getSeed() {
-        return "Hola mundo";
+    public function getUserOld($x509=null)
+    {
+        return (new Store)->where("pem", $x509)->first() ?? null;
+    }
+
+    public function guestAuth($request)
+    {
+        if( $request->hasFile("xml") )
+        {
+            $xmlContent = $request->file("xml")->getContent();
+            $xsd        = __path('{wvalidate}/Seed.xsd');
+
+            if( !$this->verifyXmlSchema($xmlContent, $xsd) )
+            {
+                return response()->json([
+                    "messaje" => "El XML contiene errores",
+                    "errores"   => [
+                        "Verifique la estructura del archivo"
+                    ]
+                ]);
+            }            
+            
+            if( ($xmlObj = new XmlRead($xmlContent))->has() ) 
+            {
+                if( now()->create($xmlObj->date())->diffInMinutes() > 120 )
+                {
+                    return response("Esta solicitud expiró");
+                }
+
+                if( (new Store)->personalToken(hash('sha256', $xmlObj->token())) != null )
+                {
+                    return response("Solicitud ocupada.");
+                }
+
+                $token      = $xmlObj->token();
+                $stack      = $xmlObj->stack();
+                $entity     = $xmlObj->entity();
+                $userOld    = $this->getUserOld($xmlObj->getX509());
+                $password   = md5($token);
+
+                if( $userOld != null )
+                {
+                    $userOld->password = $password;
+                    $userOld->save();
+                    
+                    $user = $userOld;
+                }
+                else
+                {
+                    $credential["type"]         = "SOAClient";
+                    $credential["name"]         = "Anonimous";
+                    $credential["password"]     = $password;
+                    $credential["email"]        = \Str::random(mt_rand(7, 15))."@soaclient.lc";
+                    $credential["pem"]          = $xmlObj->getX509();
+                    $credential["activated"]    = 1;
+
+                    if( $user = (new Store)->create($credential) )
+                    {
+                        if( $stack != null )
+                        {
+                            $stack->delete();
+                        }
+                        
+                       // return $this->createSessionApi($stors, $xmlObj);
+                    }
+                }
+
+                if( !auth()->attempt(["pem" => $user->pem, "password" => $password]))
+                {   
+                    return response()->json([
+                        "message" => "Unauthorized"
+                    ], 400); 
+                }
+
+                ## SETTINGS
+                $request->user()->loadCustomToken($xmlObj->token());
+
+                return response()->json([
+                    "token" => $request->user()->createToken(
+                        "DGII"
+                    )->plainTextToken,
+                ], 200);
+                
+               // return response()->json("Error Session", 400);
+            }
+
+            return response("Semilla no valida.");            
+        }
+
+        return response("Error XML");
+    }
+
+    public function getSeed($ent)
+    { 
+        $seedXml = XmlSeed::stub();
+        $entity  = __segment(2);
+        // return response($seedXml, 200, [
+        //     'Content-Type' => 'application/xml'
+        // ]);
+
+        app("files")->put(__path("{hacienda}/$entity/SeedXml.xml"), $seedXml);
+
+        //return response($seedXml);
+        
+        //dd($ent->password);
+        //$xml = XmlSeed::stub();
+        
+        ## Simular Firma
+        if( Signer::entity($seedXml)->check() )
+        {
+            $signer = Signer::method(OPENSSL_ALGO_SHA256)->sign();
+            app("files")->put(__path("{hacienda}/$entity/Signer.xml"), $signer);
+            
+            dd((new XmlRead($signer))->flag());           
+        }
     }
 }

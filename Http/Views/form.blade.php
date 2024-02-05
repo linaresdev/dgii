@@ -3,15 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>{{$title}}</title>
 </head>
 <body>
-    <h1>Formulario</h1>
+    <h1>{{$title}}</h1>
 
-    <form action="{{__url('{form}')}}" method="POST" enctype="multipart/form-data">
+    <form action="{{__url($url)}}" method="POST" enctype="multipart/form-data">
         <table>
             <tr>
-                <td><input type="file" name="xml"></td>                
+                <td>
+                    <input type="file" name="xml">
+                    <input type="hidden" name="urlRecepcion" value="{{$urlRecepcion}}">
+                </td>                
             </tr>
             <tr>
                 <td>

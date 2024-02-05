@@ -7,6 +7,8 @@ namespace DGII\Support;
 *---------------------------------------------------------
 */
 
+use DGII\Write\Facade\Signer;
+
 class P12Certify
 {
     private static $validate;
@@ -50,7 +52,7 @@ class P12Certify
     }
 
     public function slug() {
-        return strtoupper(str_replace('-', null, $this->serial()));
+        return \Str::slug($this->serial());//strtoupper(str_replace('-', null, $this->serial()));
     }
 
     public function email($domain="entity.lc") {
@@ -65,32 +67,32 @@ class P12Certify
         return __path("{hacienda}/".$this->slug().'/'.env('DGII_ENV'));
     }
 
-    public function getData($request)
+    public function getData( $request )
     {
         return [
             "name"      => $request->name,
-            "serial"    => $this->serial(),
-            "slug"      => $this->slug(),
+            "rnc"       => $request->rnc,
+            "p12"       => $request->getCertifyContent(),
             "password"  => $request->pwd
         ];
-    }    
+    }
 
     public function dataValidate($request)
     {
         $ruls["name"]     = "required";
-        $ruls["serial"]   = "required|unique:\DGII\Model\Hacienda,serial";
-        $ruls["slug"]     = "required|unique:\DGII\Model\Hacienda,slug";
+        //$ruls["serial"]   = "required|unique:\DGII\Model\Hacienda,serial";
+        //$ruls["slug"]     = "required|unique:\DGII\Model\Hacienda,slug";
         $ruls["password"] = "required";
-        $attributes["serial"]   = __("words.serial");
-        $attributes["slug"]     = __("words.slug");
+       // $attributes["serial"]   = __("words.serial");
+       // $attributes["slug"]     = __("words.slug");
         $msg["unique"]          = __("validation.has.entity");
 
-        return validator($this->getData($request), $ruls, $msg, $attributes);
+        return validator($this->getData($request), $ruls, $msg);
     }
 
-    public function makeResources($request) {
+    public function makeResources( $request, $ent ) {
 
-        if( !app("files")->exists(($directory = __path("{hacienda}/".$this->slug()))) )
+        if( !app("files")->exists(($directory = __path("{hacienda}/".$ent->rnc))) )
         {
             app("files")->makeDirectory($directory, 0750, true);
 
@@ -107,21 +109,23 @@ class P12Certify
         return true;
     }
 
-    public function workGroup($name) {
+    public function workGroup($ent)
+    {
         return [
             "type" => "user-group",
-            "slug" => $this->slug(),
-            "name" => $name,
+            "slug" => $ent->rnc,
+            "name" => $ent->name,
             "description" => __("corporate.group")
         ];
     }
-    public function accountData($name)
+    public function accountData($ent)
     {
         return [
             "type"        => "entity",
-            "name"        => $name,
-            "user"        => $this->slug(),
-            "email"       => $this->email(),
+            "name"        => $ent->name,
+            "fullname"    => $ent->name,
+            "rnc"         => $ent->rnc,
+            "email"       => $ent->rnc."@entity.lc",
             "password"    => $this->serial(), 
             "activated"   => 1
         ];

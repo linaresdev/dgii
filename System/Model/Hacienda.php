@@ -20,9 +20,11 @@ class Hacienda extends Model
 
     protected $fillable = [
         "id",
+        "env",
         "name",
+        "rnc",
         "serial",
-        "slug",
+        "p12",
         "password",
         "xml",
         "meta",
@@ -35,10 +37,29 @@ class Hacienda extends Model
         "updated_at"
     ];
 
+    public function makeUniqueSlug() {
+        $this->update(["slug" => $this->id.str_replace('-', null, $this->slug)]);
+    }
+
     ## SETTINGS
-    public function setPasswordAttribute($value) {
-		$this->attributes['password'] = Crypt::encryptString($value);
-	}
+    public function p12(): Attribute {        
+        return Attribute::make(
+            set: fn ($value) => Crypt::encryptString($value),
+            get: fn ($value) => Crypt::decryptString($value)
+        );
+    }
+    public function password(): Attribute {        
+        return Attribute::make(
+            set: fn ($value) => Crypt::encryptString($value),
+            get: fn ($value) => Crypt::decryptString($value)
+        );
+    }
+    public function meta(): Attribute {        
+        return Attribute::make(
+            set: fn ($value) => json_encode($value),
+            get: fn ($value) => json_decode($value)
+        );
+    }
 
     ## VALIDATIONS
     public function has($slug) {
@@ -47,19 +68,37 @@ class Hacienda extends Model
 
     ## RELATIONS
     public function user() {
-        return $this->hasOne(\DGII\User\Model\Store::class, "user", "slug");
+        return $this->hasOne(\DGII\User\Model\Store::class, "rnc", "rnc");
     }
 
     public function users() {
-        return $this->belongsToMany(Term::class, "termstaxonomies", "term_id", "tax_id");
+        return $this->group->users();
     }
 
-    // public function groups() {
-    //    return $this->belongsToMany(Term::class, "termstaxonomies", "term_id", "tax_id");
-    // }
+    public function AprobacionComercial()
+    {
+        return $this->hasMany(\DGII\Model\AprobacionComercial::class, "hacienda_id");
+    }
+    public function Recepcion()
+    {
+        return $this->hasMany(\DGII\Model\Recepcion::class, "hacienda_id");
+    }
+
+    public function saveAprobacionComercial($data) {
+        return $this->AprobacionComercial()->create($data);
+    }
+
+    public function saveRecepcion($data) {
+        return $this->saveRecepcion()->create($data);
+    }
 
     ## QUERY
-    public function group($type, $slug) {
-        return (new Term)->where("type", $type)->where("slug", $slug)->first() ?? null;
+
+    public function getEntity($rnc)
+    {
+        return $this->where("rnc", $rnc)->first() ?? null;
+    }
+    public function group() {
+        return $this->hasOne(Term::class, "slug", "rnc");
     }
 }

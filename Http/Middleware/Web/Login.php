@@ -14,20 +14,21 @@ use Illuminate\Support\Facades\Auth;
 class Login {
 
     protected $exerts = [
-        "login"
     ];
 
-    public function handle( $request, Closure $next, $guard = 'web')
+    public function handle( $request, Closure $next, $guard = 'web')    
     {
-        if( ($AUTH = Auth::guard($guard))->guest() && !$this->isExert($request) )
-        {
-            $errors = Alert::addErrors("warning", [
-                __("auth.required")
-            ]);
-            
-            return redirect("login")->withErrors($errors)->withInput();
+        if( ($AUTH = Auth::guard($guard))->guest() && !$this->isExert($request) ){
+            if( __segment(1, "admin") )
+            {
+                $errors = Alert::addErrors("warning", [
+                    __("auth.required")
+                ]);
+                
+                return redirect("login")->withErrors($errors)->withInput();
+            }
         }
-
+        
         return $next( $request );
     }
 

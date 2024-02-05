@@ -54,8 +54,8 @@ class Term extends Model {
         $this->taxonomy()->attach($this->id, $rols);
     }
 
-    public function setMetaAttribute($value) {        
-    }
+    // public function setMetaAttribute($value) {        
+    // }
 
     /*
     * QUERY */
@@ -76,4 +76,13 @@ class Term extends Model {
         return $this->pivot->meta;
     }
 
+    public function users() {
+        return $this->belongsToMany(\DGII\User\Model\Store::class, "termstaxonomies", "id", "tax_id");
+    }
+
+    public function getUserGroup($slug)
+    {
+        return $this->where("type", "user-group")->where("slug", $slug)->first() ?? null;
+    }
+    
 }

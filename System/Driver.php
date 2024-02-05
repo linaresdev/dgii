@@ -34,16 +34,24 @@ class Driver
         ];
     }
 
+    public function drivers()
+    {
+        return [
+            \DGII\Write\Driver::class,
+        ];
+    }
+
     public function providers()
     {
         return [
-            \DGII\Providers\RouteServiceProvider::class
+            \DGII\Providers\RouteServiceProvider::class,            
         ];
     }
     
-    public function alias() { 
+    public function alias()
+    { 
         return [
-            "Alert" => \DGII\Facade\Alert::class
+            "Alert"     => \DGII\Facade\Alert::class,
         ]; 
     }
 

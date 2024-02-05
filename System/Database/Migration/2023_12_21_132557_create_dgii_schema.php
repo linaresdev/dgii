@@ -24,6 +24,7 @@ return new class extends Migration
 
             $table->timestamps();
         });
+
         Schema::create('EMISIONAPROVACIONCOMERCIAL', function (Blueprint $table)
         {
             $table->bigIncrements("id");
@@ -41,41 +42,44 @@ return new class extends Migration
 
             $table->timestamps();
         });
-        Schema::create('RECEPCIONAPROBACIONCOMERCIAL', function (Blueprint $table)
+
+        Schema::create('APROBACIONCOMERCIAL', function (Blueprint $table)
         {
             $table->bigIncrements("id");
 
             $table->unsignedInteger("hacienda_id");
             $table->foreign('hacienda_id')->references('id')->on('HACIENDAS')->onDelete('CASCADE')->onUpdate('CASCADE');
-
-            $table->string("Version", 10);
             $table->string("RNCEmisor", 20);
             $table->string("eNCF",20);
             $table->string("FechaEmision",20);
             $table->string("RNCComprador",20);
-            $table->char("Estado",1);
-            $table->text("DetalleMotivoRechazo");
-            $table->string("FechaHoraAprobacionComercial",20);
+            $table->string("filename",200);
+            $table->text("path")->nullable();
 
-            $table->text("xml");
+            $table->text("meta")->nullable();
 
             $table->char("state", 1)->default(0);
 
             $table->timestamps();
         });
-        Schema::create('RECEPCIONACUSERECIBO', function (Blueprint $table)
+        
+        Schema::create('RECEPCION', function (Blueprint $table)
         {
             $table->bigIncrements("id");
 
             $table->unsignedInteger("hacienda_id");
             $table->foreign('hacienda_id')->references('id')->on('HACIENDAS')->onDelete('CASCADE')->onUpdate('CASCADE');
 
-            $table->string("rnc", 20);
-            $table->string("tipoEncf", 20);
-            $table->text("urlRecepcion");
-            $table->text("urlAutenticacion")->nullable();
+            $table->string("eNCF",20);
+            $table->string("FechaEmision",20);
+            
+            $table->string("RNCEmisor", 20);
+            $table->string("RNCComprador", 20);
+            $table->string("RazonSocialComprador", 250);
 
-            $table->text("xml");
+            $table->string("TipoeCF", 20);
+            $table->text("fileName");
+            $table->text("path");
 
             $table->char("state")->default(0);
 
@@ -90,7 +94,7 @@ return new class extends Migration
     {
         Schema::dropIfExists('EMISIONCOMPROBANTE');
         Schema::dropIfExists('EMISIONAPROVACIONCOMERCIAL');
-        Schema::dropIfExists('RECEPCIONAPROBACIONCOMERCIAL');
-        Schema::dropIfExists('RECEPCIONACUSERECIBO');
+        Schema::dropIfExists('APROBACIONCOMERCIAL');
+        Schema::dropIfExists('RECEPCION');
     }
 };

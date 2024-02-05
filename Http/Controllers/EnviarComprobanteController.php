@@ -13,7 +13,7 @@ use DGII\Http\Support\EnviarComprobante;
 class EnviarComprobanteController extends Controller {
 
     public function __construct( EnviarComprobante $app ) {
-        $this->boot($support);
+        $this->boot($app);
     }
 
     public function index(Request $request) {

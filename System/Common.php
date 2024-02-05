@@ -5,7 +5,7 @@ $this->app->bind("Dgii", function($app){
     return new \DGII\Support\Dgii( new \DGII\Support\BootLoader($app) );
 });
 
-$this->app["dgii"] = Dgii::app();
+$this->app["dgii"]      = Dgii::app();
 
 ## CONFIGURACIONES
 $configs = $this->app["files"]->requireOnce(__DIR__."/Config/app.php");

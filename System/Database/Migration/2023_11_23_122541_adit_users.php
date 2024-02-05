@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string("rnc", 30)->nullable()->after("lastname");
             $table->string('user')->nullable()->after("rnc");
             $table->string('cellphone')->nullable()->after("user");
+            $table->text('pem')->nullable()->after("email_verified_at");
             $table->string("avatar", 200)->default("__avapath/avatar.png")->after("password");
             $table->string('gender', 30)->nullable()->after("password");
             $table->char("activated", 1)->default(0)->after("avatar");
