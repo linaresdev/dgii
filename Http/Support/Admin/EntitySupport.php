@@ -93,8 +93,9 @@ class EntitySupport {
                     $validate->errors()->add("certify", __("validation.entity.resources"));
                 }                
             }
-            
+
             $validate->errors()->add("certify", "No se pudo comprobar la integridad delcertificado"); 
+            dd($validate->errors());
             return back()->withErrors($validate)->withInput(); 
         }
 
