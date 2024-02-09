@@ -96,7 +96,7 @@ class EntitySupport {
             
             return back()->withErrors($validate)->withInput(); 
         }
-       
+        dd(openssl_error_string());
         $V = validator([],[]);
         $V->errors()->add("certify", __("validation.bad.certify"));
         return back()->withErrors($V)->withInput();
