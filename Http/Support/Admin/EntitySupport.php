@@ -63,10 +63,12 @@ class EntitySupport {
            return $request->news("rol", __("auth.rol.deny"));
         }   
         
-        dd($request->all());
+        
         
         if( openssl_pkcs12_read($request->getCertifyContent(), $data, $request->pwd) )
         { 
+            dd($request->all());
+            
             if( ( $cert = (new P12Certify($data)) )->passes() ) 
             {                
                 if( ($validate = $cert->dataValidate($request))->passes() )
