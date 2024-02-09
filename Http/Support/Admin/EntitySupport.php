@@ -95,7 +95,7 @@ class EntitySupport {
                 else{
                     $validate->errors()->add("certify", "Integridad certificado");                    
                 }
-
+                dd($validate->errors());
                 return back()->withErrors($validate)->withInput(); 
             }
         }
