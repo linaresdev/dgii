@@ -58,11 +58,12 @@ class EntitySupport {
 
     public function postEntityRegister( $request )
     {     
+        dd($request->all());
         
         if( !$request->user()->can("insert", "admin") ) {
-           // return $request->news("rol", __("auth.rol.deny"));
+           return $request->news("rol", __("auth.rol.deny"));
         }        
-
+        
         if( openssl_pkcs12_read($request->getCertifyContent(), $data, $request->pwd) )
         { 
             if( ( $cert = (new P12Certify($data)) )->passes() ) 
