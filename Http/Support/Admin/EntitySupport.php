@@ -70,7 +70,7 @@ class EntitySupport {
             
 
             if( ( $cert = (new P12Certify($data)) )->passes() ) 
-            {     dd($request->all());            
+            {                 
                 if( ($validate = $cert->dataValidate($request))->passes() )
                 {                    
                     
@@ -93,10 +93,9 @@ class EntitySupport {
                     $validate->errors()->add("certify", __("validation.entity.resources"));
                 }
                 else{
-
+                    $validate->errors()->add("certify", "Integridad certificado");                    
                 }
 
-                //$validate->errors()->add("certify", "Error al tratar de registrar la entidad");
                 return back()->withErrors($validate)->withInput(); 
             }
         }
