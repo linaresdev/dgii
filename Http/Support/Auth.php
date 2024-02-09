@@ -13,6 +13,8 @@ use DGII\Write\Facade\Signer;
 use DGII\Write\Facade\XmlSeed;
 use DGII\Write\Support\XmlRead;
 
+use DGII\Facade\Hacienda;
+
 class Auth
 {
     public function webLogin()
@@ -179,6 +181,15 @@ class Auth
 
     public function getSeed($ent)
     { 
+        $xmlSeed = Hacienda::load($ent)->makeSeed();
+
+        dd(Hacienda::seedSigner($xmlSeed, '</SemillaModel>', true));
+
+        return null;
+        if($ent->activated != 1) {
+            return response(__("account.{$ent->activated}"));
+        }
+
         $seedXml = XmlSeed::stub();
         $entity  = __segment(2);
         // return response($seedXml, 200, [

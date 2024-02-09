@@ -34,6 +34,9 @@ Route::prefix("admin")->namespace("Admin")->group(function($route)
     {
         Route::get('/', "EntityController@index");
 
+        Route::get('/show/{entID}', "EntityController@show");
+        Route::post('/show/{entID}/set-env', "EntityController@setEnv");
+
         Route::get('/register', "EntityController@getEntityRegister");
         Route::post('/register', "EntityController@postEntityRegister");
 
@@ -52,10 +55,12 @@ Route::prefix("admin")->namespace("Admin")->group(function($route)
 
 Route::get("authsoa", function()
 {
+    $env = env("DGII_ENV");
+
     return view("dgii::authsoa", [
         "title"     => "LOGIN SOAP",
-        "urlSeed"   => "api/101011939/testecf/emisorreceptor/fe/Autenticacion/api/Semilla",
-        "urlAuth"   => "101011939/testecf/emisorreceptor/fe/Autenticacion/api/ValidacionCertificado" 
+        "urlSeed"   => "api/101011939/$env/emisorreceptor/fe/Autenticacion/api/Semilla",
+        "urlAuth"   => "101011939/$env/emisorreceptor/fe/Autenticacion/api/ValidacionCertificado" 
     ]);
 });
 
@@ -94,118 +99,7 @@ Route::get("xmlsig", function()
       // dd( $xmlReader->isValid() );
     }
 
-    // dd("NO");
-    // $method         = Signer::getMethod(6);
-    // $canonical      = Signer::getCanonical(true, false);
-    // $digestValue    = Signer::getDigestValue($canonical, $method);
-
-    // dd($digestValue);
- 
-    // dd( Signer::load() );
-
-    ## XML Custom
-    // $don = new DOMDocument;
-    // $don->preserveWhiteSpace = false;
-    // $don->formatOutput = true;
-
-    // $don->loadXML($semilla);
-
-    // $don = $don->documentElement;
-    // ## CANONICAL DATA
-    // $canonical = $don->C14N(true, false);
-
-    // ## Method --
-    // $métodos    = openssl_get_md_methods(true);
-    // $method     = $métodos[6];
-
-    // ## DigestValue
-    // $digestValue = openssl_digest($canonical, $method);
-
-    // ## Codificamos ele DigestValue a base64
-    // $digestValue = base64_encode($digestValue);
-
-    // dd($digestValue);
-    ## END Xml Custom
-
-    ## Custom x509
-    // if(openssl_pkcs12_read($p12, $info, "Delta939"))
-    // {
-    //     ## Almacenar el certificado  y la llave privada en variables.
-    //     $cert = $info["cert"];
-    //     $pkey = $info["pkey"];
-
-    //     ## Occeder a la llave publica
-    //     $pubKey = openssl_get_publickey($cert);
-
-    //     ## Detalle publicos del certificado.
-    //     $pubKeyData = openssl_pkey_get_details($pubKey);
-
-    //     ## Exportar certificado 509
-    //     openssl_x509_export($cert, $cer509, true);
-    //     ## Libermaos de moria el certificado generado 
-    //    // openssl_x509_free($cer509);
-        
-
-    //   //  dd($cer509);
-
-    //     ## Acceder al pkeyID a partir de la clave privata pkey
-    //     $pkeyID = openssl_pkey_get_private($pkey);
-
-    //     # Firma digital a partir del pkeyID
-    //     openssl_sign($semilla, $sign, $pkeyID);
-
-    //     ## Liberar la clave de la memoria
-    //     openssl_free_key($pkeyID);
-
-    //     $signaturValue = base64_encode($sign);
-
-    //     dd($signaturValue);
-    // }
-    ## END Custom
-
-
-//     $xsig = new \DGII\XmlSig\Otro\XmlDigitalSignature;
-//     $xsig->setCryptoAlgorithm(\DGII\XmlSig\Otro\XmlDigitalSignature::RSA_ALGORITHM);
-//     $xsig->setDigestMethod(\DGII\XmlSig\Otro\XmlDigitalSignature::DIGEST_SHA256);
-//     $xsig->forceStandalone();
-
-  // $xsig->loadPrivateKey($p12, 'Delta939', false);
-    // if(openssl_pkcs12_read($p12, $cert, "Delta939"))
-    // {
-    //     $xsig->loadPrivateKey($cert["pkey"], 'Delta939', false);
-    //     $xsig->loadPublicKey($cert["cert"], false);
-
-    //     $fakeXml = new \DOMDocument();
-
-    //     $xsig->addObject("dsar");
-    //     $xsig->sign();
-
-    //     dd($xsig->getSignedDocument());
-    // }
-
-    
-
-    // $privateKeyStore = new \DGII\XmlSig\PrivateKeyStore();
-    // $privateKeyStore->loadFromPkcs12($p12, 'Delta939');
-    
-    // $algorithm = new \DGII\XmlSig\Algorithm(\DGII\XmlSig\Algorithm::METHOD_SHA256);
-    // dd(\DGII\XmlSig\Algorithm::METHOD_SHA256);
-    // $cryptoSigner = new DGII\XmlSig\CryptoSigner($privateKeyStore, $algorithm);
-    
-    // $xmlSigner = new \DGII\XmlSig\XmlSigner($cryptoSigner);
-    // $signedXml = $xmlSigner->signXml($semilla);
-
-    // dd($signedXml);
-
-    // $xml = new DOMDocument();
-    // $xml->preserveWhiteSpace = true;
-    // $xml->formatOutput = false;
-    // $xml->loadXML($semilla);
-    //$signedXml = $xmlSigner->signDocument($xml);
-
-    //app("files")->put("$seedSig/AuthSeed.xml", $signedXml);
-
-    //return $signedXml;
+   
 });
 
 Route::get("mona/{item}", function($item=null)
@@ -226,22 +120,25 @@ Route::get("mona/{item}", function($item=null)
     $token = "41|ExEStVIrtZzFEoe7v8B3HNAGXkYniWE0akEzfuel6fb84e78";
 
     $token = "1|MnGn0VcFzVh8YsI3qv5lr9y8KIbHsAWDlVSyOKFA80639650";
+    $token = "1|4TuunxuRpHvYwpfovm3msfoqsqrJ4psZoktcTIZP6cfb0702";
 
+    $envEcf = env("DGII_ENV");
 
+   
     ## Login
     if( $item == "login" )
     { 
         return view("dgii::form", [
             "title" => "Login",
-            "url" => "api/101011939/testecf/emisorreceptor/fe/Autenticacion/api/ValidacionCertificado",
-            "urlRecepcion" => "api/101011939/testecf/emisorreceptor/fe/Recepcion/api/ecf"
+            "url" => "api/101011939/$envEcf/emisorreceptor/fe/Autenticacion/api/ValidacionCertificado",
+            "urlRecepcion" => "api/101011939/$envEcf/emisorreceptor/fe/Recepcion/api/ecf"
         ]);
     }
 
     ## Emision Comprobante Electronico
     if( $item == "EmisionComprobantes")
     {       
-        $url = "192.168.10.18/api/101011939/testecf/emisorreceptor/api/Emision/EmisionComprobantes";
+        $url = "192.168.10.18/api/101011939/$envEcf/emisorreceptor/api/Emision/EmisionComprobantes";
 
         return Http::withToken($token)->post($url, [
             "rnc"               => "string",
@@ -262,7 +159,7 @@ Route::get("mona/{item}", function($item=null)
         $xsd        = app("files")->get(__path('{wvalidate}/AprobacionComercial.xsd'));
         $xml    = app("files")->get(base_path('XML/AprobacionComercial.xml'));
         
-        $url =  "192.168.10.18/api/101011939/testecf/emisorreceptor/fe/AprobacionComercial/api/ecf";
+        $url =  "192.168.10.18/api/101011939/$envEcf/emisorreceptor/fe/AprobacionComercial/api/ecf";
         return Http::withToken($token)->attach(
             "xml", 
             $xml, 
@@ -278,7 +175,7 @@ Route::get("mona/{item}", function($item=null)
         //$xml    = app("files")->get(base_path('XML/101011939E310000000219.xml'));
         $xml    = app("files")->get(base_path('XML/101011939E310000000057.xml'));
         
-        $url =  "192.168.10.18/api/101011939/testecf/emisorreceptor/fe/Recepcion/api/ecf";
+        $url =  "192.168.10.18/api/101011939/$envEcf/emisorreceptor/fe/Recepcion/api/ecf";
         return  Http::withToken($token)->attach(
             "xml", 
             $xml, 

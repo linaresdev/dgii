@@ -52,7 +52,16 @@ class Driver
     { 
         return [
             "Alert"     => \DGII\Facade\Alert::class,
+            "Hacienda"     => \DGII\Facade\Hacienda::class,
         ]; 
+    }
+
+    public function handler($app)
+    {
+        $app->bind("Hacienda", function($app)
+        {
+            return new \DGII\Support\Hacienda($app);
+        });
     }
 
     public function install($app) { }

@@ -62,6 +62,11 @@ return (new class {
             "entity.access"     => "Acceso empresarial",
             "entity.name"       => "Nombre de la entidad",
 
+            "entity.env.selected" => "Ambiente de trabajo seleccionado",
+            "entity.testecf"    => "Pre-Certificación",
+            "entity.certecf"    => "Certificación",
+            "entity.ecf"        => "Producción",
+
             "form.login"        => "Formulario de acceso",
             "form.entities"     => "Registro de entidades",
 
@@ -104,6 +109,7 @@ return (new class {
             "words.delete"          => "Eliminar",
             "words.entities"        => "Entidades",
             "words.email"           => "Correo Electrónico",
+            "words.home"            => "Inicio",
             "words.identify"        => "Identificarse",
             "words.filters"         => "Filtrar",
             "words.groups"          => "Grupos",

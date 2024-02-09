@@ -22,6 +22,7 @@ class Urls {
 	];
 
 	public function __construct( $urls ) {
+		$this->secure = env('APP_SSL', false);
 	}
 
 	public function baseDir() {

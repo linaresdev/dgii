@@ -28,6 +28,29 @@ class EntitySupport {
         return $data;
     }
 
+    public function show($entity)
+    { 
+        $data["title"]      = $entity->name;
+        $data["entity"]     = $entity;
+
+        return $data;
+    }
+
+    public function setEnv($entity, $request)
+    {
+        if( ($env = env("DGII_ENV")) != ($inp = $request->env) )
+        {
+            $oldEnv = "DGII_ENV=$env";
+            $newEnv = "DGII_ENV=$inp";
+            $envData = app("files")->get(base_path('.env'));
+            $envData = str_replace($oldEnv, $newEnv, $envData);
+
+           app("files")->put(base_path('.env'), $envData);
+        }
+        
+        return back();
+    }
+
     public function getEntities($perpage)
     {
         return (new Hacienda)->paginate($perpage);

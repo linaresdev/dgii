@@ -26,7 +26,15 @@ body{
     position: relative;
     top: 3px;
 }
-
+/*
+* NAV */
+.nav.nav-tabs-simple .nav-item .nav-link {
+    color: #777;
+}
+.nav.nav-tabs-simple .nav-item .nav-link.active {
+    background-color: #f3f3fb;
+    border-bottom-color: #f3f3fb;
+}
 /*
 * NAVBAR */
 [role=lighter] .navbar.navbar-lighter {

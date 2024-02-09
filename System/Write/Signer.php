@@ -194,7 +194,7 @@ class Signer
         }        
     }
 
-    public function sign($format=false)
+    public function sign($reemplace='</SemillaModel>', $format=false)
     {
         $stubSigner = app("files")->get(__DIR__."/Stubs/xmlsig.txt");
         //$this->seed->formatOutput = $format;
@@ -214,16 +214,15 @@ class Signer
         $this->seed->formatOutput = true;
         $seed = $this->seed->saveXML();
 
-        $sign = str_replace('</SemillaModel>', $stubSigner, $seed);
-        $sign .= '</SemillaModel>';
+        $sign = str_replace($reemplace, $stubSigner, $seed);
+        $sign .= $reemplace;
 
         $dom = new \DOMDocument;
         $dom->preserveWhiteSpace = false;
 
-        $dom->formatOutput = true;
+        $dom->formatOutput = $format;
         $dom->loadXML($sign);
 
-        return $dom->saveXML();
-       
+        return $dom->saveXML();       
     }
 }

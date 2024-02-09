@@ -26,6 +26,15 @@ class EntityController extends Controller {
         return $this->render('home', $this->app->home());
     }
 
+    public function show($entity)
+    {
+        return $this->render('show', $this->app->show($entity));
+    }
+    public function setEnv($entity, Request $request)
+    {
+        return $this->app->setEnv($entity, $request);
+    }
+
     public function getEntityRegister() {
         return $this->render('register', $this->app->home());
     }

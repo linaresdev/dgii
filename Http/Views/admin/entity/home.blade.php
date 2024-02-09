@@ -32,7 +32,12 @@
                         <tbody> 
                             @foreach($entities as $entity)
                             <tr>
-                                <td>{{$entity->name}}</td>
+                                <td>
+                                    <a href="{{__url('admin/entities/show/'.$entity->id)}}" class="btn p-0">
+                                        <span class="mdi mdi-bank"></span>
+                                        {{$entity->name}} 
+                                    </a>                                   
+                                </td>
                                 <td class="text-center"> 
                                     <div class="dropdown">
                                         <a href="#" class="btn btn-light rounded-pill btn-sm btn-dropdown dropdown-toggle px-3" 
