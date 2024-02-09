@@ -67,8 +67,6 @@ class EntitySupport {
         
         if( openssl_pkcs12_read($request->getCertifyContent(), $data, $request->pwd) )
         { 
-            
-            dd($request->all());
             if( ( $cert = (new P12Certify($data)) )->passes() ) 
             {                 
                 if( ($validate = $cert->dataValidate($request))->passes() )
@@ -98,7 +96,7 @@ class EntitySupport {
             
             return back()->withErrors($validate)->withInput(); 
         }
-
+        dd(openssl_error_string());
         $V = validator([],[]);
         $V->errors()->add("certify", __("validation.bad.certify"));
         return back()->withErrors($V)->withInput();
