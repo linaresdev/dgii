@@ -58,7 +58,7 @@ class EntitySupport {
 
     public function postEntityRegister( $request )
     { 
-        dd($request->all());
+        
         if( !$request->user()->can("insert", "admin") ) {
            return $request->news("rol", __("auth.rol.deny"));
         }        
