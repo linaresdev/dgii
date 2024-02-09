@@ -68,7 +68,7 @@ class EntitySupport {
         if( openssl_pkcs12_read($request->getCertifyContent(), $data, $request->pwd) )
         { 
             
-
+            dd($request->all());
             if( ( $cert = (new P12Certify($data)) )->passes() ) 
             {                 
                 if( ($validate = $cert->dataValidate($request))->passes() )
@@ -95,7 +95,7 @@ class EntitySupport {
             }
 
             //$validate->errors()->add("certify", "No se pudo comprobar la integridad delcertificado"); 
-            dd($request->all());
+            
             return back()->withErrors($validate)->withInput(); 
         }
 
