@@ -61,7 +61,9 @@ class EntitySupport {
         
         if( !$request->user()->can("insert", "admin") ) {
            return $request->news("rol", __("auth.rol.deny"));
-        }        
+        }   
+        
+        dd($request->all());
         
         if( openssl_pkcs12_read($request->getCertifyContent(), $data, $request->pwd) )
         { 
