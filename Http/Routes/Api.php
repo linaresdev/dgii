@@ -18,13 +18,18 @@ Route::get("/hacienda", function()
     return Http::withToken($token)->get("192.168.10.18/api/101011939/testecf/wepa")->body();
 });
 
+Route::get("nologin", function(Request $request)
+{
+    return response("Unauthorized", 401);
+});
+
+## AUTH
+Route::get("/login-api","AuthController@noLogin")->name("login");
 
 Route::prefix("{rnc}")->group(function($route)
 {
     Route::prefix(env("DGII_ENV"))->group(function($route)
-    {        
-        ## AUTH
-        Route::get("/login","AuthController@noLogin");
+    {      
 
         Route::get("/emisorreceptor/fe/Autenticacion/api/Semilla","AuthController@getSeed");
         Route::post("emisorreceptor/fe/Autenticacion/api/ValidacionCertificado","AuthController@guestAuth");
@@ -32,11 +37,6 @@ Route::prefix("{rnc}")->group(function($route)
         ## Emision
         Route::middleware('auth:sanctum')->group(function()
         {
-            Route::get("/wepa", function()
-            {               
-                return response("La weepaaaa");
-            });
-
             Route::post("emisorreceptor/api/Emision/EmisionComprobantes","EnviarComprobanteController@index");
             Route::get("emisorreceptor/api/Emision/ConsultaAcuseRecibo?Rnc=ad&Encf=ad","ConsultaReciboController@index");
             Route::post("emisorreceptor/api/Emision/EnvioAprobacionComercial","EnviarAprobacionComercialController@index");

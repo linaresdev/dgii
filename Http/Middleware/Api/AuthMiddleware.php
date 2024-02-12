@@ -7,19 +7,27 @@ namespace DGII\Http\Middleware\Api;
 *---------------------------------------------------------
 */
 
+use Illuminate\Auth\Middleware\Authenticate as Middleware;
+use Illuminate\Http\Request;
+
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
-class AuthMiddleware {
+class AuthMiddleware extends Middleware {
 
     protected $exerts = [];
 
-    public function handle( $request, Closure $next, $guard = 'web') 
-    { 
-        
-        // $user = $request->user();
-        // return response($user);
-        return $next( $request );
+    protected function redirectTo(Request $request): ?string
+    {
+        return $request->expectsJson() ? null : "api/nologin";
     }
+
+    // public function handle( $request, Closure $next, $guard = 'web') 
+    // { 
+    //     //dd(Auth::check());
+    //     // $user = $request->user();
+    //     // return response($user);
+    //     return $next( $request );
+    // }
 
 }

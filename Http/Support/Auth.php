@@ -200,6 +200,9 @@ class Auth
 
                 $outXml = $this->formatXml($outXml);
                 
+                app("files")->put(__path('{hacienda}/'.__segment(2).'/SeedSigner.xml'), $xmlContent);
+                
+                
                 return response($outXml, 200, [
                     'Content-Type' => 'application/xml'
                 ]);

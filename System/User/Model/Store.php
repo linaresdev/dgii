@@ -90,6 +90,11 @@ class Store extends Authenticatable {
         return new NewAccessToken($token, $token->getKey().'|'.$plainTextToken);
     }
 
+    // public function redirectTo(Request $request)
+    // {
+    //     return redirect(https)
+    // }
+
     /*
     * SETTINGS */
     public function setPasswordAttribute($value) {

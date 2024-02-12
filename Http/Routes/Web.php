@@ -67,23 +67,26 @@ Route::prefix("admin")->namespace("Admin")->group(function($route)
 
 Route::get("mona/{item}", function($item=null)
 {
+    $host = "https://ncf.vsdelta.com";
     $envEcf = env("DGII_ENV");
 
     ## AUTH
     if( $item == "auth" )
     {        
         $seed =  Http::get(
-            "192.168.10.18/api/101011939/$envEcf/emisorreceptor/fe/Autenticacion/api/Semilla"    
+            "$host/api/101011939/$envEcf/emisorreceptor/fe/Autenticacion/api/Semilla"    
         )->body();
 
         $signer = Hacienda::seedSigner($seed, '</SemillaModel>', true);
+
+        app("files")->put(__path("{hacienda}/101011939/SeedSigner.xml"), $signer);
         
         $token = Http::attach(
             "xml",
             $signer,
             "SemillaSigner.xml"
         )->post(
-            "192.168.10.18/api/101011939/$envEcf/emisorreceptor/fe/Autenticacion/api/ValidacionCertificado"
+            "$host/api/101011939/$envEcf/emisorreceptor/fe/Autenticacion/api/ValidacionCertificado"
         )->body();
 
         return $token;
@@ -91,11 +94,13 @@ Route::get("mona/{item}", function($item=null)
 
     $token = "1|4TuunxuRpHvYwpfovm3msfoqsqrJ4psZoktcTIZP6cfb0702";
     $token = "32|qcKs6jNg0abATI1cmPNAUhmltyGUcS0xSDHK3GSo41a0d960";
+    $token = "2|DzD5dtqu0STWhWwrp9zc98d927HgPBZDkNaVXILa4d071c61"; 
+    $token = "6|2SUxXZxzKWW6uHrglzWACCZ0mB3utSJmMwWcouEU157b2c1e";
 
     ## Emision Comprobante Electronico
     if( $item == "EmisionComprobantes")
     {       
-        $url = "192.168.10.18/api/101011939/$envEcf/emisorreceptor/api/Emision/EmisionComprobantes";
+        $url = "$host/api/101011939/$envEcf/emisorreceptor/api/Emision/EmisionComprobantes";
 
         return Http::withToken($token)->post($url, [
             "rnc"               => "string",
@@ -116,7 +121,7 @@ Route::get("mona/{item}", function($item=null)
         $xsd        = app("files")->get(__path('{wvalidate}/AprobacionComercial.xsd'));
         $xml    = app("files")->get(base_path('XML/AprobacionComercial.xml'));
         
-        $url =  "192.168.10.18/api/101011939/$envEcf/emisorreceptor/fe/AprobacionComercial/api/ecf";
+        $url =  "$host/api/101011939/$envEcf/emisorreceptor/fe/AprobacionComercial/api/ecf";
         return Http::withToken($token)->attach(
             "xml", 
             $xml, 
@@ -132,7 +137,7 @@ Route::get("mona/{item}", function($item=null)
         //$xml    = app("files")->get(base_path('XML/101011939E310000000219.xml'));
         $xml    = app("files")->get(base_path('XML/101011939E310000000057.xml'));
         
-        $url =  "192.168.10.18/api/101011939/$envEcf/emisorreceptor/fe/Recepcion/api/ecf";
+        $url =  "$host/api/101011939/$envEcf/emisorreceptor/fe/Recepcion/api/ecf";
         return  Http::withToken($token)->attach(
             "xml", 
             $xml, 
