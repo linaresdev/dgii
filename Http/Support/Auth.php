@@ -92,8 +92,27 @@ class Auth
         return (new Store)->where("pem", $x509)->first() ?? null;
     }
 
+    public function formatXml($stub)
+    {
+        $dom = new \DOMDocument;
+
+        $dom->preserveWhiteSpace    = false;
+        $dom->formatOutput          = true;
+
+        $dom->loadXML($stub);
+
+        return $dom->saveXML();
+    }
+
     public function guestAuth($request)
     {
+        $stub = '<?xml version="1.0" encoding="UTF-8"?>
+        <RespuestaAutenticacion>
+            <token>{token}</token>
+            <expira>{expira}</expira>
+            <expedido>{expedido}</expedido>
+        </RespuestaAutenticacion>';
+
         if( $request->hasFile("xml") )
         {
             $xmlContent = $request->file("xml")->getContent();
@@ -163,14 +182,27 @@ class Auth
 
                 ## SETTINGS
                 $request->user()->loadCustomToken($xmlObj->token());
-
-                return response()->json([
-                    "token" => $request->user()->createToken(
-                        "DGII"
-                    )->plainTextToken,
-                ], 200);
                 
-               // return response()->json("Error Session", 400);
+                $token = ($instToken = $request->user()->createToken(
+                    "DGII",
+                    ['*'],
+                    now()->addSeconds(62)
+                ))->plainTextToken;
+
+                $accessToken = $instToken->accessToken;
+                
+                $expira     = $accessToken->expires_at->toAtomString();
+                $expedido   = $accessToken->created_at->toAtomString();
+                
+                $outXml = str_replace('{token}', $token, $stub);
+                $outXml = str_replace('{expira}', $expira, $outXml);
+                $outXml = str_replace('{expedido}', $expedido, $outXml);
+
+                $outXml = $this->formatXml($outXml);
+                
+                return response($outXml, 200, [
+                    'Content-Type' => 'application/xml'
+                ]);
             }
 
             return response("Semilla no valida.");            
@@ -178,38 +210,41 @@ class Auth
 
         return response("Error XML");
     }
+    
 
     public function getSeed($ent)
     { 
-        $xmlSeed = Hacienda::load($ent)->makeSeed();
+        return response(Hacienda::load($ent)->makeSeed(), 200, [
+            'Content-Type' => 'application/xml'
+        ]);
 
-        dd(Hacienda::seedSigner($xmlSeed, '</SemillaModel>', true));
+       // $xml = Hacienda::seedSigner($xmlSeed, '</SemillaModel>', true);
 
-        return null;
-        if($ent->activated != 1) {
-            return response(__("account.{$ent->activated}"));
-        }
+        // return null;
+        // if($ent->activated != 1) {
+        //     return response(__("account.{$ent->activated}"));
+        // }
 
-        $seedXml = XmlSeed::stub();
-        $entity  = __segment(2);
-        // return response($seedXml, 200, [
-        //     'Content-Type' => 'application/xml'
-        // ]);
+        // $seedXml = XmlSeed::stub();
+        // $entity  = __segment(2);
+        // // return response($seedXml, 200, [
+        // //     'Content-Type' => 'application/xml'
+        // // ]);
 
-        app("files")->put(__path("{hacienda}/$entity/SeedXml.xml"), $seedXml);
+        // app("files")->put(__path("{hacienda}/$entity/SeedXml.xml"), $xml);
 
-        //return response($seedXml);
+        // //return response($seedXml);
         
-        //dd($ent->password);
-        //$xml = XmlSeed::stub();
+        // //dd($ent->password);
+        // //$xml = XmlSeed::stub();
         
-        ## Simular Firma
-        if( Signer::entity($seedXml)->check() )
-        {
-            $signer = Signer::method(OPENSSL_ALGO_SHA256)->sign();
-            app("files")->put(__path("{hacienda}/$entity/Signer.xml"), $signer);
+        // ## Simular Firma
+        // if( Signer::entity($seedXml)->check() )
+        // {
+        //     $signer = Signer::method(OPENSSL_ALGO_SHA256)->sign();
+        //     app("files")->put(__path("{hacienda}/$entity/Signer.xml"), $signer);
             
-            dd((new XmlRead($signer))->flag());           
-        }
+        //     dd((new XmlRead($signer))->flag());           
+        // }
     }
 }

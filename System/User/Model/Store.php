@@ -66,7 +66,7 @@ class Store extends Authenticatable {
     {
         $this->customToken = $token;
     }
-    public function createToken(string $name, array $abilities = ['*'], DateTimeInterface $expiresAt = null)
+    public function createToken(string $name, array $abilities = ['*'], \DateTimeInterface $expiresAt = null)
     {
         $plainTextToken = sprintf(
             '%s%s%s',
