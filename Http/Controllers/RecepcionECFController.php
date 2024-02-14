@@ -16,7 +16,8 @@ class RecepcionECFController extends Controller {
         $this->boot($support);
     }
 
-    public function index(Request $request) {
-        return $this->app->RecepcionECF($request);
+    public function index($ent, Request $request) 
+    {
+        return $this->app->RecepcionECF($ent, $request);
     }
 }

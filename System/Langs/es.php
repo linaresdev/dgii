@@ -91,7 +91,7 @@ return (new class {
             "validate.bad.name"             => "Nombre incorrecto",
             "validate.unique"               => "El :attribute existe en nuestros registros",
             "validation.has.entity"         => ":attribute no disponible",
-            "validation.is_rnc"             => "RNC incorrecto",
+            "validation.is_rnc"             => "RNC no es valido",
             "validation.slug.entity"        => "Cuenta no disponible",
             "validation.entity.resources"   => "Error al tratar de crear los recursos de la entidad",
             "validator.name.business"       => "El :attribute existe en nuestros registros",

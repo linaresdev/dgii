@@ -35,7 +35,7 @@ if( env("APP_START") ):
     Dgii::addPath([
         "{cdn}"                 => "{public}/cdn",
         "{assets}"              => "{dgii}/System/Public",
-        "{hacienda}"            => "{base}/Hacienda/",
+        "{hacienda}"            => "{base}/Hacienda",
         "{AprobacionComercial}" => "{hacienda}/$entity/$env/AprobacionComercial/$year/$month",
         "{Recepcion}"           => "{hacienda}/$entity/$env/Recepcion/$year/$month",
     ]);
@@ -50,8 +50,8 @@ if( env("APP_START") ):
 
     ## Validations
     Validator::extend("isRnc", "\DGII\Http\Request\DgiiRequest@isRNC");
-    Validator::extend("isEncf", "\DGII\Http\Request\DgiiRequest@isENCF");    
-
+    Validator::extend("encf", "\DGII\Http\Request\DgiiRequest@isENCF");    
+    
     ## Entities Policies
     $entitiesPolicies = [
         "owner", "view", "insert", "update", "delete",

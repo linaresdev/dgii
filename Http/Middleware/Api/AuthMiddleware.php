@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
-class AuthMiddleware extends Middleware {
+class AuthMiddleware {
 
     protected $exerts = [];
 
@@ -22,12 +22,12 @@ class AuthMiddleware extends Middleware {
         return $request->expectsJson() ? null : "api/nologin";
     }
 
-    // public function handle( $request, Closure $next, $guard = 'web') 
-    // { 
-    //     //dd(Auth::check());
-    //     // $user = $request->user();
-    //     // return response($user);
-    //     return $next( $request );
-    // }
+    public function handle( $request, Closure $next, $guard = 'web') 
+    { 
+        //dd(Auth::check());
+        // $user = $request->user();
+        // return response($user);
+        return $next( $request );
+    }
 
 }

@@ -35,8 +35,8 @@ Route::prefix("{rnc}")->group(function($route)
         Route::post("emisorreceptor/fe/Autenticacion/api/ValidacionCertificado","AuthController@guestAuth");
         
         ## Emision
-        Route::middleware('auth:sanctum')->group(function()
-        {
+        //Route::middleware('auth:sanctum')->group(function()
+        //{
             Route::post("emisorreceptor/api/Emision/EmisionComprobantes","EnviarComprobanteController@index");
             Route::get("emisorreceptor/api/Emision/ConsultaAcuseRecibo?Rnc=ad&Encf=ad","ConsultaReciboController@index");
             Route::post("emisorreceptor/api/Emision/EnvioAprobacionComercial","EnviarAprobacionComercialController@index");
@@ -44,7 +44,7 @@ Route::prefix("{rnc}")->group(function($route)
             ## Recepción
             Route::post("emisorreceptor/fe/AprobacionComercial/api/ecf","RecepcionComprobanteController@index");
             Route::post("emisorreceptor/fe/Recepcion/api/ecf","RecepcionECFController@index");
-        });
+        //});
     });
 });
 

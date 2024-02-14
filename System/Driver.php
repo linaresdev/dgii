@@ -62,6 +62,11 @@ class Driver
         {
             return new \DGII\Support\Hacienda($app);
         });
+
+        $app->bind("ECF", function($app)
+        {
+            return new \DGII\Support\ECF($app);
+        });
     }
 
     public function install($app) { }

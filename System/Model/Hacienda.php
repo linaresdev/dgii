@@ -83,13 +83,21 @@ class Hacienda extends Model
     {
         return $this->hasMany(\DGII\Model\Recepcion::class, "hacienda_id");
     }
+    public function arecf()
+    {
+        return $this->hasMany(\DGII\Model\ARECF::class, "hacienda_id");
+    }
+
 
     public function saveAprobacionComercial($data) {
         return $this->AprobacionComercial()->create($data);
     }
 
     public function saveRecepcion($data) {
-        return $this->saveRecepcion()->create($data);
+        return $this->Recepcion()->create($data);
+    }
+    public function saveARECF($data) {
+        return $this->arecf()->create($data);
     }
 
     ## QUERY
@@ -100,5 +108,10 @@ class Hacienda extends Model
     }
     public function group() {
         return $this->hasOne(Term::class, "slug", "rnc");
+    }
+
+    public function getEcf($rnc, $encf)
+    {
+        return $this->Recepcion->where("RNCComprador", $rnc)->where("eNCF", $encf)->first() ?? null;
     }
 }

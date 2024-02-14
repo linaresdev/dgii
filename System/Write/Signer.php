@@ -28,10 +28,38 @@ class Signer
     protected $algorithm = [
     ];
 
-    public function load($p12=null, $password=null)
+    public function load($key=null)
     {
         return $this;
     }
+
+    public function from($entity)
+    {
+        if( openssl_pkcs12_read($entity->p12, $data, $entity->password) )
+        {
+            self::$loged    = true;
+            self::$data     = $data;
+        }
+
+        return $this;
+    }
+
+    public function before( $tag=null, $xml=null )
+    {
+        if( ($this->check() == true ) && !empty($tag) && !empty($xml) )
+        {
+            $dom = new \DOMDocument;
+
+            $dom->preserveWhiteSpace    = false;
+            $dom->formatOutput          = true;
+            $dom->loadXML($xml);
+
+            $this->seed = $dom;
+
+            return $this->method(OPENSSL_ALGO_SHA256)->sign($tag, true);
+        }
+    }
+
 
     public function isValid($xml)
     {

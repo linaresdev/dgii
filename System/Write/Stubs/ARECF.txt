@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ARECF>
+  <DetalleAcusedeRecibo>
+    <Version>1.0</Version>
+    <RNCEmisor>{RNCEmisor}</RNCEmisor>
+    <RNCComprador>{RNCComprador}</RNCComprador>
+    <eNCF>{eNCF}</eNCF>
+    <Estado>{Estado}</Estado>
+    <CodigoMotivoNoRecibido>{CodigoMotivoNoRecibido}</CodigoMotivoNoRecibido>
+    <FechaHoraAcuseRecibo>{FechaHoraAcuseRecibo}</FechaHoraAcuseRecibo>
+  </DetalleAcusedeRecibo>
+</ARECF>
+

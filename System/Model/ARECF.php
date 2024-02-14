@@ -3,28 +3,24 @@ namespace DGII\Model;
 
 /*
 *---------------------------------------------------------
-* ©IIPEC
+* ©Delta
 *---------------------------------------------------------
 */
 
 use Illuminate\Database\Eloquent\Model;
 
-class Recepcion extends Model {
+class ARECF extends Model {
 
-    protected $table = 'RECEPCION';
+    protected $table = 'ARECF';
 
     protected $fillable = [
-        "id",
-        "hacienda_id",
-        "eNCF",
-        "FechaEmision",
         "RNCEmisor",
         "RNCComprador",
-        "RazonSocialComprador",
-        "TipoeCF",
-        "fileName",
+        "eNCF",
+        "Estado",
+        "FechaHoraAcuseRecibo",
+        "CodigoMotivoNoRecibido",
         "path",
-        "state",
         "created_at",
         "updated_at"
     ];
