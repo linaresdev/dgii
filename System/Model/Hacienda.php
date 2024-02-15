@@ -114,4 +114,10 @@ class Hacienda extends Model
     {
         return $this->Recepcion->where("RNCComprador", $rnc)->where("eNCF", $encf)->first() ?? null;
     }
+    public function getARECF($request)
+    {
+        return  $this->arecf()->where("RNCComprador", $request->get("Rnc"))
+                    ->where("eNCF", $request->get("Encf"))
+                    ->first() ?? null;
+    }
 }

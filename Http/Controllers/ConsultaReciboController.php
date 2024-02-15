@@ -16,7 +16,8 @@ class ConsultaReciboController extends Controller {
         $this->boot($app);
     }
 
-    public function index( Request $request ) {
-        return $this->app->consultaRecibo($request);
+    public function index( $entity, Request $request ) 
+    {
+        return $this->app->consultaRecibo($entity, $request);
     }
 }

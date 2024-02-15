@@ -113,8 +113,7 @@ class RecepcionECF
                 return response($this->xmlARECF($ecf, 0, 3), 400, [
                     'Content-Type' => 'application/xml'
                 ]);
-            }
-            
+            }           
 
             ## VALIDA CODE 4
             ## RNC Comprador no corresponde

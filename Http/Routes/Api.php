@@ -38,7 +38,7 @@ Route::prefix("{rnc}")->group(function($route)
         //Route::middleware('auth:sanctum')->group(function()
         //{
             Route::post("emisorreceptor/api/Emision/EmisionComprobantes","EnviarComprobanteController@index");
-            Route::get("emisorreceptor/api/Emision/ConsultaAcuseRecibo?Rnc=ad&Encf=ad","ConsultaReciboController@index");
+            Route::get("emisorreceptor/api/Emision/ConsultaAcuseRecibo","ConsultaReciboController@index");
             Route::post("emisorreceptor/api/Emision/EnvioAprobacionComercial","EnviarAprobacionComercialController@index");
     
             ## Recepción
