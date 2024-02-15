@@ -233,7 +233,7 @@ class Signer
         //$data['{DigestMethod}'] = $this->getDigestMethod();
         $data['{DigestValue}'] = $this->getDigestValue();
         $data['{SignatureValue}'] = $this->getSignatureValue();
-        $data['{X509Certificate}'] = $this->getX509();
+        $data['{X509Certificate}'] = str_replace("\n",null,$this->getX509());
         
         foreach($data as $key => $value )
         {
