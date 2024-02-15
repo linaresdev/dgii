@@ -68,7 +68,7 @@ Route::prefix("admin")->namespace("Admin")->group(function($route)
 Route::get("mona/{item}", function($item=null)
 {
     $host = "192.168.10.18";
-    //$host = "https://ncf.vsdelta.com";
+    $host = "https://ncf.vsdelta.com";
     $envEcf = env("DGII_ENV");
 
     ## AUTH
@@ -155,7 +155,8 @@ Route::get("mona/{item}", function($item=null)
         //$xml    = app("files")->get(base_path('XML/101011939E310000000219.xml'));
         $xml    = app("files")->get(base_path('XML/101011939E310000000058.xml'));
         
-        $url =  "$host/api/101011939/$envEcf/fe/Recepcion/api/ecf";
+        $url =  "$host/api/101011939/$envEcf/fe/recepcion/api/ecf";
+        //dd($url);
         $out =  Http::withToken($token)->attach(
             "xml", 
             $xml, 
