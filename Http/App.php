@@ -38,6 +38,7 @@ if( env("APP_START") ):
         "{hacienda}"            => "{base}/Hacienda",
         "{AprobacionComercial}" => "{hacienda}/$entity/$env/AprobacionComercial/$year/$month",
         "{Recepcion}"           => "{hacienda}/$entity/$env/Recepcion/$year/$month",
+        "{ARECF}"               => "{hacienda}/$entity/$env/ARECF/$year/$month",
     ]);
 
     ## URLS

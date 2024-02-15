@@ -68,7 +68,7 @@ Route::prefix("admin")->namespace("Admin")->group(function($route)
 Route::get("mona/{item}", function($item=null)
 {
     $host = "192.168.10.18";
-    $host = "https://ncf.vsdelta.com";
+    //$host = "https://ncf.vsdelta.com";
     $envEcf = env("DGII_ENV");
 
     ## AUTH
@@ -139,7 +139,7 @@ Route::get("mona/{item}", function($item=null)
         $xsd        = app("files")->get(__path('{wvalidate}/AprobacionComercial.xsd'));
         $xml    = app("files")->get(base_path('XML/AprobacionComercial.xml'));
         
-        $url =  "$host/api/101011939/$envEcf/fe/AprobacionComercial/api/ecf";
+        $url =  "$host/api/101011939/$envEcf/fe/aprobacioncomercial/api/ecf";
         return Http::withToken($token)->attach(
             "xml", 
             $xml, 
@@ -153,17 +153,17 @@ Route::get("mona/{item}", function($item=null)
        // $xsd        = app("files")->get(__path('{wvalidate}/AprobacionComercial.xsd'));
        
         //$xml    = app("files")->get(base_path('XML/101011939E310000000219.xml'));
-        $xml    = app("files")->get(base_path('XML/101011939E310000000058.xml'));
+        $xml    = app("files")->get(base_path('XML/101011939E310000000057.xml'));
         
         $url =  "$host/api/101011939/$envEcf/fe/recepcion/api/ecf";
-        //dd($url);
+        dd($url);
         $out =  Http::withToken($token)->attach(
             "xml", 
             $xml, 
             "101011939E310000000057.xml", 
             ["Content-Type" => "text/xml;charset=utf-8"]
         )->post($url)->body(); 
-        return $out;
+        //return $out;
         dd($out);
         // return response($data, 200, [
         //     "Content-Type" => "text/xml;charset=utf-8"
