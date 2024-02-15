@@ -42,8 +42,8 @@ Route::prefix("{rnc}")->group(function($route)
             Route::post("emisorreceptor/api/Emision/EnvioAprobacionComercial","EnviarAprobacionComercialController@index");
     
             ## Recepción
-            Route::post("emisorreceptor/fe/AprobacionComercial/api/ecf","RecepcionComprobanteController@index");
-            Route::post("emisorreceptor/fe/Recepcion/api/ecf","RecepcionECFController@index");
+            Route::post("fe/AprobacionComercial/api/ecf","RecepcionComprobanteController@index");
+            Route::post("fe/Recepcion/api/ecf","RecepcionECFController@index");
         //});
     });
 });

@@ -139,7 +139,7 @@ Route::get("mona/{item}", function($item=null)
         $xsd        = app("files")->get(__path('{wvalidate}/AprobacionComercial.xsd'));
         $xml    = app("files")->get(base_path('XML/AprobacionComercial.xml'));
         
-        $url =  "$host/api/101011939/$envEcf/emisorreceptor/fe/AprobacionComercial/api/ecf";
+        $url =  "$host/api/101011939/$envEcf/fe/AprobacionComercial/api/ecf";
         return Http::withToken($token)->attach(
             "xml", 
             $xml, 
@@ -155,7 +155,7 @@ Route::get("mona/{item}", function($item=null)
         //$xml    = app("files")->get(base_path('XML/101011939E310000000219.xml'));
         $xml    = app("files")->get(base_path('XML/101011939E310000000058.xml'));
         
-        $url =  "$host/api/101011939/$envEcf/emisorreceptor/fe/Recepcion/api/ecf";
+        $url =  "$host/api/101011939/$envEcf/fe/Recepcion/api/ecf";
         $out =  Http::withToken($token)->attach(
             "xml", 
             $xml, 
