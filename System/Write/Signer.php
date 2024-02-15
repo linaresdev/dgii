@@ -234,7 +234,7 @@ class Signer
         $data['{DigestValue}'] = $this->getDigestValue();
         $data['{SignatureValue}'] = $this->getSignatureValue();
         $data['{X509Certificate}'] = $this->getX509();
-
+        
         foreach($data as $key => $value )
         {
             $stubSigner = str_replace($key, $value, $stubSigner);

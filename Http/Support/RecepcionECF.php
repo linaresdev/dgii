@@ -102,7 +102,7 @@ class RecepcionECF
                 
                 $XML = $this->xmlARECF($ecf, 1, 1);
                 $XML = Signer::from($ent)->before('</ARECF>', $XML);
-                
+
                 return response($XML, 400, [
                     'Content-Type' => 'application/xml'
                 ]);
@@ -126,7 +126,7 @@ class RecepcionECF
             if( $ecf->exists()->errors()->any() )
             {
                 $XML = $this->xmlARECF($ecf, 1, 3);
-                $XML = Signer::from($ent)->before('</ARECF>', $XML);
+                $XML = Signer::from($ent)->before('</ARECF>', $XML);                
                 //app("files")->put($PATHARECF.'/'.$fileName, $XML);
 
                 return response($XML, 400, [

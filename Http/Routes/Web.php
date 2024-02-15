@@ -156,7 +156,7 @@ Route::get("mona/{item}", function($item=null)
         $xml    = app("files")->get(base_path('XML/101011939E310000000057.xml'));
         
         $url =  "$host/api/101011939/$envEcf/fe/recepcion/api/ecf";
-        dd($url);
+        //dd($url);
         $out =  Http::withToken($token)->attach(
             "xml", 
             $xml, 
