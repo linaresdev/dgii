@@ -1,13 +1,1 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ARECF xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <DetalleAcusedeRecibo>
-    <Version>1.0</Version>
-    <RNCEmisor>{RNCEmisor}</RNCEmisor>
-    <RNCComprador>{RNCComprador}</RNCComprador>
-    <eNCF>{eNCF}</eNCF>
-    <Estado>{Estado}</Estado>
-    <CodigoMotivoNoRecibido>{CodigoMotivoNoRecibido}</CodigoMotivoNoRecibido>
-    <FechaHoraAcuseRecibo>{FechaHoraAcuseRecibo}</FechaHoraAcuseRecibo>
-  </DetalleAcusedeRecibo>
-</ARECF>
-
+<ARECF xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><DetalleAcusedeRecibo><Version>1.0</Version><RNCEmisor>{RNCEmisor}</RNCEmisor><RNCComprador>{RNCComprador}</RNCComprador><eNCF>{eNCF}</eNCF><Estado>{Estado}</Estado><CodigoMotivoNoRecibido>{CodigoMotivoNoRecibido}</CodigoMotivoNoRecibido><FechaHoraAcuseRecibo>{FechaHoraAcuseRecibo}</FechaHoraAcuseRecibo></DetalleAcusedeRecibo></ARECF>

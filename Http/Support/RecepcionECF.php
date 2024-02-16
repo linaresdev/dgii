@@ -64,12 +64,13 @@ class RecepcionECF
             $this->arecf["Estado"] = $state;
 
             $stub = str_replace(
-                "<CodigoMotivoNoRecibido>{CodigoMotivoNoRecibido}</CodigoMotivoNoRecibido>\n", null, $stub
+                "<CodigoMotivoNoRecibido>{CodigoMotivoNoRecibido}</CodigoMotivoNoRecibido>", null, $stub
             );
         }
         else{
             $stub = str_replace('{CodigoMotivoNoRecibido}', $code, $stub);
         }
+
         $this->arecf["path"] = $ecf->get("path");
         $this->arecf["FechaHoraAcuseRecibo"] = ($date = now()->format("d-m-Y H:m:s"));
         $stub = str_replace('{FechaHoraAcuseRecibo}', $date, $stub);
@@ -78,7 +79,7 @@ class RecepcionECF
     }
 
     public function recepcionECF($ent, $request)
-    {
+    {        
         if( $request->hasFile("xml") )
         {
             $xmlData    = ($file = $request->file("xml"))->getContent();
@@ -151,7 +152,6 @@ class RecepcionECF
             {
                 app("files")->makeDirectory($path, 0775, true);
             } 
-
             
             
             ## SAVE && RESPONSE ARECF
@@ -161,12 +161,9 @@ class RecepcionECF
                
                 $ent->saveARECF($this->arecf);
 
-                $signer = Signer::from($ent)->before('</ARECF>', $ARECF);
-                app("files")->put($PATHARECF.'/'.$fileName, $signer);
+                $signer = Signer::from($ent)->before('</ARECF>', $ARECF);                
 
-                // return response()->download($PATHARECF.'/'.$fileName, $fileName, [
-                //     'Content-Type' => 'application/xml'
-                // ]);
+                app("files")->put($PATHARECF.'/'.$fileName, $signer);
 
                 return response($signer, 200, [
                     'Content-Type' => 'application/xml'

@@ -50,10 +50,9 @@ class Signer
         {
             $dom = new \DOMDocument;
 
-            $dom->preserveWhiteSpace    = false;
-            $dom->formatOutput          = true;
+            $dom->preserveWhiteSpace    = false;            
             $dom->loadXML($xml);
-
+            
             $this->seed = $dom;
 
             return $this->method(OPENSSL_ALGO_SHA256)->sign($tag, true);
@@ -218,14 +217,13 @@ class Signer
         {
             $x509 = str_replace("-----BEGIN CERTIFICATE-----\n", '', $x509);
             $x509 = str_replace("-----END CERTIFICATE-----\n", '', $x509);
-            return $x509;
+            return str_replace( "\n", '', $x509);
         }        
     }
 
     public function sign($reemplace='</SemillaModel>', $format=false)
     {
         $stubSigner = app("files")->get(__DIR__."/Stubs/xmlsig.txt");
-        //$this->seed->formatOutput = $format;
 
         $data['{CanonicalizationMethod}'] = $this->getCanonicalUrl();
         $data['{SignatureMethod}'] = $this->getSignatureMethod();
@@ -233,23 +231,22 @@ class Signer
         //$data['{DigestMethod}'] = $this->getDigestMethod();
         $data['{DigestValue}'] = $this->getDigestValue();
         $data['{SignatureValue}'] = $this->getSignatureValue();
-        $data['{X509Certificate}'] = str_replace("\n",null,$this->getX509());
+        $data['{X509Certificate}'] = $this->getX509();
         
         foreach($data as $key => $value )
         {
             $stubSigner = str_replace($key, $value, $stubSigner);
         }
-        $this->seed->formatOutput = true;
-        $seed = $this->seed->saveXML();
-
-        $sign = str_replace($reemplace, $stubSigner, $seed);
+        //$this->seed->formatOutput = true;
+        $seed  = $this->seed->saveXML();
+        $sign  = str_replace($reemplace, $stubSigner, $seed);
         $sign .= $reemplace;
+        $sign  = str_replace( "\n", '', $sign);
 
-        $dom = new \DOMDocument;
-        $dom->preserveWhiteSpace = false;
-
-        $dom->formatOutput = $format;
+        $dom = new \DOMDocument;        
+        $dom->preserveWhiteSpace = false;        
         $dom->loadXML($sign);
+        $dom->formatOutput = false;
 
         return $dom->saveXML();       
     }

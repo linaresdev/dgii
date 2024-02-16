@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<EnvioAprobacionComercialModel>
-    <urlAprobacionComercial>{urlAprobacionComercial}</urlAprobacionComercial>
-    <urlAutenticacion>{urlAutenticacion}</urlAutenticacion>
-    <rnc>{rnc}</rnc>
-    <encf>{encf}</encf>
-    <estadoAprobacion>{estadoAprobacion}</estadoAprobacion>
-</EnvioAprobacionComercialModel>

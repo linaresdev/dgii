@@ -1,15 +1,2 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ACECF xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <DetalleAprobacionComercial>
-    <Version>1.0</Version>
-    <RNCEmisor>{RNCEmisor}</RNCEmisor>
-    <eNCF>{eNCF}</eNCF>
-    <FechaEmision>{FechaEmision}</FechaEmision>
-    <MontoTotal>{MontoTotal}</MontoTotal>
-    <RNCComprador>{RNCComprador}</RNCComprador>
-    <Estado>1</Estado>
-    <DetalleMotivoRechazo>{DetalleMotivoRechazo}</DetalleMotivoRechazo>
-    <FechaHoraAprobacionComercial>{FechaHoraAprobacionComercial}</FechaHoraAprobacionComercial>
-  </DetalleAprobacionComercial>
-</ACECF>
-
+<?xml version="1.0" encoding="UTF-8"?>
+<ACECF xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><DetalleAprobacionComercial><Version>1.0</Version><RNCEmisor>{RNCEmisor}</RNCEmisor><eNCF>{eNCF}</eNCF><FechaEmision>{FechaEmision}</FechaEmision><MontoTotal>{MontoTotal}</MontoTotal><RNCComprador>{RNCComprador}</RNCComprador><Estado>1</Estado><DetalleMotivoRechazo>{DetalleMotivoRechazo}</DetalleMotivoRechazo><FechaHoraAprobacionComercial>{FechaHoraAprobacionComercial}</FechaHoraAprobacionComercial></DetalleAprobacionComercial></ACECF>
