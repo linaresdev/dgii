@@ -13,7 +13,6 @@
             <tr>
                 <td>
                     <input type="file" name="xml">
-                    <input type="hidden" name="urlRecepcion" value="{{$urlRecepcion}}">
                 </td>                
             </tr>
             <tr>

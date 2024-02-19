@@ -60,3 +60,4 @@
   </DetalleAcusedeRecibo>
 </ARECF>
 
+https://es.stackoverflow.com/questions/379305/firmar-xml-con-php-y-javascript

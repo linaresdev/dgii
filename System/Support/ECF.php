@@ -134,13 +134,13 @@ class ECF {
 
     public function checkRNCComprador()
     {
-        $ruls["RNCComprador"]   = "required|numeric|isRnc";
+        $ruls["RNCComprador"]   = "";
         return validator($this->data, $ruls);
     }
 
     public function exists() 
     {
-        $ruls["path"]           = "unique:\DGII\Model\ARECF,path";
+        $ruls["pathARECF"] = "unique:\DGII\Model\ARECF,pathARECF";
         return validator($this->data, $ruls);
     }
 
@@ -151,6 +151,7 @@ class ECF {
         $ruls["TipoeCF"]        = ["required","numeric", Rule::in([31,33,34,44])];
         $ruls["eNCF"]           = ["required", new \DGII\Rules\Encf];
         $ruls["RNCEmisor"]      = ["required","numeric",new \DGII\Rules\RNC];
+        $ruls["RNCComprador"]   = ["required","numeric",new \DGII\Rules\RNC];
         $ruls["FechaEmision"]   = "required";
         
         $ruls["MontoTotal"]     = "required|numeric";
@@ -169,6 +170,7 @@ class ECF {
             $stub = str_replace('{FechaEmision}', $this->data["FechaEmision"], $stub);
             $stub = str_replace('{MontoTotal}', $this->data["MontoTotal"], $stub);
             $stub = str_replace('{RNCComprador}', $this->data["RNCComprador"], $stub);
+            
             return $stub;
         }
         

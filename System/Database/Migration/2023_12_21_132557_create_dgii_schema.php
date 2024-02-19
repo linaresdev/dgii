@@ -100,7 +100,8 @@ return new class extends Migration
             
             $table->char("CodigoMotivoNoRecibido", 1)->nullable();
 
-            $table->text("path");
+            $table->text("pathECF");
+            $table->text("pathARECF");
 
             $table->timestamps();
         });

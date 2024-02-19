@@ -7,6 +7,8 @@ namespace DGII\Write;
 *---------------------------------------------------------
 */
 
+use EllipticCurve\Ecdsa;
+use EllipticCurve\PrivateKey;
 use DGII\Write\Support\XmlRead;
 
 class Signer
@@ -14,6 +16,8 @@ class Signer
     protected $seed;
 
     protected $entity;
+
+    protected $signMethod;
 
     protected $algoMethod;
 
@@ -27,6 +31,7 @@ class Signer
 
     protected $algorithm = [
     ];
+
 
     public function load($key=null)
     {
@@ -144,10 +149,11 @@ class Signer
                 $this->canonicalUrl = "http://www.w3.org/TR/2001/REC-xml-c14n-20010315";
                 $this->algoUrl      = "http://www.w3.org/2001/04/xmldsig-more#sha224";
                 break;
-            case 7:
-                $this->algoMethod   = OPENSSL_ALGO_SHA256;
-                $this->canonicalUrl = "http://www.w3.org/TR/2001/REC-xml-c14n-20010315";
-                $this->algoUrl      = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256";
+            case 7:                
+                $this->algoMethod    = OPENSSL_ALGO_SHA256;
+                $this->canonicalUrl  = "http://www.w3.org/TR/2001/REC-xml-c14n-20010315";
+                $this->signMethod    = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256";
+                $this->algoUrl       = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256";
                 break;
         }
 
@@ -169,6 +175,7 @@ class Signer
 
     public function getCanonical( $exclusive=true, $comment=false )
     {
+        
         if( !empty( $this->seed ) )
         {
             if( ($element = $this->seed->documentElement) != null )
@@ -178,11 +185,11 @@ class Signer
         }
     }
 
-    public function getDigestValue($canonical=null, $method=null)
+    public function getDigestValue($canonical=null, $method=7)
     {
-        if( !empty(($canonical = $this->getCanonical())) && !empty(($method = $this->getMethod())) )
+        if( !empty($canonical)  && !empty($method) )
         {
-            return base64_encode(openssl_digest($canonical, $method));
+            return base64_encode(openssl_digest($canonical, "sha256", true));
         }
     }
 
@@ -190,9 +197,13 @@ class Signer
     {
         return $this->canonicalUrl;
     }
-    public function getCanonicalMethod()
+    public function getSignMethod()
     {
-        return $this->canonicalMethod();
+        return $this->signMethod;
+    }
+    public function getAlgoUrl()
+    {
+        return $this->signMethod;
     }
     public function getSignatureMethod()
     {
@@ -203,9 +214,9 @@ class Signer
     {
         $pkey   = openssl_get_publickey(self::$data["cert"]);
         $pkeyID = openssl_pkey_get_private(self::$data["pkey"]);
-        
+       
         if(openssl_sign($this->getCanonical(false), $sign, $pkeyID, $this->algoMethod))
-        {
+        {   
             openssl_free_key($pkeyID);
             return base64_encode($sign);
         }        
@@ -215,9 +226,14 @@ class Signer
     {
         if(openssl_x509_export(self::$data["cert"], $x509, $detail))
         {
-            $x509 = str_replace("-----BEGIN CERTIFICATE-----\n", '', $x509);
-            $x509 = str_replace("-----END CERTIFICATE-----\n", '', $x509);
-            return str_replace( "\n", '', $x509);
+            $START  = '-----BEGIN CERTIFICATE-----';
+            $END    = '-----END CERTIFICATE-----';
+
+            $REGEX = '/' . $START . '(.+)' . $END . '/Us';
+
+            preg_match($REGEX, $x509, $matches);
+
+            return str_replace(["\r\n", "\n"], '', trim($matches[1]));
         }        
     }
 

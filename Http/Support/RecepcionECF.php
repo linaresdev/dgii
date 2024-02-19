@@ -8,6 +8,7 @@ namespace DGII\Http\Support;
 */
 
 use DGII\Facade\ECF;
+use DGII\Support\XML;
 use DGII\Model\Hacienda;
 use DGII\Write\Facade\Signer;
 use Illuminate\Validation\Rule;
@@ -71,10 +72,11 @@ class RecepcionECF
             $stub = str_replace('{CodigoMotivoNoRecibido}', $code, $stub);
         }
 
-        $this->arecf["path"] = $ecf->get("path");
+        $this->arecf["pathECF"] = $ecf->get("pathECF");
+        $this->arecf["pathARECF"] = $ecf->get("pathARECF");
         $this->arecf["FechaHoraAcuseRecibo"] = ($date = now()->format("d-m-Y H:m:s"));
         $stub = str_replace('{FechaHoraAcuseRecibo}', $date, $stub);
-
+        
         return $stub;
     }
 
@@ -87,24 +89,59 @@ class RecepcionECF
             $ecf        = ECF::load($xmlData);
 
             $ecf->add("fileName", ($fileName = $file->getClientOriginalName()));
-            $ecf->add("path", __path("{Recepcion}/$fileName"));
+            $ecf->add("pathECF", __path("{Recepcion}/$fileName"));
 
             if( !app("files")->exists(($PATHARECF = __path("{ARECF}"))) )
             {
                 app("files")->makeDirectory($PATHARECF, 0775, true);
             } 
 
-            $ecf->add("path", "$PATHARECF/$fileName");
+            $ecf->add("pathARECF", "$PATHARECF/$fileName");
+
+            ## DIRECTORY
+            if( !app("files")->exists(($path = __path("{Recepcion}"))) )
+            {
+                app("files")->makeDirectory($path, 0775, true);
+            } 
+
+            ## VALIDA CODE 3
+            ## Envío duplicado
+            if( $ecf->exists()->errors()->any() )
+            {   
+                ## Estructura de respuesta no recibido
+                $XML = $this->xmlARECF($ecf, 1, 3);
+                
+                ## Guardamos la factura
+                $file->move($path, $fileName);
+
+                $firma = (new XML($ent))->xml($XML)->sign();
+                //app("files")->put($PATHARECF.'/'.$fileName, $firma);
+
+                return response($firma, 400, [
+                    'Content-Type' => 'application/xml'
+                ]);
+            } 
 
             ## VALIDA CODE 1
             ## Error de especificación
             if( $ecf->validate()->errors()->any() )
-            { 
-                
-                $XML = $this->xmlARECF($ecf, 1, 1);
-                $XML = Signer::from($ent)->before('</ARECF>', $XML);
+            {      
+                $ecf->add("CodigoMotivoNoRecibido", 1);
 
-                return response($XML, 400, [
+                $XML    = $this->xmlARECF($ecf, 1, 1);
+                $firma  = (new XML($ent))->xml($XML)->sign();
+
+                ## Guardamos la factura
+                if( $file->move($path, $fileName) )
+                {
+                    ## Creamos el archivo ARECF
+                    app("files")->put($PATHARECF.'/'.$fileName, $firma);
+
+                    ## REGISTRAMOS LOS RESULTADOS
+                    $ent->saveARECF($this->arecf);
+                }
+
+                return response($firma, 400, [
                     'Content-Type' => 'application/xml'
                 ]);
             }
@@ -120,52 +157,42 @@ class RecepcionECF
                 return response($XML, 400, [
                     'Content-Type' => 'application/xml'
                 ]);
-            }
-
-            ## VALIDA CODE 3
-            ## Envío duplicado
-            if( $ecf->exists()->errors()->any() )
-            {
-                $XML = $this->xmlARECF($ecf, 1, 3);
-                $XML = Signer::from($ent)->before('</ARECF>', $XML);                
-                //app("files")->put($PATHARECF.'/'.$fileName, $XML);
-
-                return response($XML, 400, [
-                    'Content-Type' => 'application/xml'
-                ]);
-            }           
+            }                      
 
             ## VALIDA CODE 4
             ## RNC Comprador no corresponde
             if( $ecf->checkRNCComprador()->errors()->any() )
             {
-                $XML = $this->xmlARECF($ecf, 0, 4);
-                $XML = Signer::from($ent)->before('</ARECF>', $XML);
+                $ecf->add("CodigoMotivoNoRecibido", 4);
+                $XML = $this->xmlARECF($ecf, 1, 4);
+                $firma = (new XML($ent))->xml($XML)->sign();
 
-                return response($XML, 400, [
+                ## Guardamos la factura
+                if( $file->move($path, $fileName) )
+                {
+                    ## Creamos el archivo ARECF
+                    app("files")->put($PATHARECF.'/'.$fileName, $firma);
+
+                    ## REGISTRAMOS LOS RESULTADOS
+                    $ent->saveARECF($this->arecf);
+                }
+
+                return response($firma, 400, [
                     'Content-Type' => 'application/xml'
                 ]);
-            }
-
-            ## DIRECTORY
-            if( !app("files")->exists(($path = __path("{Recepcion}"))) )
-            {
-                app("files")->makeDirectory($path, 0775, true);
-            } 
-            
+            }            
             
             ## SAVE && RESPONSE ARECF
             if( $file->move($path, $fileName) ) 
             {              
-                $ARECF  = $this->xmlARECF($ecf, 0); 
+                $XML  = $this->xmlARECF($ecf, 0); 
                
                 $ent->saveARECF($this->arecf);
+                $firma = (new XML($ent))->xml($XML)->sign();               
 
-                $signer = Signer::from($ent)->before('</ARECF>', $ARECF);                
+                app("files")->put($PATHARECF.'/'.$fileName, $firma);
 
-                app("files")->put($PATHARECF.'/'.$fileName, $signer);
-
-                return response($signer, 200, [
+                return response($firma, 200, [
                     'Content-Type' => 'application/xml'
                 ]);
             }                

@@ -52,24 +52,28 @@ Route::prefix("admin")->namespace("Admin")->group(function($route)
     });
 });
 
-// Route::get("authsoa", function()
-// {
-//     $env = env("DGII_ENV");
+Route::get("recepcion", function()
+{   
+    //$host   = "https://ncf.vsdelta.com";
+    $host   = "http://192.168.10.18";
 
-//     return view("dgii::authsoa", [
-//         "title"     => "LOGIN SOAP",
-//         "urlSeed"   => "api/101011939/$env/emisorreceptor/fe/Autenticacion/api/Semilla",
-//         "urlAuth"   => "101011939/$env/emisorreceptor/fe/Autenticacion/api/ValidacionCertificado" 
-//     ]);
-// });
+    $env    = env("DGII_ENV");
+    $url =  "$host/api/101011939/$env/fe/recepcion/api/ecf";
+
+    return view("dgii::form", [
+        "title"     => "SOAP",
+        "url"   => $url,
+        "urlAuth"   => "101011939/$env/emisorreceptor/fe/Autenticacion/api/ValidacionCertificado" 
+    ]);
+});
 
 
 
 Route::get("mona/{item}", function($item=null)
 {
     $host = "192.168.10.18";
-    //$host = "https://ncf.vsdelta.com";
-    $envEcf = env("DGII_ENV");
+    $host = "https://ncf.vsdelta.com";
+    $envEcf = env("DGII_ENV");    
 
     ## AUTH
     if( $item == "auth" )
@@ -156,7 +160,7 @@ Route::get("mona/{item}", function($item=null)
         $xml    = app("files")->get(base_path('XML/101011939E310000000057.xml'));
         
         $url =  "$host/api/101011939/$envEcf/fe/recepcion/api/ecf";
-        //dd($url);
+        
         $out =  Http::withToken($token)->attach(
             "xml", 
             $xml, 

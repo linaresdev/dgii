@@ -20,7 +20,8 @@ class ARECF extends Model {
         "Estado",
         "FechaHoraAcuseRecibo",
         "CodigoMotivoNoRecibido",
-        "path",
+        "pathECF",
+        "pathARECF",
         "created_at",
         "updated_at"
     ];
