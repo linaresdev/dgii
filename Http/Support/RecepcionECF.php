@@ -107,9 +107,28 @@ class RecepcionECF
             ## VALIDA CODE 3
             ## Envío duplicado
             if( $ecf->exists()->errors()->any() )
-            {   
+            {                  
+
                 ## Estructura de respuesta no recibido
                 $XML = $this->xmlARECF($ecf, 1, 3);
+
+                // $privateKeyStore = new \DGII\Firma\PrivateKeyStore();
+
+                // $privateKeyStore->loadFromPkcs12($ent->p12, $ent->password);
+
+                // $algorithm = new \DGII\Firma\Algorithm( \DGII\Firma\Algorithm::METHOD_SHA256 );
+
+                // $cryptoSigner = new \DGII\Firma\CryptoSigner($privateKeyStore, $algorithm);
+                
+                // $xmlSigner = new \DGII\Firma\XmlSigner($cryptoSigner);
+
+                // $xmlSigner->setReferenceUri('');
+
+                // $signedXml = $xmlSigner->signXml($XML);
+
+                // dd($signedXml);
+
+                // return null;
                 
                 ## Guardamos la factura
                 $file->move($path, $fileName);
@@ -166,7 +185,7 @@ class RecepcionECF
                 $ecf->add("CodigoMotivoNoRecibido", 4);
                 $XML = $this->xmlARECF($ecf, 1, 4);
                 $firma = (new XML($ent))->xml($XML)->sign();
-
+                
                 ## Guardamos la factura
                 if( $file->move($path, $fileName) )
                 {

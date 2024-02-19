@@ -23,6 +23,7 @@ class XML {
     {
         $this->entity   = $entity;
         self::$sign     = ($signs = (new \DGII\Write\Signer));
+        
 
         ## CONFIG SIGN
         $signs->from($this->entity);
@@ -56,6 +57,22 @@ class XML {
         $this->signs["diguestvalue"]   = self::$sign->getDigestValue( $canonical );
         
         return $this;
+    }
+
+    public function queryDomNode(\DOMXPath $xpath, string $expression, \DOMNode $contextNode): \DOMNode
+    {
+        $nodeList = $xpath->query($expression, $contextNode);
+
+        if (!$nodeList) {
+            throw new UnexpectedValueException('Signature value not found');
+        }
+
+        $item = $nodeList->item(0);
+        if ($item === null) {
+            throw new UnexpectedValueException('Signature value not found');
+        }
+
+        return $item;
     }
 
     public function sign( $format=false )
@@ -97,13 +114,20 @@ class XML {
         $referenceElement->appendChild($digestMethodElement);
 
         $digestValueElement = $xml->createElement('DigestValue', $this->signs["diguestvalue"]);
-        $referenceElement->appendChild($digestValueElement);
+        $referenceElement->appendChild($digestValueElement); 
 
-        $signatureValueElement = $xml->createElement('SignatureValue', $this->signs["signaturevalue"]);
+        $signatureValueElement = $xml->createElement('SignatureValue', '');
         $signatureElement->appendChild($signatureValueElement);
+        
+        $c14nSignedInfo = $signedInfoElement->C14N(true, false);
+        $signatureValue = self::$sign->signatureValue($c14nSignedInfo);
+         
+        $xpath = new \DOMXpath($xml);
+        $signatureValueElement = $this->queryDomNode($xpath, '//SignatureValue', $signatureElement);
+        $signatureValueElement->nodeValue = base64_encode($signatureValue);
 
         $keyInfoElement = $xml->createElement('KeyInfo');
-        $signatureElement->appendChild($keyInfoElement);
+        $signatureElement->appendChild($keyInfoElement);       
 
         $keyValueElement = $xml->createElement('KeyValue');
         $keyInfoElement->appendChild($keyValueElement);

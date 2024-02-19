@@ -7,8 +7,8 @@
 </head>
 <body>
     <h1>{{$title}}</h1>
-
-    <form action="{{__url($url)}}" method="POST" enctype="multipart/form-data">
+    
+    <form action="{{$url}}" method="POST" enctype="multipart/form-data">
         <table>
             <tr>
                 <td>

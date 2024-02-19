@@ -210,6 +210,18 @@ class Signer
         return $this->algoUrl;
     }
 
+    public function signatureValue($cn14)
+    { 
+        $pkey   = openssl_get_publickey(self::$data["cert"]);
+        $pkeyID = openssl_pkey_get_private(self::$data["pkey"]);
+        
+        if(openssl_sign($cn14, $sign, $pkeyID, $this->algoMethod))
+        {   
+            openssl_free_key($pkeyID);
+            return base64_encode($sign);
+        } 
+    }
+
     public function getSignatureValue()
     {
         $pkey   = openssl_get_publickey(self::$data["cert"]);

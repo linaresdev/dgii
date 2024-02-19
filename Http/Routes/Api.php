@@ -29,8 +29,7 @@ Route::get("/login-api","AuthController@noLogin")->name("login");
 Route::prefix("{rnc}")->group(function($route)
 {
     Route::prefix(env("DGII_ENV"))->group(function($route)
-    {      
-
+    {  
         Route::get("/emisorreceptor/fe/Autenticacion/api/Semilla","AuthController@getSeed");
         Route::post("emisorreceptor/fe/Autenticacion/api/ValidacionCertificado","AuthController@guestAuth");
         

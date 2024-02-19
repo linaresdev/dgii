@@ -54,7 +54,7 @@ Route::prefix("admin")->namespace("Admin")->group(function($route)
 
 Route::get("recepcion", function()
 {   
-    //$host   = "https://ncf.vsdelta.com";
+    $host   = "https://ncf.vsdelta.com";
     $host   = "http://192.168.10.18";
 
     $env    = env("DGII_ENV");
