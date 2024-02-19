@@ -86,14 +86,13 @@ class RecepcionECF
     public function firmador($ent, $XML)
     {
         $doc = new \DOMDocument();
-        $doc->formatOutput = true;
         $doc->loadXML( $XML );
         if( openssl_pkcs12_read($ent->p12, $data, $ent->password) )
         {
             $certify    = $data["cert"];
             $privatKey  = $data["pkey"];
             
-            $objDSig = new XMLSecurityDSig();
+            $objDSig = new XMLSecurityDSig(null);
 
             $objDSig->setCanonicalMethod(XMLSecurityDSig::EXC_C14N);
 
@@ -148,11 +147,9 @@ class RecepcionECF
             ## VALIDA CODE 3
             ## Envío duplicado
             if( $ecf->exists()->errors()->any() )
-            {                  
-
+            {
                 ## Estructura de respuesta no recibido
                 $XML = $this->xmlARECF($ecf, 1, 3);
-
                 
                 $firma = $this->firmador($ent, $XML);
 
@@ -175,7 +172,7 @@ class RecepcionECF
                 $ecf->add("CodigoMotivoNoRecibido", 1);
 
                 $XML    = $this->xmlARECF($ecf, 1, 1);
-                $firma  = (new XML($ent))->xml($XML)->sign();
+                $firma  = $this->firmador($ent, $XML);
 
                 ## Guardamos la factura
                 if( $file->move($path, $fileName) )
@@ -197,10 +194,10 @@ class RecepcionECF
             if( $ecf->checkSignature()->errors()->any() )
             {
                 $XML = $this->xmlARECF($ecf, 0, 2);
-                $XML = Signer::from($ent)->before('</ARECF>', $XML);
+                $firma = $this->firmador($ent, $XML);
 
                 //app("files")->put($PATHARECF.'/'.$fileName, $XML);
-                return response($XML, 400, [
+                return response($firma, 400, [
                     'Content-Type' => 'application/xml'
                 ]);
             }                      
@@ -210,8 +207,9 @@ class RecepcionECF
             if( $ecf->checkRNCComprador()->errors()->any() )
             {
                 $ecf->add("CodigoMotivoNoRecibido", 4);
-                $XML = $this->xmlARECF($ecf, 1, 4);
-                $firma = (new XML($ent))->xml($XML)->sign();
+
+                $XML    = $this->xmlARECF($ecf, 1, 4);
+                $firma  = $this->firmador($ent, $XML);
                 
                 ## Guardamos la factura
                 if( $file->move($path, $fileName) )
@@ -236,8 +234,8 @@ class RecepcionECF
 
                 $ent->saveARECF($this->arecf);
 
-               //$firma = (new XML($ent))->xml($XML)->sign();
-               $firma = $this->firmador($ent, $XML);              
+                //$firma = (new XML($ent))->xml($XML)->sign();
+                $firma = $this->firmador($ent, $XML);              
 
                 app("files")->put($PATHARECF.'/'.$fileName, $firma);
 
