@@ -39,7 +39,6 @@ final class CryptoSigner implements CryptoSignerInterface
         if (!$privateKey) {
             throw new CertificateException('Undefined private key');
         }
-        dd($this->algorithm->getSignatureSslAlgorithm());
         // Calculate and encode digest value
         $status = openssl_sign($data, $signatureValue, $privateKey, $this->algorithm->getSignatureSslAlgorithm());
         

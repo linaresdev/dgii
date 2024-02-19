@@ -80,6 +80,23 @@ class RecepcionECF
         return $stub;
     }
 
+    public function fimador($ent, $XML)
+    {
+        $privateKeyStore = new \DGII\Firma\PrivateKeyStore();
+
+        $privateKeyStore->loadFromPkcs12($ent->p12, $ent->password);
+
+        $algorithm = new \DGII\Firma\Algorithm( \DGII\Firma\Algorithm::METHOD_SHA256 );
+
+        $cryptoSigner = new \DGII\Firma\CryptoSigner($privateKeyStore, $algorithm);
+        
+        $xmlSigner = new \DGII\Firma\XmlSigner($cryptoSigner);
+
+        $xmlSigner->setReferenceUri('');
+
+        $signedXml = $xmlSigner->signXml($XML);
+    }
+
     public function recepcionECF($ent, $request)
     {        
         if( $request->hasFile("xml") )
@@ -87,6 +104,20 @@ class RecepcionECF
             $xmlData    = ($file = $request->file("xml"))->getContent();
             $xsd        = __path('{wvalidate}/RecepcionComercial.xsd');
             $ecf        = ECF::load($xmlData);
+
+            ## signer
+            $privateKeyStore = new \DGII\Firma\PrivateKeyStore();
+
+            $privateKeyStore->loadFromPkcs12($ent->p12, $ent->password);
+
+            $algorithm = new \DGII\Firma\Algorithm( \DGII\Firma\Algorithm::METHOD_SHA256 );
+
+            $cryptoSigner = new \DGII\Firma\CryptoSigner($privateKeyStore, $algorithm);
+            
+            $xmlSigner = new \DGII\Firma\XmlSigner($cryptoSigner);
+
+            $xmlSigner->setReferenceUri('');
+
 
             $ecf->add("fileName", ($fileName = $file->getClientOriginalName()));
             $ecf->add("pathECF", __path("{Recepcion}/$fileName"));
@@ -110,31 +141,14 @@ class RecepcionECF
             {                  
 
                 ## Estructura de respuesta no recibido
-                $XML = $this->xmlARECF($ecf, 1, 3);
+                $XML = $this->xmlARECF($ecf, 1, 3);               
 
-                // $privateKeyStore = new \DGII\Firma\PrivateKeyStore();
-
-                // $privateKeyStore->loadFromPkcs12($ent->p12, $ent->password);
-
-                // $algorithm = new \DGII\Firma\Algorithm( \DGII\Firma\Algorithm::METHOD_SHA256 );
-
-                // $cryptoSigner = new \DGII\Firma\CryptoSigner($privateKeyStore, $algorithm);
-                
-                // $xmlSigner = new \DGII\Firma\XmlSigner($cryptoSigner);
-
-                // $xmlSigner->setReferenceUri('');
-
-                // $signedXml = $xmlSigner->signXml($XML);
-
-                // dd($signedXml);
-
-                // return null;
-                
                 ## Guardamos la factura
                 $file->move($path, $fileName);
 
-                $firma = (new XML($ent))->xml($XML)->sign();
-                //app("files")->put($PATHARECF.'/'.$fileName, $firma);
+                //$firma = (new XML($ent))->xml($XML)->sign();
+                $firma = $xmlSigner->signXml($XML);
+                app("files")->put($PATHARECF.'/'.$fileName, $firma);
 
                 return response($firma, 400, [
                     'Content-Type' => 'application/xml'
@@ -205,9 +219,12 @@ class RecepcionECF
             if( $file->move($path, $fileName) ) 
             {              
                 $XML  = $this->xmlARECF($ecf, 0); 
-               
+                app("files")->put($PATHARECF.'/Acuse.xml', $XML);
+
                 $ent->saveARECF($this->arecf);
-                $firma = (new XML($ent))->xml($XML)->sign();               
+
+               //$firma = (new XML($ent))->xml($XML)->sign();
+               $firma = $xmlSigner->signXml($XML);               
 
                 app("files")->put($PATHARECF.'/'.$fileName, $firma);
 
@@ -219,8 +236,7 @@ class RecepcionECF
             return response($this->xmlARECF($ecf, 0, 1), 400, [
                 'Content-Type' => 'application/xml'
             ]);
-        }
-        
+        }        
 
         $errors = $this->xmlNews([
             "Autenticacion requerida"

@@ -43,10 +43,10 @@ class XML {
 
     public function xml( $xml=null )
     {
-        $this->xml = new \DOMDocument( env("XML_VERSION", 1.0), env("XML_ENCODE", "utf-8"));
-
+        $this->xml = new \DOMDocument( env("XML_VERSION", 1.0));
+       
         $this->xml->preserveWhiteSpace = env("XML_SPACE", true);
-        $this->xml->formatOutput = env("XML_FORMAT", false);
+        $this->xml->formatOutput = true;
 
         $this->xml->loadXML($xml); 
 
@@ -77,12 +77,12 @@ class XML {
 
     public function sign( $format=false )
     {
-        $xml = $this->xml;
+        $xml = $this->xml;        
         
         $signatureElement = $xml->createElement('Signature');
         $signatureElement->setAttribute('xmlns', 'http://www.w3.org/2000/09/xmldsig#');
         $xml->documentElement->appendChild($signatureElement);
-
+        
         $signedInfoElement = $xml->createElement('SignedInfo');
         $signatureElement->appendChild($signedInfoElement);
 
@@ -119,16 +119,19 @@ class XML {
         $signatureValueElement = $xml->createElement('SignatureValue', '');
         $signatureElement->appendChild($signatureValueElement);
         
-        $c14nSignedInfo = $signedInfoElement->C14N(true, false);
+        $c14nSignedInfo = $signedInfoElement->C14N(  
+            env("XML_CANONICAL_EXCLUSIVE", true), env("XML_CANONICAL_COMMENT", false)
+        );
+
         $signatureValue = self::$sign->signatureValue($c14nSignedInfo);
          
         $xpath = new \DOMXpath($xml);
         $signatureValueElement = $this->queryDomNode($xpath, '//SignatureValue', $signatureElement);
         $signatureValueElement->nodeValue = base64_encode($signatureValue);
-
+        
         $keyInfoElement = $xml->createElement('KeyInfo');
         $signatureElement->appendChild($keyInfoElement);       
-
+        
         $keyValueElement = $xml->createElement('KeyValue');
         $keyInfoElement->appendChild($keyValueElement);
 
@@ -137,6 +140,7 @@ class XML {
         $x509CertificateElement = $xml->createElement('X509Certificate', $this->signs["X509Certificate"]);
         $x509DataElement->appendChild($x509CertificateElement);
 
-        return $this->xml->saveXML();
+        dd($xml);
+        return $xml->saveXML();
     }
 }
