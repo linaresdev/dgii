@@ -13,6 +13,9 @@ use DGII\Model\Hacienda;
 use DGII\Write\Facade\Signer;
 use Illuminate\Validation\Rule;
 
+use RobRichards\XMLSecLibs\XMLSecurityDSig;
+use RobRichards\XMLSecLibs\XMLSecurityKey;
+
 class RecepcionECF 
 {
 
@@ -80,21 +83,40 @@ class RecepcionECF
         return $stub;
     }
 
-    public function fimador($ent, $XML)
+    public function firmador($ent, $XML)
     {
-        $privateKeyStore = new \DGII\Firma\PrivateKeyStore();
+        $doc = new \DOMDocument();
+        $doc->formatOutput = true;
+        $doc->loadXML( $XML );
+        if( openssl_pkcs12_read($ent->p12, $data, $ent->password) )
+        {
+            $certify    = $data["cert"];
+            $privatKey  = $data["pkey"];
+            
+            $objDSig = new XMLSecurityDSig();
 
-        $privateKeyStore->loadFromPkcs12($ent->p12, $ent->password);
+            $objDSig->setCanonicalMethod(XMLSecurityDSig::EXC_C14N);
 
-        $algorithm = new \DGII\Firma\Algorithm( \DGII\Firma\Algorithm::METHOD_SHA256 );
+            $objDSig->addReference(
+                $doc, 
+                XMLSecurityDSig::SHA256, 
+                array('http://www.w3.org/2000/09/xmldsig#enveloped-signature')
+            );
 
-        $cryptoSigner = new \DGII\Firma\CryptoSigner($privateKeyStore, $algorithm);
-        
-        $xmlSigner = new \DGII\Firma\XmlSigner($cryptoSigner);
+            $objKey = new XMLSecurityKey(XMLSecurityKey::RSA_SHA256, array('type'=>'private'));
 
-        $xmlSigner->setReferenceUri('');
+            $objKey->loadKey($privatKey, false);
 
-        $signedXml = $xmlSigner->signXml($XML);
+            $objDSig->sign($objKey);
+
+            $objDSig->add509Cert($certify);
+
+            $objDSig->appendSignature($doc->documentElement);
+
+            // $doc->save('./path/to/signed.xml');
+            
+            return $doc->saveXML();
+        }
     }
 
     public function recepcionECF($ent, $request)
@@ -106,18 +128,6 @@ class RecepcionECF
             $ecf        = ECF::load($xmlData);
 
             ## signer
-            $privateKeyStore = new \DGII\Firma\PrivateKeyStore();
-
-            $privateKeyStore->loadFromPkcs12($ent->p12, $ent->password);
-
-            $algorithm = new \DGII\Firma\Algorithm( \DGII\Firma\Algorithm::METHOD_SHA256 );
-
-            $cryptoSigner = new \DGII\Firma\CryptoSigner($privateKeyStore, $algorithm);
-            
-            $xmlSigner = new \DGII\Firma\XmlSigner($cryptoSigner);
-
-            $xmlSigner->setReferenceUri('');
-
 
             $ecf->add("fileName", ($fileName = $file->getClientOriginalName()));
             $ecf->add("pathECF", __path("{Recepcion}/$fileName"));
@@ -141,13 +151,16 @@ class RecepcionECF
             {                  
 
                 ## Estructura de respuesta no recibido
-                $XML = $this->xmlARECF($ecf, 1, 3);               
+                $XML = $this->xmlARECF($ecf, 1, 3);
+
+                
+                $firma = $this->firmador($ent, $XML);
 
                 ## Guardamos la factura
                 $file->move($path, $fileName);
 
                 //$firma = (new XML($ent))->xml($XML)->sign();
-                $firma = $xmlSigner->signXml($XML);
+               // $firma = $xmlSigner->signXml($XML);
                 app("files")->put($PATHARECF.'/'.$fileName, $firma);
 
                 return response($firma, 400, [
@@ -224,7 +237,7 @@ class RecepcionECF
                 $ent->saveARECF($this->arecf);
 
                //$firma = (new XML($ent))->xml($XML)->sign();
-               $firma = $xmlSigner->signXml($XML);               
+               $firma = $this->firmador($ent, $XML);              
 
                 app("files")->put($PATHARECF.'/'.$fileName, $firma);
 
