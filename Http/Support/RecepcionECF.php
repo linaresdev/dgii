@@ -84,9 +84,12 @@ class RecepcionECF
     }
 
     public function firmador($ent, $XML)
-    {
-        $doc = new \DOMDocument();
+    { 
+        $doc = new \DOMDocument("1.0", "utf-8");
+        $doc->preserveWhiteSpace = false;
+        $doc->formatOutput = true;
         $doc->loadXML( $XML );
+        
         if( openssl_pkcs12_read($ent->p12, $data, $ent->password) )
         {
             $certify    = $data["cert"];
@@ -101,7 +104,7 @@ class RecepcionECF
                 XMLSecurityDSig::SHA256, 
                 array('http://www.w3.org/2000/09/xmldsig#enveloped-signature')
             );
-
+            
             $objKey = new XMLSecurityKey(XMLSecurityKey::RSA_SHA256, array('type'=>'private'));
 
             $objKey->loadKey($privatKey, false);
@@ -109,12 +112,15 @@ class RecepcionECF
             $objDSig->sign($objKey);
 
             $objDSig->add509Cert($certify);
-
+            
             $objDSig->appendSignature($doc->documentElement);
 
+           
             // $doc->save('./path/to/signed.xml');
-            
-            return $doc->saveXML();
+           
+            //return $doc->saveXML();
+
+            return $doc->documentElement->C14N();
         }
     }
 
