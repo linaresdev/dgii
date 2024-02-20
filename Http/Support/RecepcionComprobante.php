@@ -64,9 +64,7 @@ class RecepcionComprobante {
 
             if( ($errors = $validate->errors())->any() )
             {          
-                return response($this->errorMessage("Insastifactorio"), 400, [
-                    'Content-Type' => 'application/xml'
-                ]);
+                return response(null, 400);
             }
 
             $xml        = $request->file("xml");
@@ -86,19 +84,15 @@ class RecepcionComprobante {
 
                 if($entity->saveAprobacionComercial($storData))
                 {
-                    return response($this->errorMessage("Sastifactorio"), 200, [
-                        'Content-Type' => 'application/xml'
-                    ]);
+                    return response(null, 200);
                 }                
             }
 
-            return response( $this->errorMessage("Insastifactorio - "), 400, [
+            return response( $this->errorMessage("Insastifactorio"), 400, [
                 'Content-Type' => 'application/xml'
             ]);            
         }
 
-        return response("Insatisfactorio", 400, [
-            'Content-Type' => 'application/xml'
-        ]);        
+        return response(null, 400);        
     }
 }

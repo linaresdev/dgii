@@ -59,7 +59,7 @@ Route::get("recepcion", function()
 
     $env    = env("DGII_ENV");
     $url =  "$host/api/101011939/$env/fe/recepcion/api/ecf";
-
+    
     return view("dgii::form", [
         "title"     => "SOAP",
         "url"   => $url,
@@ -74,7 +74,7 @@ Route::get("aprobacion", function()
 
     $env    = env("DGII_ENV");
     $url =  "$host/api/101011939/$env/fe/aprobacioncomercial/api/ecf";
-
+    dd($url);
     return view("dgii::form", [
         "title"     => "SOAP",
         "url"   => $url,
