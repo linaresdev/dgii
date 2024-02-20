@@ -40,9 +40,7 @@ class RecepcionComprobante {
 
             if( !$xmlData->hasEntity() )
             {
-                return response($this->errorMessage("Insastifactorio"), 400, [
-                    'Content-Type' => 'application/xml'
-                ]);
+                return response(null, 400);
             }
 
             $data["Estado"]                         = 1;
@@ -62,10 +60,10 @@ class RecepcionComprobante {
         
             $validate = validator($xmlData->all(), $ruls, $messages, $attrs);
 
-            if( ($errors = $validate->errors())->any() )
-            {          
-                return response(null, 400);
-            }
+            // if( ($errors = $validate->errors())->any() )
+            // {          
+            //     return response(null, 400);
+            // }
 
             $xml        = $request->file("xml");
             $fileName   = $xmlData->get("RNCComprador").$xmlData->get("eNCF").".xml";
@@ -88,9 +86,7 @@ class RecepcionComprobante {
                 }                
             }
 
-            return response( $this->errorMessage("Insastifactorio"), 400, [
-                'Content-Type' => 'application/xml'
-            ]);            
+            return response(null, 400);            
         }
 
         return response(null, 400);        
