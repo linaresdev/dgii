@@ -119,8 +119,10 @@ class RecepcionECF
             // $doc->save('./path/to/signed.xml');
            
             //return $doc->saveXML();
+            $xml = '<?xml version="1.0" encoding="utf-8"?>'."\n";
+            $xml .= $doc->documentElement->C14N();
 
-            return $doc->documentElement->C14N();
+            return $xml;
         }
     }
 
