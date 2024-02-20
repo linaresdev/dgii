@@ -67,6 +67,21 @@ Route::get("recepcion", function()
     ]);
 });
 
+Route::get("aprobacion", function()
+{   
+    $host   = "https://ncf.vsdelta.com";
+    $host   = "http://192.168.10.18";
+
+    $env    = env("DGII_ENV");
+    $url =  "$host/api/101011939/$env/fe/aprobacioncomercial/api/ecf";
+
+    return view("dgii::form", [
+        "title"     => "SOAP",
+        "url"   => $url,
+        "urlAuth"   => "101011939/$env/emisorreceptor/fe/Autenticacion/api/ValidacionCertificado" 
+    ]);
+});
+
 
 
 Route::get("mona/{item}", function($item=null)

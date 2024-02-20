@@ -32,72 +32,73 @@ class RecepcionComprobante {
     }
 
     public function recepcionComprobante($request)
-    { 
-        
-       // if( $request->user()->can("isexpire", $request) )
-       // {            
-            if( $request->hasFile("xml") )
-            {      
-                $xmlData = (new AprobacionData($request->file("xml")));     
-                $entity = $xmlData->entity();
+    {             
+        if( $request->hasFile("xml") )
+        {      
+            $xmlData = (new AprobacionData($request->file("xml")));     
+            $entity = $xmlData->entity();
 
-                if( !$xmlData->hasEntity() )
-                {
-                    return response("Insatisfactorio - Entidad no valida", 400);
-                }
-
-                $data["Estado"]                         = 1;
-                
-                $ruls["Version"] 						= "required";
-                $ruls["RNCEmisor"] 						= ["required", new \DGII\Rules\RNC];
-                $ruls["eNCF"] 							= ["required","unique:\DGII\Model\AprobacionComercial,eNCF", new \DGII\Rules\Encf];
-                $ruls["FechaEmision"] 					= "required";
-                $ruls["MontoTotal"] 					= "required|numeric";
-                $ruls["RNCComprador"] 					= "required";
-                $ruls["Estado"] 						= ["required",Rule::in([1,2])];
-                $ruls["DetalleMotivoRechazo"] 			= "";			
-                $ruls["FechaHoraAprobacionComercial"] 	= "";
-
-                $messages["unique"] = __("validate.unique");
-                $attrs["eNCF"] = "Nombre o Numero de comprobante";
-            
-                $validate = validator($xmlData->all(), $ruls, $messages, $attrs);
-
-                if( ($errors = $validate->errors())->any() )
-                {                    
-                    return response("Insatisfactorio - ".implode(',', $errors->all()), 400, [
-                        'Content-Type' => 'application/xml'
-                    ]);
-                }
-
-                $xml        = $request->file("xml");
-                $fileName   = $xmlData->get("RNCComprador").$xmlData->get("eNCF").".xml";
-                
-                if( !app("files")->exists(($path = __path("{AprobacionComercial}"))) )
-                {
-                    app("files")->makeDirectory($path, 0775, true);
-                }           
-            
-                if( $xml->move($path, $fileName) ) 
-                {
-                    $storData               = $xmlData->all();
-                    $storData["filename"]   = $fileName;
-                    $storData["path"]       = "$path/$fileName";
-                    $storData["state"]      = $xmlData->get("Estado");
-
-                    if($entity->saveAprobacionComercial($storData))
-                    {
-                        return response("Satisfactorio", 200);
-                    }                
-                }
-
-                return response("Insatisfactorio", 400);
+            if( !$xmlData->hasEntity() )
+            {
+                return response($this->errorMessage("Insastifactorio"), 400, [
+                    'Content-Type' => 'application/xml'
+                ]);
             }
 
-            return response("Insatisfactorio - Especifique el documento a tratar", 400);
-       // }
+            $data["Estado"]                         = 1;
+            
+            $ruls["Version"] 						= "required";
+            $ruls["RNCEmisor"] 						= ["required", new \DGII\Rules\RNC];
+            $ruls["eNCF"] 							= ["required","unique:\DGII\Model\AprobacionComercial,eNCF", new \DGII\Rules\Encf];
+            $ruls["FechaEmision"] 					= "required";
+            $ruls["MontoTotal"] 					= "required|numeric";
+            $ruls["RNCComprador"] 					= "required";
+            $ruls["Estado"] 						= ["required",Rule::in([1,2])];
+            $ruls["DetalleMotivoRechazo"] 			= "";			
+            $ruls["FechaHoraAprobacionComercial"] 	= "";
 
-        //return response()->json("Autenticacion requerida.", 401);        
+            $messages["unique"] = __("validate.unique");
+            $attrs["eNCF"] = "comprobante";
         
+            $validate = validator($xmlData->all(), $ruls, $messages, $attrs);
+
+            if( ($errors = $validate->errors())->any() )
+            {          
+                return response($this->errorMessage("Insastifactorio"), 400, [
+                    'Content-Type' => 'application/xml'
+                ]);
+            }
+
+            $xml        = $request->file("xml");
+            $fileName   = $xmlData->get("RNCComprador").$xmlData->get("eNCF").".xml";
+            
+            if( !app("files")->exists(($path = __path("{AprobacionComercial}"))) )
+            {
+                app("files")->makeDirectory($path, 0775, true);
+            }           
+        
+            if( $xml->move($path, $fileName) ) 
+            {
+                $storData               = $xmlData->all();
+                $storData["filename"]   = $fileName;
+                $storData["path"]       = "$path/$fileName";
+                $storData["state"]      = $xmlData->get("Estado");
+
+                if($entity->saveAprobacionComercial($storData))
+                {
+                    return response($this->errorMessage("Sastifactorio"), 200, [
+                        'Content-Type' => 'application/xml'
+                    ]);
+                }                
+            }
+
+            return response( $this->errorMessage("Insastifactorio - "), 400, [
+                'Content-Type' => 'application/xml'
+            ]);            
+        }
+
+        return response("Insatisfactorio", 400, [
+            'Content-Type' => 'application/xml'
+        ]);        
     }
 }
