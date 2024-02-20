@@ -6,8 +6,8 @@ namespace DGII\Http\Support;
 * ©Delta
 *---------------------------------------------------------
 */
-
 use DGII\Facade\ECF;
+use DGII\Facade\XLib;
 use DGII\Support\XML;
 use DGII\Model\Hacienda;
 use DGII\Write\Facade\Signer;
@@ -115,14 +115,9 @@ class RecepcionECF
             
             $objDSig->appendSignature($doc->documentElement);
 
-           
             // $doc->save('./path/to/signed.xml');
-           
-            //return $doc->saveXML();
-            $xml = '<?xml version="1.0" encoding="utf-8"?>'."\n";
-            $xml .= $doc->documentElement->C14N();
-
-            return $xml;
+            //dd($doc->documentElement->CN14());
+            return $doc->saveXML();
         }
     }
 
@@ -158,9 +153,13 @@ class RecepcionECF
             {
                 ## Estructura de respuesta no recibido
                 $XML = $this->xmlARECF($ecf, 1, 3);
-                
-                $firma = $this->firmador($ent, $XML);
 
+                $firma = XLib::load($ent)->xml($XML)->sign();
+                
+                //$firma = (new XML($ent))->xml($XML)->sign();               
+                
+                //$firma = $this->firmador($ent, $XML);
+                
                 ## Guardamos la factura
                 $file->move($path, $fileName);
 
@@ -180,7 +179,8 @@ class RecepcionECF
                 $ecf->add("CodigoMotivoNoRecibido", 1);
 
                 $XML    = $this->xmlARECF($ecf, 1, 1);
-                $firma  = $this->firmador($ent, $XML);
+                //$firma  = $this->firmador($ent, $XML);
+                $firma = XLib::load($ent)->xml($XML)->sign();
 
                 ## Guardamos la factura
                 if( $file->move($path, $fileName) )
@@ -202,7 +202,8 @@ class RecepcionECF
             if( $ecf->checkSignature()->errors()->any() )
             {
                 $XML = $this->xmlARECF($ecf, 0, 2);
-                $firma = $this->firmador($ent, $XML);
+                // $firma = $this->firmador($ent, $XML);
+                $firma = XLib::load($ent)->xml($XML)->sign();
 
                 //app("files")->put($PATHARECF.'/'.$fileName, $XML);
                 return response($firma, 400, [
@@ -217,7 +218,8 @@ class RecepcionECF
                 $ecf->add("CodigoMotivoNoRecibido", 4);
 
                 $XML    = $this->xmlARECF($ecf, 1, 4);
-                $firma  = $this->firmador($ent, $XML);
+                // $firma  = $this->firmador($ent, $XML);
+                $firma = XLib::load($ent)->xml($XML)->sign();
                 
                 ## Guardamos la factura
                 if( $file->move($path, $fileName) )
@@ -243,7 +245,9 @@ class RecepcionECF
                 $ent->saveARECF($this->arecf);
 
                 //$firma = (new XML($ent))->xml($XML)->sign();
-                $firma = $this->firmador($ent, $XML);              
+                // $firma = $this->firmador($ent, $XML);
+                
+                $firma = XLib::load($ent)->xml($XML)->sign();
 
                 app("files")->put($PATHARECF.'/'.$fileName, $firma);
 

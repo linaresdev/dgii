@@ -117,17 +117,17 @@ class XML {
         $referenceElement->appendChild($digestValueElement); 
 
         $signatureValueElement = $xml->createElement('SignatureValue', '');
-        $signatureElement->appendChild($signatureValueElement);
-        
+        $signatureElement->appendChild($signatureValueElement);        
+
         $c14nSignedInfo = $signedInfoElement->C14N(  
             env("XML_CANONICAL_EXCLUSIVE", true), env("XML_CANONICAL_COMMENT", false)
         );
 
-        $signatureValue = self::$sign->signatureValue($c14nSignedInfo);
+        // $signatureValue = self::$sign->signatureValue($c14nSignedInfo);
          
-        $xpath = new \DOMXpath($xml);
-        $signatureValueElement = $this->queryDomNode($xpath, '//SignatureValue', $signatureElement);
-        $signatureValueElement->nodeValue = base64_encode($signatureValue);
+        // $xpath = new \DOMXpath($xml);
+        // $signatureValueElement = $this->queryDomNode($xpath, '//SignatureValue', $signatureElement);
+        // $signatureValueElement->nodeValue = base64_encode($signatureValue);
         
         $keyInfoElement = $xml->createElement('KeyInfo');
         $signatureElement->appendChild($keyInfoElement);       

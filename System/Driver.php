@@ -67,6 +67,11 @@ class Driver
         {
             return new \DGII\Support\ECF($app);
         });
+
+        $app->bind("XLib", function($app)
+        {
+            return new \DGII\Support\XLib($app);
+        });
     }
 
     public function install($app) { }
