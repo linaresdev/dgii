@@ -38,9 +38,21 @@ class RecepcionComprobante {
             $xmlData = (new AprobacionData($request->file("xml")));     
             $entity = $xmlData->entity();
 
+            $xml        = $request->file("xml");
+            $fileName   = $xmlData->get("RNCComprador").$xmlData->get("eNCF").".xml";
+
+            if( !app("files")->exists(($path = __path("{AprobacionComercial}"))) )
+            {
+                app("files")->makeDirectory($path, 0775, true);
+            }  
+
+            app("files")->put(
+                "$path/$fileName.tmp", $request->file("xml")->getContent()
+            );
+
             if( !$xmlData->hasEntity() )
             {
-                return response(null, 400);
+                return response("Insatisfactorio", 400);
             }
 
             $data["Estado"]                         = 1;
@@ -60,18 +72,14 @@ class RecepcionComprobante {
         
             $validate = validator($xmlData->all(), $ruls, $messages, $attrs);
 
-            // if( ($errors = $validate->errors())->any() )
-            // {          
-            //     return response(null, 400);
-            // }
+            if( ($errors = $validate->errors())->any() )
+            {          
+                return response("Insatisfactorio", 400);
+            }
 
-            $xml        = $request->file("xml");
-            $fileName   = $xmlData->get("RNCComprador").$xmlData->get("eNCF").".xml";
             
-            if( !app("files")->exists(($path = __path("{AprobacionComercial}"))) )
-            {
-                app("files")->makeDirectory($path, 0775, true);
-            }           
+            
+                     
         
             if( $xml->move($path, $fileName) ) 
             {
@@ -82,13 +90,11 @@ class RecepcionComprobante {
 
                 if($entity->saveAprobacionComercial($storData))
                 {
-                    return response(null, 200);
+                    return response("Satisfactorio", 200);
                 }                
-            }
-
-            return response(null, 400);            
+            }           
         }
 
-        return response(null, 400);        
+        return response("Insatisfactorio", 400);        
     }
 }

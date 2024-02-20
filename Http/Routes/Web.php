@@ -70,7 +70,7 @@ Route::get("recepcion", function()
 Route::get("aprobacion", function()
 {   
     $host   = "https://ncf.vsdelta.com";
-   // $host   = "http://192.168.10.18";
+    $host   = "http://192.168.10.18";
 
     $env    = env("DGII_ENV");
     $url =  "$host/api/101011939/$env/fe/aprobacioncomercial/api/ecf";
