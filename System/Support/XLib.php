@@ -109,7 +109,9 @@ class XLib
 
         $this->DOM->loadXML($XML);
 
-        $this->stubs["c14nBase"] = $this->DOM->documentElement->C14N(true, false);
+        $this->stubs["c14nBase"] = $this->DOM->documentElement->C14N(
+            env("XML_C14NBASE_EXCLUSIVE", true), env("XML_C14NBASE_COMMENT", false)
+        );
 
         $this->digestValue = base64_encode(
             openssl_digest( $this->stubs["c14nBase"], $this->algoMethod, true )
@@ -169,9 +171,9 @@ class XLib
 
             $signatureValueElement = $this->DOM->createElement('SignatureValue', '');
             $signatureElement->appendChild($signatureValueElement);
-
+            
             $this->makeSignatureValue( $signedInfoElement->C14N(  
-                env("XML_CANONICAL_EXCLUSIVE", true), env("XML_CANONICAL_COMMENT", false)
+                env("XML_C14NINFO_EXCLUSIVE", true), env("XML_C14NINFO_COMMENT", false)
             ));
 
             $xpath = new \DOMXpath( $this->DOM );
@@ -192,7 +194,6 @@ class XLib
 
             return str_replace("\n", null, $this->DOM->saveXML());
         }
-
     }
 
     public function queryDomNode(\DOMXPath $xpath, string $expression, \DOMNode $contextNode): \DOMNode
