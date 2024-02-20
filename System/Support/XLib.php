@@ -190,9 +190,14 @@ class XLib
             $keyInfoElement->appendChild($x509DataElement);
             $x509DataElement->appendChild(
                 $this->DOM->createElement('X509Certificate', $this->X509Certificate)
-            );
+            );            
 
-            return str_replace("\n", null, $this->DOM->saveXML());
+            if( env("XML_INLINE", false) == true )
+            {
+                return $this->DOM->documentElement->C14N(true, true);
+            }
+
+            return$this->DOM->saveXML();
         }
     }
 
