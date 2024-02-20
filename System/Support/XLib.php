@@ -190,7 +190,7 @@ class XLib
                 $this->DOM->createElement('X509Certificate', $this->X509Certificate)
             );
 
-            return rtrim($this->DOM->saveXML(), "\n");
+            return str_replace("\n", null, $this->DOM->saveXML());
         }
 
     }
