@@ -62,7 +62,12 @@ class RecepcionComprobante {
             $validate = validator($xmlData->all(), $ruls, $messages, $attrs);
 
             if( ($errors = $validate->errors())->any() )
-            {          
+            {            
+                foreach($errors->all() as $error )
+                {
+                    $this->append($error, 400);
+                }
+
                 return response("Insatisfactorio", 400);
             }                     
         
@@ -80,6 +85,24 @@ class RecepcionComprobante {
             }           
         }
 
+        $this->append("No fue posible procesar el documento", 400);
+
         return response("Insatisfactorio", 400);        
+    }
+
+    public function append($data, $code)
+    {
+        $header  = "ERROR $code | ";
+        $header .= now()->toDateTimeString()." | ";
+        $header .= $data."\n";
+
+        if( !app("files")->exists(base_path("errors.txt")) )
+        {
+            app("files")->put(
+                base_path("errors.txt"), "LOGGED ".now()->toDateTimeString()."\n"
+            ); 
+        }
+
+        app("files")->append(base_path("errors.txt"), $header); 
     }
 }
