@@ -130,7 +130,8 @@ class Store extends Authenticatable {
 
     /*
     * SYNCS */
-    public function syncGroup($gID=0, $rols=null) {
+    public function syncGroup($gID=0, $rols=null)
+    {
         if( is_numeric($gID) ) 
         {
             $this->groups()->attach($gID, ["meta" => $rols]);
@@ -146,6 +147,11 @@ class Store extends Authenticatable {
         {
             $this->groups()->attach($gID->id, ["meta" => $rols]);
         }        
+    }
+
+    public function isGroup($slug)
+    {
+        return ($this->groups->where("slug", $slug)->count() > 0);
     }
 
 

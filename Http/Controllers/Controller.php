@@ -27,6 +27,14 @@ class Controller extends BaseController {
         $data["icon"] = '<span class="mdi mdi-text"></span>';
         $data["title"] = 'Title Page';
 
+        if( method_exists($app, "share") )
+        {
+            if( is_array($app->share()) )
+            {
+                $this->share($app->share());
+            }
+        }
+
         $this->share($data);
     }
 
@@ -38,7 +46,8 @@ class Controller extends BaseController {
 
     public function render($view=NULL, $data=[], $mergeData=[]) {
 
-        if(view()->exists(($path = $this->path.$view))) {
+        if(view()->exists(($path = $this->path.$view)))
+        {
             return view($path, $data, $mergeData);
         }
 

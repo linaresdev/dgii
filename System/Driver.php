@@ -38,6 +38,7 @@ class Driver
     {
         return [
             \DGII\Write\Driver::class,
+            \DGII\Button\Driver::class,
         ];
     }
 
@@ -57,7 +58,8 @@ class Driver
     }
 
     public function handler($app)
-    {
+    {       
+
         $app->bind("Hacienda", function($app)
         {
             return new \DGII\Support\Hacienda($app);

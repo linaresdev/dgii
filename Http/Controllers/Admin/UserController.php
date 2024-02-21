@@ -22,4 +22,9 @@ class UserController extends Controller {
     {
         return $this->render('index', $this->app->index());
     }
+
+    public function register()
+    {
+        return $this->render('register', $this->app->register());
+    }
 }

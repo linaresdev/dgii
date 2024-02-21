@@ -1,7 +1,7 @@
 
 <nav class="navbar navbar-lighter navbar-expand-md fixed-top">
         <a href="{{__url('mainURL')}}" class="navbar-brand px-3">
-            Delta Domercial
+            Delta Comercial
         </a>
         <button class="navbar-toggler" 
                 type="button" 
@@ -15,8 +15,9 @@
         <div id="mainBar" class="collapse navbar-collapse">
             
             @if( auth("web")->check() && is_object(($nav = anonymous(__path("{http}/Support/Menu.php"))))) 
-            @if( !empty(($items = $nav->items())))
+            @if( !empty(($items = $nav->items())))            
             <ul class="nav">
+                @if( ($UI = request()->user())->isGroup("admin"))
                 <li class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                         <span class="mdi mdi-cog"></span> Administrar
@@ -30,8 +31,18 @@
                         @endforeach
                     </div>
                 </li>
+                @endif
+                @if( $UI->isGroup(101011939) )
+                <li class="nav-item">
+                    <a href="{{__url('entity')}}" class="nav-link">
+                        <span class="mdi mdi-bank"></span>
+                        {{__("words.entities")}}
+                    </a>
+                </li>
+                @endif
             </ul>
             @endif
+
             @endif
             <ul class="nav ms-auto">
                 @if(auth("web")->check())                

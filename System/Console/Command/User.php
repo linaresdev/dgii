@@ -7,9 +7,11 @@ namespace DGII\Console\Command;
 *---------------------------------------------------------
 */
 
+use DGII\Model\Hacienda;
 use DGII\User\Model\Store;
 use Illuminate\Console\Command;
 use DGII\Console\Command\Account\UpdatePassword;
+use DGII\Console\Command\Account\CreateUserContab;
 
 use function Laravel\Prompts\text;
 use function Laravel\Prompts\select;
@@ -29,7 +31,7 @@ class User extends Command
         {
             $this->{$opt}();
         }        
-    }
+    }    
 
     public function update()
     {
@@ -54,5 +56,29 @@ class User extends Command
         }        
 
         (new UpdatePassword)->render($this, $user);        
+    }
+
+    public function contab()
+    {
+        $rnc = text(
+            label: __("words.rnc"),
+            placeholder: __("words.entity"),
+            default: '',
+            hint: 'RNC de la entida que pertenecera el usuario'
+        );
+
+        while( (($entity = (new Hacienda)->getEntity($rnc)) == null) )
+        {
+            $this->error("No existe la entidad");
+
+            $rnc = text(
+                label: __("words.rnc"),
+                placeholder: __("words.entity"),
+                default: $rnc,
+                hint: 'RNC de la entida que pertenecera el usuario'
+            );
+        }
+
+        return (new CreateUserContab)->render($this, $entity);    
     }
 }

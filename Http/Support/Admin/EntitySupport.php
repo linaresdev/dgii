@@ -32,7 +32,7 @@ class EntitySupport {
     { 
         $data["title"]      = $entity->name;
         $data["entity"]     = $entity;
-
+        
         return $data;
     }
 
@@ -57,13 +57,10 @@ class EntitySupport {
     }
 
     public function postEntityRegister( $request )
-    { 
-        
+    {         
         if( !$request->user()->can("insert", "admin") ) {
            return $request->news("rol", __("auth.rol.deny"));
-        }   
-        
-        
+        }         
         
         if( openssl_pkcs12_read($request->getCertifyContent(), $data, $request->pwd) )
         { 
@@ -96,7 +93,7 @@ class EntitySupport {
             
             return back()->withErrors($validate)->withInput(); 
         }
-        dd(openssl_error_string());
+       // dd(openssl_error_string());
         $V = validator([],[]);
         $V->errors()->add("certify", __("validation.bad.certify"));
         return back()->withErrors($V)->withInput();

@@ -87,8 +87,7 @@ class Hacienda extends Model
     {
         return $this->hasMany(\DGII\Model\ARECF::class, "hacienda_id");
     }
-
-
+    
     public function saveAprobacionComercial($data) {
         return $this->AprobacionComercial()->create($data);
     }

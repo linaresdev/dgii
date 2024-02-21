@@ -10,7 +10,7 @@
 
             <article class="row my-3">
                 <div class="col-7">
-                    <a href="#" class="btn btn-outline-primary btn-sm rounded-pill px-3">
+                    <a href="{{__url('{users}/new')}}" class="btn btn-outline-primary btn-sm rounded-pill px-3">
                         <span class="mdi mdi-plus-thick"></span>
                         {{__('words.new')}}
                     </a>

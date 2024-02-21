@@ -46,7 +46,7 @@ class UpdatePassword
         $ruls["confirm"]    = "required|same:password";
 
         return Validator::make($data, $ruls)->errors();
-    }
+    }    
 
     public function form()
     {

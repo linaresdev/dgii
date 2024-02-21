@@ -84,7 +84,11 @@ return (new class {
             "update.successfully"   => "Actualización realizada exitosamente",
             "update.error"          => "Error al tratar de actualizar los datos",
 
+            "user.fullname"         => "Nombre completo  para el usuario",
+
             "rol.empty"             => "No posee los permisos requeridos para esta operación",
+            
+            "register.users"        => "Registros de usuarios",
 
             "validation.required"           => "El campo :attribute es requerido",
             "validation.bad.certify"        => "Certificado no válido o llave incorrecta",
@@ -108,6 +112,7 @@ return (new class {
             "words.deny"            => "Denegado",
             "words.delete"          => "Eliminar",
             "words.entities"        => "Entidades",
+            "words.entity"          => "Entidad",
             "words.email"           => "Correo Electrónico",
             "words.home"            => "Inicio",
             "words.identify"        => "Identificarse",
@@ -119,6 +124,7 @@ return (new class {
             "words.update"          => "Actualizar",
             "words.name"            => "Nombre",
             "words.rnc"             => "RNC",
+            "words.register"        => "Registro",
 
             "words.new"             => "Nuevo",
             "words.password"        => "Contraseña",

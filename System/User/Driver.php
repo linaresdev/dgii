@@ -3,7 +3,7 @@ namespace DGII\User;
 
 /*
 *---------------------------------------------------------
-* ©IIPEC
+* ©Delta
 *---------------------------------------------------------
 */
 
@@ -12,8 +12,8 @@ use DGII\User\Model\Store;
 
 class Driver {
 
-    public function info() {
-
+    public function info()
+    {
         return [
             'name'          => 'User',
             'author'        => "Ing. Ramón A Linares Febles",
