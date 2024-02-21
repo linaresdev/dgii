@@ -13,24 +13,6 @@ use DGII\Http\Support\Recepcion\AprobacionData;
 
 class RecepcionComprobante {
 
-    public function errorMessage($message) {
-        $stub = '<?xml version="1.0" encoding="UTF-8"?>
-        <AprobacionComercial>
-            <Mensaje>{Mensaje}</Mensaje>
-        </AprobacionComercial>';
-
-        $xml = str_replace('{Mensaje}', $message, $stub);
-
-        $dom = new \DOMDocument;
-
-        $dom->preserveWhiteSpace    = false;
-        $dom->formatOutput          = true;
-
-        $dom->loadXML($xml);
-
-        return $dom->saveXML();
-    }
-
     public function recepcionComprobante( $ent, $request )
     {             
         if( $request->hasFile("xml") )
@@ -62,12 +44,7 @@ class RecepcionComprobante {
             $validate = validator($xmlData->all(), $ruls, $messages, $attrs);
 
             if( ($errors = $validate->errors())->any() )
-            {            
-                foreach($errors->all() as $error )
-                {
-                    $this->append($error, 400);
-                }
-
+            {
                 return response("Insatisfactorio", 400);
             }                     
         
@@ -85,24 +62,6 @@ class RecepcionComprobante {
             }           
         }
 
-        $this->append("No fue posible procesar el documento", 400);
-
         return response("Insatisfactorio", 400);        
-    }
-
-    public function append($data, $code)
-    {
-        $header  = "ERROR $code | ";
-        $header .= now()->toDateTimeString()." | ";
-        $header .= $data."\n";
-
-        if( !app("files")->exists(base_path("errors.txt")) )
-        {
-            app("files")->put(
-                base_path("errors.txt"), "LOGGED ".now()->toDateTimeString()."\n"
-            ); 
-        }
-
-        app("files")->append(base_path("errors.txt"), $header); 
     }
 }

@@ -12,7 +12,7 @@ class Encf implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if( (strlen($value) != 13)  OR (!in_array(substr($value, 0, 3), ['E31','E33','E34','E44'])) )
+        if( (strlen($value) != 13)  OR (!in_array(substr($value, 0, 3), ['E31','E33','E34','E44', 'E45'])) )
         {
             $fail('El '.$attribute.' no valido');
         }
