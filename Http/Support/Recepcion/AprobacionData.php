@@ -41,10 +41,9 @@ class AprobacionData {
 
             if( array_key_exists("RNCComprador", $data) )
             {
-                $this->entity = $this->getEntity($data["RNCComprador"]);
+                $this->entity = $this->getEntity(__segment(2));
             }
-        }
-        
+        }        
     }
 
     public function all()

@@ -31,29 +31,18 @@ class RecepcionComprobante {
         return $dom->saveXML();
     }
 
-    public function recepcionComprobante($request)
+    public function recepcionComprobante( $ent, $request )
     {             
         if( $request->hasFile("xml") )
         {      
-            $xmlData = (new AprobacionData($request->file("xml")));     
-            $entity = $xmlData->entity();
-
+            $xmlData    = (new AprobacionData($request->file("xml")));            
             $xml        = $request->file("xml");
             $fileName   = $xmlData->get("RNCComprador").$xmlData->get("eNCF").".xml";
 
             if( !app("files")->exists(($path = __path("{AprobacionComercial}"))) )
             {
                 app("files")->makeDirectory($path, 0775, true);
-            }  
-
-            app("files")->put(
-                "$path/$fileName.tmp", $request->file("xml")->getContent()
-            );
-
-            if( !$xmlData->hasEntity() )
-            {
-                return response("Insatisfactorio", 400);
-            }
+            } 
 
             $data["Estado"]                         = 1;
             
@@ -75,11 +64,7 @@ class RecepcionComprobante {
             if( ($errors = $validate->errors())->any() )
             {          
                 return response("Insatisfactorio", 400);
-            }
-
-            
-            
-                     
+            }                     
         
             if( $xml->move($path, $fileName) ) 
             {
@@ -88,7 +73,7 @@ class RecepcionComprobante {
                 $storData["path"]       = "$path/$fileName";
                 $storData["state"]      = $xmlData->get("Estado");
 
-                if($entity->saveAprobacionComercial($storData))
+                if( $ent->saveAprobacionComercial($storData) )
                 {
                     return response("Satisfactorio", 200);
                 }                

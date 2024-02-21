@@ -16,7 +16,8 @@ class RecepcionComprobanteController extends Controller {
         $this->boot($support);
     }
 
-    public function index( Request $request ) {
-        return $this->app->recepcionComprobante($request);
+    public function index( $ent, Request $request )
+    {        
+        return $this->app->recepcionComprobante( $ent, $request );
     }
 }
