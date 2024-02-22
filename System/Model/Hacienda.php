@@ -48,6 +48,7 @@ class Hacienda extends Model
             get: fn ($value) => Crypt::decryptString($value)
         );
     }
+    
     public function password(): Attribute {        
         return Attribute::make(
             set: fn ($value) => Crypt::encryptString($value),
@@ -87,7 +88,7 @@ class Hacienda extends Model
     {
         return $this->hasMany(\DGII\Model\ARECF::class, "hacienda_id");
     }
-    
+
     public function saveAprobacionComercial($data) {
         return $this->AprobacionComercial()->create($data);
     }

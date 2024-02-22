@@ -43,6 +43,14 @@ class ECF {
         return $this->original;
     }
 
+    public function path($XML)
+    {
+        if( app("files")->exists($XML) )
+        {
+            return $this->load(app("files")->get($XML));
+        }
+    }
+
     public function load($xmlContent=null)
     {
         if( $xmlContent != null )

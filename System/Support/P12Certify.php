@@ -112,7 +112,7 @@ class P12Certify
     public function workGroup($ent)
     {
         return [
-            "type" => "user-group",
+            "type" => "entity-group",
             "slug" => $ent->rnc,
             "name" => $ent->name,
             "description" => __("corporate.group")

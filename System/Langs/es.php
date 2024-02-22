@@ -66,6 +66,7 @@ return (new class {
             "entity.testecf"    => "Pre-Certificación",
             "entity.certecf"    => "Certificación",
             "entity.ecf"        => "Producción",
+            "entity.owner"      => "Mis Instituciones",
 
             "form.login"        => "Formulario de acceso",
             "form.entities"     => "Registro de entidades",

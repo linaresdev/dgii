@@ -9,12 +9,19 @@ namespace DGII\Http\Support\Entity;
 
 class Home
 {
+
+    public function  user() {
+        return request()->user();
+    }
+
     public function index()
     {
-        $data['title'] = __("words.entities");
-
-        $data["container"] = "col-xl-8 offset-xl-2 col-lg-10 offset-lg-1";
-
+        $data['title']      = __("entity.owner");
+        $data["container"]  = "col-xl-6 offset-xl-3 col-lg-10 offset-lg-1";
+        $data["user"]       = request()->user();
+        
         return $data;
     }
+
+
 }

@@ -113,7 +113,10 @@ class Store extends Authenticatable {
         )->using(\DGII\User\Model\UserGroupPivot::class);
     }
 
-    public function entity($slug){}
+    public function entities()
+    {
+        return $this->groups->where("type", "entity-group");
+    }
     
     public function stack() {
         return $this->hasMany(UserStack::class, "user_id");
