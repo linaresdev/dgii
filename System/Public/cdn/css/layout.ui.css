@@ -26,6 +26,11 @@ body{
     position: relative;
     top: 3px;
 }
+
+.table .dropdown.dropstart.nopointer  .btn.show::before 
+{
+    display: none;
+}
 /*
 * NAV */
 .nav.nav-tabs-simple .nav-item .nav-link {
@@ -76,4 +81,3 @@ body{
 .card.card-silveryMoon {
     background: var(--light-grad-pink-blue, radial-gradient(ellipse at 40% 0%, #bf398910 0, transparent 75%), radial-gradient(ellipse at 60% 0%, #096bde10 0, transparent 75%));
 }
-
