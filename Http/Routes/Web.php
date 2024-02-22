@@ -17,7 +17,7 @@ Route::prefix("ACECF")->namespace("ACECF")->group(function($route)
 });
 
 ## ENTITY
-Route::prefix("entity")->namespace("Entity")->group(__DIR__."/Partial/Entity.php");
+Route::prefix("entity")->middleware("entity")->namespace("Entity")->group(__DIR__."/Partial/Entity.php");
 
 Route::prefix("admin")->namespace("Admin")->group(function($route)
 {

@@ -32,6 +32,9 @@ class Handler
             ],
             "dgii" => [
                 \DGII\Http\Middleware\Api\AuthMiddleware::class,
+            ],
+            "entity" => [
+                \DGII\Http\Middleware\EntityMiddleware::class, 
             ]
         ];
     }
