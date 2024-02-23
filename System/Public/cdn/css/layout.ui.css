@@ -19,18 +19,20 @@ body{
 .dropdown.dropstart .btn.show::before {
     display: inline-block;
 }
-
+.fs-7 {
+    font-size: .9em;
+}
 .mdi.mdi-20px{
     font-size: 20px;
     line-height: 90%;
     position: relative;
     top: 3px;
 }
-
 .table .dropdown.dropstart.nopointer  .btn.show::before 
 {
     display: none;
 }
+
 /*
 * NAV */
 .nav.nav-tabs-simple .nav-item .nav-link {

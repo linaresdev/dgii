@@ -63,9 +63,10 @@ class ECF {
             $IdDoc      = (array) $elements->Encabezado->IdDoc;
             $Emisor     = (array) $elements->Encabezado->Emisor;
             $Comprador  = (array) $elements->Encabezado->Comprador;
+            $items      = (array) $elements->DetallesItems;
             $Totales    = (array) $elements->Encabezado->Totales;
             $Signature  = [];
-
+            
             ## Collect
             $data = array_merge($data, $IdDoc);
 
@@ -81,7 +82,8 @@ class ECF {
             
             $data = array_merge($data, $Emisor);
             $data = array_merge($data, $Comprador);
-            $data = array_merge($data, $Totales); 
+            $data = array_merge($data, $Totales);
+            $data = array_merge($data, $items);
             $data = array_merge($data, $Signature);
     
             $this->original = ($this->data = $data);

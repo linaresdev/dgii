@@ -3,7 +3,8 @@
     @section("content")
     
     <article class="card">
-        <section class="card-body">
+        <section class="card-body">            
+
             <table class="table table-striped table-borderless">
                 <thead>
                     <tr>
@@ -31,7 +32,7 @@
                                 <ul class="dropdown-menu">
                                     <h6 class="dropdown-header">{{$row->razonSocialEmisor()}}</h6>
                                     <li>
-                                        <a class="dropdown-item" href="#">
+                                        <a class="dropdown-item" href="{{__url('{ent}/ecf/'.$row->id.'/send/arecf')}}">
                                             <span class="mdi mdi-link mdi-20px"></span>
                                             Envíar Aprobación Comercial
                                         </a>

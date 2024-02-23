@@ -33,11 +33,16 @@ class ARECF extends Model {
         );
     }
 
+    public function item( $key )
+    {
+        return $this->pathECF->get($key);
+    }
+
     public function razonSocialEmisor()
     {
         return $this->pathECF->get("RazonSocialEmisor");
     }
-
+    
     public function montoTotal()
     {
         return $this->pathECF->get("MontoTotal");

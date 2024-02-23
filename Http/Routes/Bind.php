@@ -8,3 +8,7 @@ Route::bind("entID", function($ID) {
 Route::bind('rnc', function($rnc){
     return (new \DGII\Model\Hacienda)->where("rnc", $rnc)->first() ?? abort(404); 
 });
+
+Route::bind('ecfID', function($ID){
+    return (new \DGII\Model\ARECF)->find($ID) ?? abort(404); 
+});

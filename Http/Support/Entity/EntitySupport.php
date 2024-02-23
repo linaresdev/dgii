@@ -7,18 +7,102 @@ namespace DGII\Http\Support\Entity;
 *---------------------------------------------------------
 */
 
+use DGII\Facade\Dgii;
+
 class EntitySupport
 {
-    public function index($entity) {
 
-        $data["icon"]   = '<span class="mdi mdi-bank"></span>';
-        $data['title']  = $entity->name;
+    public function __construc()
+    {
+        // Dgii::addUrl([
+        //     "{ent}" => 
+        // ]);
+    }
 
+    public function ecfFieldHeader()
+    {
+        $data[0][0]["label"] = "EMISOR :";
+        $data[0][0]["value"] = "RazonSocialEmisor";
+        $data[0][1]["label"] = "CEDULA/RNC :";
+        $data[0][1]["value"] = "RNCEmisor";
+
+        $data[1][0]["label"] = "INDICADOR MONTO GRAVADO :";
+        $data[1][0]["value"] = "IndicadorMontoGravado";
+        $data[1][1]["label"] = "TELEFONO :";
+        $data[1][1]["value"] = "";
+
+        $data[2][0]["label"] = "CIUDAD :";
+        $data[2][0]["value"] = "";
+        $data[2][1]["label"] = "VENTA A :";
+        $data[2][1]["value"] = "";
+
+        return $data;
+
+        // $data[3][0]["label"] = "CUENTA :";
+        // $data[3][0]["value"] = "";
+        // $data[3][1]["label"] = "#ORDEN :";
+        // $data[3][1]["value"] = "";
+    }
+
+    public function totales()
+    {
+        $data[0]["label"] = "VALOR GRAVADO RD$";
+        $data[0]["value"] = "MontoGravadoTotal";
+
+        // $data[1]["label"] = "DESCUENTO RD$";
+        // $data[1]["value"] = "DescuentoMonto";
+
+        // $data[2]["label"] = "DESC. DEDUCIBLE RD$";
+        // $data[2]["value"] = "";
+
+        // $data[3]["label"] = "SUB-TOTAL RD$";
+        // $data[3]["value"] = "DescuentoMonto";
+
+        $data[4]["label"] = "ITBIS RD$";
+        $data[4]["value"] = "TotalITBIS";
+        
+        // $data[5]["label"] = "OTROS IMPUESTOS RD$";
+        // $data[5]["value"] = "";
+
+        $data[6]["label"] = "TOTAL RD$";
+        $data[6]["value"] = "MontoTotal";
+
+        return $data;
+    }
+    
+
+    public function header($entity)
+    {
+        $data["icon"]       = '<span class="mdi mdi-bank"></span>';
+        $data['title']      = $entity->name;
         $data["container"]  = "col-xl-8 offset-xl-2 col-lg-10 offset-lg-1";
         $data["entity"]     = $entity;
+
+        Dgii::addUrl([
+            "{ent}" => "entity/{$entity->rnc}",
+        ]);
+
+        return $data;
+    }
+
+    public function index($entity) {
+
+        $data               = $this->header($entity);
         $data["arecf"]      = $entity->arecf->take(10);
 
         //dd($entity->arecf[0]->pathECF);
+        return $data;
+    }
+
+    public function arecf($entity, $ecf)
+    {
+        $data        = $this->header($entity, $ecf);        
+        $data["ecf"] = $ecf;
+
+        $data["headerFields"]   = $this->ecfFieldHeader();
+        $data["totales"]        = $this->totales();
+
+        //dd($ecf->pathECF);
         return $data;
     }
 }
