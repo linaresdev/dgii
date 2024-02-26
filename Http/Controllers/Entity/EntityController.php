@@ -8,6 +8,7 @@ namespace DGII\Http\Controllers\Entity;
 */
 
 
+use Illuminate\Http\Request;
 use DGII\Http\Support\Entity\EntitySupport;
 
 class EntityController extends Controller 
@@ -20,8 +21,13 @@ class EntityController extends Controller
         return $this->render('entity.index', $this->app->index($entity));
     }
 
-    public function sendARECF($entity, $ecf)
+    public function ARECF($entity, $ecf)
     {
         return $this->render('entity.sendArecf', $this->app->arecf($entity, $ecf));
+    }
+
+    public function sendARECF($entity, $ecf, Request $request)
+    {
+        return $this->app->sendARECF($entity, $ecf, $request);
     }
 }

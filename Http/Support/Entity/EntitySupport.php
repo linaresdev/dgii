@@ -8,6 +8,7 @@ namespace DGII\Http\Support\Entity;
 */
 
 use DGII\Facade\Dgii;
+use Illuminate\Support\Facades\Http;
 
 class EntitySupport
 {
@@ -104,5 +105,16 @@ class EntitySupport
 
         //dd($ecf->pathECF);
         return $data;
+    }
+
+    public function sendARECF($entity, $ecf, $request)
+    {
+        $url = "https://ecf.dgii.gov.do/ecf/consultadirectorio/api/consultas/obtenerdirectorioporrnc?RNC";
+        $url = "$url=".$ecf->item("RNCComprador");
+       
+        $remoteData = Http::acceptJson()->get($url);
+        dd($remoteData);
+
+        return back();
     }
 }

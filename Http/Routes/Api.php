@@ -39,7 +39,7 @@ Route::prefix("{rnc}")->group(function($route)
             Route::post("emisorreceptor/api/Emision/EmisionComprobantes","EnviarComprobanteController@index");
             Route::get("emisorreceptor/api/Emision/ConsultaAcuseRecibo","ConsultaReciboController@index");
             Route::post("emisorreceptor/api/Emision/EnvioAprobacionComercial","EnviarAprobacionComercialController@index");
-    
+                       
             ## Recepción
             Route::post("fe/aprobacioncomercial/api/ecf","RecepcionComprobanteController@index");
             Route::post("fe/recepcion/api/ecf","RecepcionECFController@index");

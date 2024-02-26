@@ -1,22 +1,25 @@
 
-    <table class="table table-borderless" style="font-size: .9em;">
-        <tbody>
+
+    <article class="col-3 offset-9">
+        <table class="table table-borderless rounded">
             <tr>
-                <td class="p-0">
-                    <strong class="fw-normal text-body-emphasis">FACTURA NO.:</strong>
+                <td class="text-end py-0">
+                    FACTURA NO.:
+                </td>
+                <td class="text-end py-0">
                     {{$ecf->item("NumeroFacturaInterna")}}
                 </td>
-                <td class="text-end p-0">
-                    <strong class="fw-normal text-body-emphasis">DE FECHA :</strong>
+            </tr>
+            <tr>
+                <td class="text-end py-0">
+                    DE FECHA :
+                </td>
+                <td class="text-end py-0">
                     {{$ecf->item("FechaEmision")}}
                 </td>
-                <td class="text-end p-0">
-                    <strong class="fw-normal text-body-emphasis">VALIDO HASTA :</strong>
-                    <strong class="fs-7">N/A</strong>
-                </td>                
             </tr>
-        </tbody>
-    </table>
+        </table>
+    </article>
 
     <table class="table border" style="font-size: .9em;">
         <tbody>
@@ -35,40 +38,5 @@
                 @endforeach
             </tr>
             @endforeach
-            <!-- <tr>
-                <td colspan="4" class="p-0">
-                    <table class="table table-borderless m-0">
-                        <tr>
-                            <td width="120" class="bg-light text-end py-1">
-                                <strong>
-                                    CUENTA :
-                                </strong>
-                            </td>
-                            <td class="py-1"></td>
-
-                            <td width="120" class="bg-light text-end py-1 ">
-                                <strong>
-                                    # ORDEN
-                                </strong>
-                            </td>
-                            <td class="py-1"></td>
-
-                            <td width="120" class="bg-light text-end py-1">
-                                <strong>
-                                    SUC :
-                                </strong>
-                            </td>
-                            <td class="py-1"></td>
-
-                            <td width="120" class="bg-light text-end py-1">
-                                <strong>
-                                    DEVOLUCION :
-                                </strong>
-                            </td>
-                            <td class="py-1"></td>
-                        </tr>
-                    </table>
-                </td>
-            </tr> -->
         </tbody>
     </table>

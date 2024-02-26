@@ -55,7 +55,7 @@ class ConsultaRecibo
         else
         {            
             $stub = str_replace("<mensajes>{mensajes}</mensajes>\n", null, $stub);
-
+            //dd($stub);
             $data["rnc"]        = $request->get("Rnc");
             $data["encf"]       = $request->get("Encf");
             $data["estado"]     = $query->Estado;        

@@ -2,9 +2,26 @@
 
 @section("body")
     <article class="col-xl-8 offset-xl-2 col-lg-10 offset-lg-1">
-        <h4>{{$title}}</h4>
+        <h4></h4>
 
-        <section class="container-fluid">
+        <section class="container mb-3">
+            <article class="row">
+                <div class="col d-flex align align-items-start border p-2 bg-danger text-white">
+                    <span class="mdi mdi-shield-lock-outline" style="font-size: 3em;"></span>
+                    <div>
+                        <h4 class="fx-bold fs-5 mb-0">
+                            Espacio privado.
+                        </h4>
+                        Contiene información privilegiada y confidencial para 
+                        nuestros usuarios. Dicha información es exclusivamente 
+                        para el uso del individuo o entidad autorizada por Delta 
+                        Comercial, S. A.
+                    </div>
+                </div>                
+            </article>            
+        </section>
+
+        <section class="container-fluid">            
             <article class="row">
 
                 <div class="col d-flex align align-items-start border p-2 bg-white">
