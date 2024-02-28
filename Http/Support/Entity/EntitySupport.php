@@ -109,6 +109,12 @@ class EntitySupport
 
     public function sendARECF($entity, $ecf, $request)
     {
+        $seed       = Http::get(
+            "https://ecf.dgii.gov.do/testecf/emisorreceptor/fe/autenticacion/api/semilla"
+        )->body();
+
+        dd($seed);
+
         $url = "https://ecf.dgii.gov.do/ecf/consultadirectorio/api/consultas/obtenerdirectorioporrnc?RNC";
         $url = "$url=".$ecf->item("RNCComprador");
        
