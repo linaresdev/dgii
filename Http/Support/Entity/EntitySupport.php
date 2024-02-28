@@ -8,6 +8,7 @@ namespace DGII\Http\Support\Entity;
 */
 
 use DGII\Facade\Dgii;
+use DGII\Facade\XLib;
 use Illuminate\Support\Facades\Http;
 
 class EntitySupport
@@ -109,16 +110,28 @@ class EntitySupport
 
     public function sendARECF($entity, $ecf, $request)
     {
-        $seed       = Http::get(
+        ## Solicitar Semilla
+        $xmlSeed = Http::get(
             "https://ecf.dgii.gov.do/testecf/emisorreceptor/fe/autenticacion/api/semilla"
         )->body();
+        
+        ## Firmar Semilla
+        $seedSigner = XLib::load($entity)->xml($xmlSeed)->sign();
+        
+        ## Solicitar Token
+        $urlAuth = "https://ecf.dgii.gov.do/testecf/emisorreceptor/fe/autenticacion/a
+        pi/validacioncertificado";
 
-        dd($seed);
+        $auth = Http::attach(
+            'xml', $seedSigner, "Certify.xml", ["Content-Type" => "text/xml"])->post(
+            "https://ecf.dgii.gov.do/testecf/emisorreceptor/fe/autenticacion/api/validacioncertificado"
+        )->body();
+        $auth = json_decode($auth);
 
-        $url = "https://ecf.dgii.gov.do/ecf/consultadirectorio/api/consultas/obtenerdirectorioporrnc?RNC";
+        $url    = "https://ecf.dgii.gov.do/ecf/consultadirectorio/api/consultas/obtenerdirectorioporrnc?RNC";
         $url = "$url=".$ecf->item("RNCComprador");
        
-        $remoteData = Http::acceptJson()->get($url);
+        $remoteData = Http::withToken($auth->token)->acceptJson()->get($url)->body();
         dd($remoteData);
 
         return back();
