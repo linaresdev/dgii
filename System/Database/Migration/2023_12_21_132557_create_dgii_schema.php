@@ -105,6 +105,27 @@ return new class extends Migration
 
             $table->timestamps();
         });
+
+        Schema::create('ACECF', function (Blueprint $table)
+        {
+            $table->bigIncrements("id");
+
+            $table->unsignedInteger("hacienda_id");
+            $table->foreign('hacienda_id')->references('id')->on('HACIENDAS')->onDelete('CASCADE')->onUpdate('CASCADE');
+            
+            $table->string("RNCEmisor", 20);
+            $table->string("RNCComprador", 20);
+            $table->string("eNCF",20);
+            $table->boolean("Estado")->default(0);
+            $table->string("FechaHoraAcuseRecibo",20);
+            
+            $table->char("CodigoMotivoNoRecibido", 1)->nullable();
+
+            $table->text("pathECF");
+            $table->text("pathACECF");
+
+            $table->timestamps();
+        });
     }
 
     /**
@@ -117,5 +138,6 @@ return new class extends Migration
         Schema::dropIfExists('APROBACIONCOMERCIAL');
         Schema::dropIfExists('RECEPCION');
         Schema::dropIfExists('ARECF');
+        Schema::dropIfExists('ACECF');
     }
 };

@@ -32,7 +32,7 @@
                                 <ul class="dropdown-menu">
                                     <h6 class="dropdown-header">{{$row->razonSocialEmisor()}}</h6>
                                     <li>
-                                        <a class="dropdown-item" href="{{__url('{ent}/ecf/'.$row->id.'/send/arecf')}}">
+                                        <a class="dropdown-item" href="{{__url('{ent}/ecf/'.$row->id.'/send/acecf')}}">
                                             <span class="mdi mdi-link mdi-20px"></span>
                                             Envíar Aprobación Comercial
                                         </a>

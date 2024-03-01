@@ -7,8 +7,8 @@ namespace DGII\Support;
 *---------------------------------------------------------
 */
 
-class Alert {
-
+class Alert
+{
     protected $prefix;
 
     protected $zip;
@@ -51,7 +51,7 @@ class Alert {
         $this->prefix = $slug; return $this;
     }
 
-    public function form( $slug=null, $tpl="dgii::alerts.simple" ) {
+    public function form( $slug=null, $tpl="dgii::alerts.form" ) {
 
         $view=null;
 

@@ -1,5 +1,5 @@
                 
-                @if( $errors->any() )
+                
                 @if(session()->has("type"))
                 <div class="mb-1 ms-2 border-start border-3 border-{{session('type')}} ps-2 py-2 my-2">
                     @foreach($errors->all() as $error)
@@ -13,4 +13,4 @@
                     @endforeach
                 </div>
                 @endif
-                @endif
+                

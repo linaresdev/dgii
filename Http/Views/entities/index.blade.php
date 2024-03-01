@@ -1,7 +1,7 @@
 @extends("dgii::entities.layout")
 
     @section("content")
-        <hr class="divider">
+        
         @if(auth("web")->check())
         
         <article class="row mx-1">            

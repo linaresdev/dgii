@@ -88,6 +88,10 @@ class Hacienda extends Model
     {
         return $this->hasMany(\DGII\Model\ARECF::class, "hacienda_id");
     }
+    public function acecf()
+    {
+        return $this->hasMany(\DGII\Model\ACECF::class, "hacienda_id");
+    }
 
     public function saveAprobacionComercial($data) {
         return $this->AprobacionComercial()->create($data);
@@ -98,6 +102,9 @@ class Hacienda extends Model
     }
     public function saveARECF($data) {
         return $this->arecf()->create($data);
+    }
+    public function saveACECF($data) {
+        return $this->acecf()->create($data);
     }
 
     ## QUERY

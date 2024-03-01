@@ -39,6 +39,7 @@ if( env("APP_START") ):
         "{AprobacionComercial}" => "{hacienda}/$entity/$env/AprobacionComercial/$year/$month",
         "{Recepcion}"           => "{hacienda}/$entity/$env/Recepcion/$year/$month",
         "{ARECF}"               => "{hacienda}/$entity/$env/ARECF/$year/$month",
+        "{ACECF}"               => "{hacienda}/$entity/$env/ACECF/$year/$month",
     ]);
 
     ## URLS
@@ -70,6 +71,42 @@ if( env("APP_START") ):
 
     ## Views 
     $this->loadViewsFrom(__DIR__.'/Views', 'dgii');
+
+    ## MENU ADMIN ENTITY
+    Nav::save(function($nav)
+    {
+        $seg2 = __segment(2);
+
+        $nav->add("group", "Area nav 0");
+        $nav->add("tag", "entity-contab");
+        $nav->add("route", "entity*");
+
+        $nav->addFilters("style", [
+            ":node0" => "nav"
+        ]);
+        
+        if( count(__segment()) >= 2 )
+        {
+            $nav->addItem([
+                "icon"   => "mdi mdi-file-document-multiple-outline",
+                "label"  => "ECF",
+                "url"    => "entity/$seg2"
+            ]);
+    
+            $nav->addItem([
+                "icon"   => "mdi mdi-file-document-multiple-outline",
+                "label"  => "ARECF",
+                "url"    => "entity/$seg2/arecf"
+            ]);
+    
+            $nav->addItem([
+                "icon"   => "mdi mdi-file-document-multiple-outline",
+                "label"  => "ACECF",
+                "url"    => "entity/$seg2/acecf"
+            ]);
+        }
+    });
+
 
     ## NAVBAR SUPPORT
     $mainURL = '/';

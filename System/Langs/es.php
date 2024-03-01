@@ -101,6 +101,9 @@ return (new class {
             "validation.entity.resources"   => "Error al tratar de crear los recursos de la entidad",
             "validator.name.business"       => "El :attribute existe en nuestros registros",
             'validation.is_encf'            => "Tipo de comprobante no valido",
+            'validate.ecf.unique'           => "El :attribute no disponible para procesar",
+            'validate.ecf.expira'           => "El tiempo permitido para enviar la aprobacion comercion expiro",
+
             "words.actions"         => "Acciones",
             "words.accounts-users"        => "Cuentas de usuarios",
             "words.approved"        => "Aprobado",

@@ -10,31 +10,31 @@ namespace DGII\Model;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
-class ARECF extends Model {
+class ACECF extends Model {
 
-    protected $table = 'ARECF';
+    protected $table = 'ACECF';
 
     protected $fillable = [
         "RNCEmisor",
         "RNCComprador",
         "eNCF",
         "Estado",
-        "FechaHoraAcuseRecibo",
-        "CodigoMotivoNoRecibido",
-        "pathECF",
-        "pathARECF",
+        "DetalleMotivoRechazo",
+        "FechaHoraAprobacionComercial",
+        "ecf",
+        "acecf",
         "created_at",
         "updated_at"
     ];
 
     public function getOriginalEcf()
     {
-        return $this->attributes["pathECF"];
+        return $this->attributes["ecf"];
     }
 
-    public function pathECF(): Attribute {        
+    public function ecf(): Attribute {        
         return Attribute::make(
-            get: fn ($value) => (new \DGII\Support\ECF)->path($value)
+            get: fn ($value) => (new \DGII\Support\ECF)->path($value)           
         );
     }
 

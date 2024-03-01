@@ -39,6 +39,7 @@ class Driver
         return [
             \DGII\Write\Driver::class,
             \DGII\Button\Driver::class,
+            \DGII\Navy\Driver::class,
         ];
     }
 

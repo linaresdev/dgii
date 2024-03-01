@@ -79,6 +79,23 @@ body{
 
 
 /*
+* NAVBAR ENTITY STYLE */
+[role=lighter] .navbar-entity {
+    border-bottom: 1px solid #ddd;
+}
+
+[role=lighter] .navbar-entity .nav-item .nav-link {
+    color: #777;
+}
+
+[role=lighter] .navbar-entity .navbar-brand.active,
+[role=lighter] .navbar-entity .nav-item .nav-link.active {
+    background-color: #ddd;
+    color: #333;
+}
+
+
+/*
 * CARD STYLE */
 .card.card-silveryMoon {
     background: var(--light-grad-pink-blue, radial-gradient(ellipse at 40% 0%, #bf398910 0, transparent 75%), radial-gradient(ellipse at 60% 0%, #096bde10 0, transparent 75%));
