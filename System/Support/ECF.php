@@ -7,6 +7,7 @@ namespace DGII\Support;
 *---------------------------------------------------------
 */
 
+use Illuminate\Support\Number;
 use Illuminate\Validation\Rule;
 
 class ECF {
@@ -52,11 +53,12 @@ class ECF {
     }
 
     public function load($xmlContent=null)
-    {
+    { 
         if( $xmlContent != null )
         {
             $elements           = (new \SimpleXMLElement( $xmlContent ));
             $header             = (array) $elements->Encabezado;
+            
             $data["Version"]    = $header["Version"];
             
             
@@ -90,6 +92,26 @@ class ECF {
         }
 
         return $this;
+    }
+
+    public function getDescription()
+    {
+        $date   = $this->get("FechaEmision");
+        $total  = $this->get("MontoTotal");
+        
+
+        if( !empty($date) && !empty($total) )
+        {
+            $number = new Number;
+
+            $txt  = "Emitido el ";
+            $txt .= $this->get("FechaEmision");
+            $txt .= " con un total de ";
+            $txt .= Number::format($this->get("MontoTotal"), precision: 3);
+            $txt .= " RD$";
+    
+            return $txt;
+        }
     }
 
     public function getSignedInfoFromECF($signer)

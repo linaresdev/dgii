@@ -1,39 +1,59 @@
 @extends("dgii::entities.layout")
 
+    @section("header")
+
+        <section class="mb-3 p-0">
+            <h4 class="fx-bold fw-semibold fs-5 m-0 p-0">
+                ERECF - {{__("words.arecf")}}
+            </h4>
+            Información del acuse de recibo.
+        </section> 
+    @endsection
+
     @section("content")
         
-        @if(auth("web")->check())
+    @if(auth("web")->check())
         
-        <article class="row mx-0">            
-            @foreach($lists as $list)
-            <section class="card mb-3 border-0 rounded-0 p-0 shadow-sm">
-                <article class="card-body p-0">
-                    <div class="d-flex align align-items-start">
-                        <div class="p-3">
-                            <span class="mdi mdi-file-certificate-outline" style="font-size: 3em; line-height: 100%;"></span>
-                        </div>
-                        <div class="p-3 border-start">
-                            
-                            <h4 class="fx-bold fw-semibold fs-6 text-body-emphasis m-0">
-                                {{$list->pathECF->get("RazonSocialComprador")}}
-                            </h4>
-                            Acuse de recibo procesado el {{$list->created_at}}
-                            <div>
-                                <a href="#" class="link-primary">
-                                    <spn class="mdi mdi-link mdi-20px"></spn>
-                                    Información
-                                </a>
-                            </div>
-                        </div>
-                    </div>                                      
-                </article>
-                <footer class="border-top px-3 py-1 bg-light">
-                    Recibido: <span class="badge text-bg-light">{{$list->created_at->diffForHumans()}}</span> | 
-                    Enviado por: <span class="badge text-bg-light">{{$list->pathECF->get("RNCComprador")}}</span>
-                </footer>
-            </section>
-            @endforeach           
+        <article class=" bg-secondary text-white text-end p-3 rounded-top-1">            
+            <hgroup>
+                <h4 class="fx-bold fw-semibold fs-6 m-0 mb-1">
+                    {{$ecf->eNCF}}
+                </h4>
+                <h4 class="fs-7">
+                    {{$ecf->RazonSocialComprador()}}
+                </h4>
+            </hgroup>          
+        </article>
+        <article class="bg-white d-flex justify-content-center shadow-sm p-3">
+            <ul class="m-0 p-0" style="list-style:none;">
+                <h4 class="fx-bold fw-semibold fs-6 mx-0 mb-3">
+                    DETALLE ACUSE DE RECIBO
+                </h4>
+                @foreach($arecf->arrayFormat() as $key => $value )
+                <li>
+                    <strong style="width: 300px; display: inline-block;">
+                        {{$key}}
+                    </strong>
+                    
+                    {{$value}}
+                </li>
+                @endforeach
+                <li class="py-3">
+                    <a href="{{__url('{ent}')}}" class="btn btn-sm bg-danger-subtle link-danger rounded-pill px-3">
+                        <span class="mdi mdi-close mdi-20px"></span>
+                        {{__('words.close')}}
+                    </a>
+                    <a href="{{__url('{current}/download')}}" class="btn btn-sm bg-primary-subtle link-primary rounded-pill px-3">
+                        <span class="mdi mdi-download mdi-20px"></span>
+                        {{__('download.xml')}}
+                    </a>
+                    <!-- <a href="{{__url('{current}/send/mail')}}" class="btn btn-sm bg-success-subtle link-success rounded-pill px-3">
+                        <span class="mdi mdi-email-arrow-right-outline mdi-20px"></span>
+                        {{__('send.xml')}}
+                    </a> -->
+                </li>
+            </ul>
         </article>
       
-       @endif
+    @endif
     @endsection

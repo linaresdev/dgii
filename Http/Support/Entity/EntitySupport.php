@@ -10,6 +10,7 @@ namespace DGII\Http\Support\Entity;
 use DGII\Facade\Dgii;
 use DGII\Facade\XLib;
 use DGII\Facade\Alert;
+use Illuminate\Support\Number;
 use Illuminate\Support\Facades\Http;
 
 class EntitySupport
@@ -71,42 +72,139 @@ class EntitySupport
         return $data;
     }
 
-    public function index($entity) {
+    public function index($entity)
+    { 
+        
+        $config =           $entity->getConfig();
 
         $data               = $this->header($entity);
-        $data["arecf"]      = $entity->arecf->take(10);
-        
+        $data["arecf"]      = $this->getEcf($entity); //$entity->arecf->take(10);
+       
+        $data["getConfig"]  = (function($key) use ($config) 
+        {
+            if( array_key_exists($key, $config) )
+            {
+                return $config[$key];
+            }
+        });
+
+        $data['isLists']    = (function($key) use ($config) 
+        {
+            if( array_key_exists("ecf.lists.by", $config) )
+            {
+                if( $config["ecf.lists.by"] == $key ) 
+                {
+                    return true;
+                }
+            }
+            return false;
+        });
+
+        $data['isFilter']    = (function($key) use ($config) 
+        {
+            if( array_key_exists("ecf.filter.by", $config) )
+            {
+                if( $config["ecf.filter.by"] == $key ) 
+                {
+                    return true;
+                }
+            }
+            return false;
+        });
+
         return $data;
     }
 
-    public function arecf($entity)
+    public function getEcf($entity)
     {
-        $data          = $this->header($entity);
-        $data["title"] = "ARECF";
-
-        $data["lists"]  = $entity->arecf()->paginate(10);   
-
-        return $data;
+        return $entity->arecf()->orderBY("id", "DESC")->get()->take(10);
     }
 
-    public function acecf($entity)
+    public function setConfig( $entity, $key, $value )
     {
-        $data          = $this->header($entity);
-        $data["title"] = "ACECF";
-        $data["lists"]  = $entity->acecf()->paginate(10); 
-        
+        $entity->toggleConfig(str_replace('-', '.', $key), $value);
+
+        return back();
+    }
+
+    public function arecf( $entity, $ecf )
+    {
+        $data           = $this->header($entity);
+        $data["ecf"]    = $ecf;
+        $data["arecf"]  = $ecf->arecf();
+
         return $data;
     }
 
-    public function sendArecf($entity, $ecf)
+    public function downloadArecf( $entity, $ecf )
+    {
+        return response()->download($ecf->pathARECF);
+    }
+
+    public function acecf($entity, $ecf)
+    {
+        $data               = $this->header($entity);
+        $data["ecf"]        = $ecf;
+        $data["acecf"]      = $ecf->acecf;
+
+        return $data;
+    }
+
+    public function downloadAcecf( $entity, $ecf )
+    {
+        return response()->download($ecf->acecf->pathAcecf());
+    }
+
+    public function sendAprobacionComercial($entity, $ecf)
     {
         $data                   = $this->header($entity, $ecf);        
         $data["ecf"]            = $ecf;
 
         $data["headerFields"]   = $this->ecfFieldHeader();
-        $data["totales"]        = $this->totales();
+        $data["totales"]        = $this->totales();        
+
+        $data['subject']        = "Detalle Aprobación Comercial";
+        $message                = null;        
+
+        if( !empty(($acecf = $ecf->acecf)) )
+        { 
+            $data["acecf"] = $acecf;
+
+            if( !empty(($acecfDataFile = $acecf->acecf) ) )
+            {
+                foreach( $acecfDataFile->arrayFormat() as $label => $value )
+                {
+                    $message .= "$label ".str_repeat("-", (50 - strlen($label)))." $value\n\r";
+                }
+            }
+        }
+        
+        $data['message'] = $message;
         
         return $data;
+    }
+
+    public function sendMailArecf($entity, $ecf)
+    {
+        $data                   = $this->header($entity, $ecf);        
+        $data["ecf"]            = $ecf;        
+
+        $data['subject']    = "Detalle Aprobación Comercial";
+        
+        
+        return $data;
+    }
+
+    public function postSendMailArecf($entity, $ecf, $request) 
+    {   
+        $ruls["email"]      = "required|email";
+        $ruls["subject"]    = "required";
+
+        $mail = \Mail::to($request->email)->send(
+            new \DGII\Http\Emails\SendACECF($entity, $ecf, $ecf->acecf)
+        );
+
+        return back();
     }
 
     public function ecfData( $ecf, $estado, $razon )
@@ -160,7 +258,7 @@ class EntitySupport
         $ruls["expira"]         = (function($attr, $value, $fail) {
             if( $value >= 30 ) $fail(__("validate.ecf.expira"));
         });        
-
+        
         if( $estado == "2" ) {
             $data['DetalleMotivoRechazo'] = $request->DetalleMotivoRechazo;
             $ruls['DetalleMotivoRechazo'] = "required|max:250";
@@ -177,7 +275,7 @@ class EntitySupport
             return back()->withErrors($V)->withInput();
         }
         
-        $baseUrl    = "http://192.168.10.18";
+        //$baseUrl    = "http://192.168.10.18";
 
         $env        = env("DGII_ENV");
         $acecf      = app("files")->get(__path("{xmlstub}/ACECF.txt"));
@@ -193,50 +291,48 @@ class EntitySupport
 
             $acecf  = str_replace('{'.$key.'}', $value, $acecf);
         }
-
+        
         ## Aprobacion Firmada
         $acecf = XLib::load($entity)->xml($acecf)->sign();        
 
-        if(app("files")->put($filePath, $acecf))
-        {
-            $data["acecf"]  = $PATHACECF."/".$this->getNameEcf($ecf->getOriginalEcf());
+        // if(app("files")->put($filePath, $acecf))
+        // {
+        //     $data["acecf"]  = $PATHACECF."/".$this->getNameEcf($ecf->getOriginalEcf());
             
-            if( $entity->saveACECF($data) )
-            {
-                return back();
-            }
-        }        
-
-       // dd($OwnerPath);
+        //     if( $entity->saveACECF($data) )
+        //     {
+        //         return redirect(__url('entity/'.$entity->rnc));
+        //     }
+        // }        
 
         ## Solicitar Semilla
-        // $xmlSeed = Http::get(
-        //     "https://ecf.dgii.gov.do/testecf/emisorreceptor/fe/autenticacion/api/semilla"
-        // )->body();
-        
+        $xmlSeed = Http::get(
+            "https://ecf.dgii.gov.do/$env/emisorreceptor/fe/autenticacion/api/semilla"
+        )->body();
+        dd($xmlSeed);
         ## Firmar Semilla
-        //$seedSigner = XLib::load($entity)->xml($xmlSeed)->sign();
+        $seedSigner = XLib::load($entity)->xml($xmlSeed)->sign();
         
         ## Solicitar Token
-        // $urlAuth = "https://ecf.dgii.gov.do/testecf/emisorreceptor/fe/autenticacion/a
-        // pi/validacioncertificado";
-
-        // $auth = Http::attach(
-        //     'xml', $seedSigner, "Certify.xml", ["Content-Type" => "text/xml"])->post(
-        //     "https://ecf.dgii.gov.do/testecf/emisorreceptor/fe/autenticacion/api/validacioncertificado"
-        // )->body();
-        // $auth = json_decode($auth);
-
-        ## Enviar aprobacion a DGII
-
-        // $url    = "https://ecf.dgii.gov.do/testecf/consultadirectorio/api/consultas/obtenerdirectorioporrnc?RNC";
-        // //$url = "$url=".$ecf->item("RNCComprador");
-        // $url = "$url=130329737";
-       
-        // $remoteData = Http::acceptJson()->withToken($auth->token)->get($url)->body();
-        // $remoteData = json_decode($remoteData);
+        $urlAuth = "https://ecf.dgii.gov.do/$env/emisorreceptor/fe/autenticacion/a
+        pi/validacioncertificado";
         
-        // dd($remoteData);
+        $auth = Http::attach(
+            'xml', $seedSigner, "Certify.xml", ["Content-Type" => "text/xml"])->post(
+            "https://ecf.dgii.gov.do/$env/emisorreceptor/fe/autenticacion/api/validacioncertificado"
+        )->body();
+        $auth = json_decode($auth);
+
+        
+        ## Enviar aprobacion a DGII
+        $url = "https://ecf.dgii.gov.do/$env/consultadirectorio/api/consultas/obtenerdirectorioporrnc?RNC";
+        $url = "$url=".$ecf->item("RNCComprador");
+        $url = "$url=130329737";
+       
+        $remoteData = Http::acceptJson()->withToken($auth->token)->get($url)->body();
+        $remoteData = json_decode($remoteData);
+        
+        dd($remoteData);
 
         ## Enviar Aprobacion Al Comprodor;
 

@@ -59,6 +59,8 @@ return (new class {
             "delete.successfully"   => "Datos elimininados correctamente",
             "delete.errors"         => "Error al tratar de eliminar los datos",
 
+            "download.xml"      => "Descargar XML",
+
             "entity.access"     => "Acceso empresarial",
             "entity.name"       => "Nombre de la entidad",
 
@@ -67,6 +69,15 @@ return (new class {
             "entity.certecf"    => "Certificación",
             "entity.ecf"        => "Producción",
             "entity.owner"      => "Mis Instituciones",
+
+            "ecf.lists"         => "Listar comprobantes",
+            "ecf.filters.by"    => "Filtro por",
+
+            "acecf.issuance"    => "Emisión de la aprobación comercial",
+
+            "filter.by.eNCF"    => "Filtrar por eNCF",
+            "filter.by.date"    => "Filtrar por fecha",
+            "filter.by.RNC"     => "Filtrar por RNC",
 
             "form.login"        => "Formulario de acceso",
             "form.entities"     => "Registro de entidades",
@@ -87,6 +98,11 @@ return (new class {
 
             "user.fullname"         => "Nombre completo  para el usuario",
 
+            "lists.show"            => "Mostrar listas",
+            "lists.encf.all"        => "Listar todos los comprobantes",
+            "lists.encf.processed"  => "Listar comprobantes procesados",
+            "lists.encf.complete"   => "Listar comprobantes sin procesados",
+
             "rol.empty"             => "No posee los permisos requeridos para esta operación",
             
             "register.users"        => "Registros de usuarios",
@@ -101,20 +117,24 @@ return (new class {
             "validation.entity.resources"   => "Error al tratar de crear los recursos de la entidad",
             "validator.name.business"       => "El :attribute existe en nuestros registros",
             'validation.is_encf'            => "Tipo de comprobante no valido",
-            'validate.ecf.unique'           => "El :attribute no disponible para procesar",
+            'validate.ecf.unique'           => "Este :attribute no está disponible para procesar",
             'validate.ecf.expira'           => "El tiempo permitido para enviar la aprobacion comercion expiro",
 
             "words.actions"         => "Acciones",
-            "words.accounts-users"        => "Cuentas de usuarios",
+            "words.accounts-users"  => "Cuentas de usuarios",
+            "words.arecf"           => "Acuse de recibo",
             "words.approved"        => "Aprobado",
             'words.account'         => "Cuenta",
             "words.auth"            => "Autenticar",
             "words.authentication"  => "Autenticaión",
+            "words.acecf"           => "Aprobación Comercial",
             "words.certify"         => "Certificado",
             "words.close"           => "Cerrar",
             "words.credentials"     => "Credenciles",
+            "words.date"            => "Fecha",
             "words.deny"            => "Denegado",
             "words.delete"          => "Eliminar",
+            "words.eNCF"            => "eNCF",
             "words.entities"        => "Entidades",
             "words.entity"          => "Entidad",
             "words.email"           => "Correo Electrónico",
@@ -126,17 +146,29 @@ return (new class {
             "words.logout"          => "Salir",
             "words.users"           => "Usuarios",
             "words.update"          => "Actualizar",
+            "words.mixed"           => "Mesclados",
+            'words.pending'         => "Pendientes",
+            'words.processing'      => "Procesando",
+            'words.processed'       => "Procesados",
+            "words.registers"       => "Registros",
             "words.name"            => "Nombre",
             "words.rnc"             => "RNC",
+            "words.RNC"             => "RNC",
             "words.register"        => "Registro",
 
+            "words.message"         => "Mensaje",
             "words.new"             => "Nuevo",
             "words.password"        => "Contraseña",
             "words.rejected"        => "Rechazado",
+            "words.send"            => "Enviar",
             'words.serial'          => "Serial",
             "words.state"           => "Estado",
             "words.search"          => "Buscar",
+            "words.subject"         => "Asunto",
             "words.slug"            => "Nombre amigable",
+            "words.to-lists"        => "Listar",
+
+            "send.xml"              => "Enviar XML",
 
             "state.0" => "Inactivo|inactivar",
             "state.1" => "Activo|Activar",

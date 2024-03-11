@@ -4,6 +4,12 @@ body{
     height: 100vh;
     padding-top: 65px;
 }
+.bg-banner-moon {
+    background: var(--light-grad-pink-blue, radial-gradient(ellipse at 40% 0%, #bf398910 0, transparent 75%), radial-gradient(ellipse at 60% 0%, #096bde10 0, transparent 75%));
+    background-size: cover;
+    margin-top: -25px;
+    padding: 30px 0 0;
+}
 .dropdown .btn {
     border: none;
     outline: none;
@@ -11,6 +17,7 @@ body{
 .dropdown .btn [class*="mdi mdi-"] {
     font-size: 24px;
 }
+.dropdown .btn::after,
 .dropdown.dropstart .btn::before {
     margin-right: -4px;
     margin-bottom: 4px;
@@ -18,6 +25,9 @@ body{
 }
 .dropdown.dropstart .btn.show::before {
     display: inline-block;
+}
+.dropdown.nopointer  .btn.show::before {
+    display: none;
 }
 .fs-7 {
     font-size: .9em;
@@ -74,16 +84,12 @@ body{
     font-size: 20px;
     line-height: 90%;
     position: relative;
-    top: 2px;
+    top: 2px;    
 }
 
 
 /*
 * NAVBAR ENTITY STYLE */
-[role=lighter] .navbar-entity {
-    border-bottom: 1px solid #ddd;
-}
-
 [role=lighter] .navbar-entity .nav-item .nav-link {
     color: #777;
 }
@@ -93,7 +99,6 @@ body{
     background-color: #ddd;
     color: #333;
 }
-
 
 /*
 * CARD STYLE */

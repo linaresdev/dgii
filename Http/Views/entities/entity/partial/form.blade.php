@@ -1,5 +1,5 @@
 
-        <article class="card border-dark p-4">
+        <article class="card pt-4 border-0 rounded-1 shadow-1">
             <div class="card-body">
 
                 @if($errors->any())

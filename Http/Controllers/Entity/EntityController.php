@@ -12,29 +12,52 @@ use DGII\Http\Support\Entity\EntitySupport;
 
 class EntityController extends Controller 
 {
-    public function __construct( EntitySupport $app ) {
+    public function __construct( EntitySupport $app )
+    {
         $this->boot($app);
-
-
     }
 
-    public function index($entity) {
+    public function index($entity)
+    {
         return $this->render('entity.index', $this->app->index($entity));
     }
 
-    public function arecf($entity)
+    public function setConfig( $entity, $key, $value )
     {
-        return $this->render("entity.arecf", $this->app->arecf($entity));
+        return $this->app->setConfig($entity, $key, $value);        
     }
 
-    public function acecf($entity)
+    public function arecf($entity, $ecf)
     {
-        return $this->render("entity.acecf", $this->app->acecf($entity));
+        return $this->render("entity.arecf", $this->app->arecf($entity, $ecf));
     }
 
-    public function getSendACECF($entity, $ecf)
+    public function downloadArecf($entity, $ecf)
     {
-        return $this->render('entity.sendArecf', $this->app->sendArecf($entity, $ecf));
+        return $this->app->downloadArecf($entity, $ecf);
+    }
+
+    public function acecf($entity, $ecf)
+    { 
+        return $this->render("entity.acecf", $this->app->acecf($entity, $ecf));
+    }
+    
+    public function downloadAcecf($entity, $ecf)
+    {
+        return $this->app->downloadAcecf($entity, $ecf);
+    }
+    public function getSendMailAcecf( $entity, $ecf )
+    {
+        return $this->render("entity.sendmail-acecf", $this->app->sendMailArecf($entity, $ecf));
+    }
+    public function postSendMailAcecf( $entity, $ecf, Request $request )
+    {
+        return $this->app->postSendMailArecf($entity, $ecf, $request);
+    }
+
+    public function getSendACECF( $entity, $ecf )
+    {
+        return $this->render('entity.sendArecf', $this->app->sendAprobacionComercial($entity, $ecf));
     }
 
     public function postSendACECF( $entity, $ecf, Request $request )

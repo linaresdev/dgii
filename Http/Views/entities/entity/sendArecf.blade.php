@@ -1,19 +1,61 @@
 @extends("dgii::entities.layout")
 
+    @section("header")
+
+        <section class="mb-3 p-0">
+            <h4 class="fx-bold fw-semibold fs-5 m-0 p-0">
+                ECECF - {{__("words.acecf")}}
+            </h4>
+            Envío de  aprobación comercial
+        </section> 
+    @endsection
+
     @section("content")
 
-        <h4 class="fx-bold fs-5 text-body-emphasis mb-4">
-            Envío de  aprobación comercial
-        </h4>
+        <article class="row mb-3">
 
-        <article class="card pt-4 mb-3">
-            <section class="card-body">               
+            <section class="col-lg-4 col-md-4 col-sm-12">
+                @include("dgii::entities.entity.partial.form")  
+            </section>  
 
-                @include("dgii::entities.entity.partial.header")
-                @include("dgii::entities.entity.partial.resumen")               
-                
-            </section>
+            <section class="col-lg-8 col-md-8 col-sm-12">
+               <div class="card border-0 rounded-0 rounded-top-1 d-flex bg-secondary text-white">
+                    <div class="p-3 text-end">
+                        <h4 class="fx-bold fw-semibold fs-6 m-0 mb-1">
+                           {{$ecf->eNCF}}
+                        </h4>
+                        <h4 class="fs-7">{{$ecf->RazonSocialComprador()}}</h4>
+                    </div>
+               </div>
+               <div class="card border-0 rounded-0 d-flex align-items-center">
+                    <ul class="p-3 m-0" style="list-style:none;">
+                        <li>
+                            <strong style="width: 300px; display: inline-block;">FECHA DE EMISION</strong>
+                            {{$ecf->fechaEmision()}}
+                        </li>
+                        <li>
+                            <strong style="width: 300px; display: inline-block;">RNC</strong>
+                            {{$ecf->item('RNCComprador')}}
+                        </li>
+                        <li>
+                            <strong style="width: 300px; display: inline-block;">VALOR GRAVADO RD$</strong>
+                            {{Number::format($ecf->item('MontoGravadoTotal'))}} RD$
+                        </li>
+                        <li>
+                            <strong style="width: 300px; display: inline-block;">INDICADOR VALOR GRAVADO</strong>
+                            {{Number::format($ecf->item('IndicadorMontoGravado'))}}
+                        </li>
+                        <li>
+                            <strong style="width: 300px; display: inline-block;">TOTAL ITBIS</strong>
+                            {{Number::format($ecf->item('TotalITBIS'))}} RD$
+                        </li>
+                        <li>
+                            <strong style="width: 300px; display: inline-block;">MONTO TOTAL</strong>
+                            {{Number::format($ecf->item('MontoTotal'))}} RD$
+                        </li>
+                    </ul>
+               </div>
+            </section> 
         </article>
-
-        @include("dgii::entities.entity.partial.form")
+        
     @endsection

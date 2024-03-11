@@ -68,6 +68,11 @@ class Hacienda extends Model
     }
 
     ## RELATIONS
+    public function metaData()
+    {
+        return $this->hasMany(HaciendaMeta::class, "hacienda_id");
+    }
+
     public function user() {
         return $this->hasOne(\DGII\User\Model\Store::class, "rnc", "rnc");
     }
@@ -88,6 +93,7 @@ class Hacienda extends Model
     {
         return $this->hasMany(\DGII\Model\ARECF::class, "hacienda_id");
     }
+    
     public function acecf()
     {
         return $this->hasMany(\DGII\Model\ACECF::class, "hacienda_id");
@@ -107,7 +113,75 @@ class Hacienda extends Model
         return $this->acecf()->create($data);
     }
 
+    ## add
+    public function addConfig( $data=[] )
+    {
+        if( !empty($data) && is_array($data) )
+        {
+            foreach($data as $key => $value )
+            {
+                $this->metaData()->create([
+                    "type"  => "config",
+                    "key"   => $key,
+                    "value" => $value
+                ]);
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    ## UPDATE
+    public function updateConfig( $key=null, $value=null )
+    {
+        $data = $this->metaData()->where("type", "config")->where("key", $key);
+        
+        if( $data->count() > 0 )
+        {
+            $config = $data->first();
+
+            $config->value = $value;
+
+            return $config()->save();
+        }
+
+        return false;
+    }
+
+    public function toggleConfig($key, $value)
+    {
+        if( ($data = $this->metaData()->where("type", "config")->where("key", $key))->count() > 0 )
+        {
+            $config         = $data->first();
+            $config->value  = $value;
+            
+            return $config->save();
+        }
+        else {
+            return $this->addConfig([$key => $value]);
+        }
+    }
+
     ## QUERY
+
+    public function getConfig()
+    {
+        $arreglo = [];
+
+        if( ($data = $this->metaData()->where("type", "config"))->count() > 0  ) 
+        {
+            $arreglo = null;
+
+            foreach($data->select("key", "value")->get() as $row ) 
+            {
+                $arreglo[$row->key] = $row->value;
+            }
+        }  
+        
+        return $arreglo;
+    }
 
     public function getEntity($rnc)
     {

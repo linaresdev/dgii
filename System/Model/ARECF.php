@@ -27,6 +27,11 @@ class ARECF extends Model {
         "updated_at"
     ];
 
+    public function acecf()
+    {
+        return $this->hasOne(ACECF::class, "eNCF", "eNCF");
+    }
+
     public function getOriginalEcf()
     {
         return $this->attributes["pathECF"];
@@ -38,6 +43,11 @@ class ARECF extends Model {
         );
     }
 
+    public function arecf()
+    {
+        return new \DGII\Support\ARECF($this->pathARECF);        
+    }
+
     public function item( $key )
     {
         return $this->pathECF->get($key);
@@ -46,6 +56,19 @@ class ARECF extends Model {
     public function razonSocialEmisor()
     {
         return $this->pathECF->get("RazonSocialEmisor");
+    }
+    public function razonSocialComprador()
+    {
+        return $this->pathECF->get("RazonSocialComprador");
+    }
+
+    public function description()
+    {
+        return $this->pathECF->getDescription();
+    }
+    public function fechaEmision()
+    {
+        return $this->pathECF->get("FechaEmision");
     }
     
     public function montoTotal()
