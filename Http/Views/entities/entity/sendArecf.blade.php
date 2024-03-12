@@ -39,19 +39,25 @@
                         </li>
                         <li>
                             <strong style="width: 300px; display: inline-block;">VALOR GRAVADO RD$</strong>
-                            {{Number::format($ecf->item('MontoGravadoTotal'))}} RD$
+                            @if( ($MontoGravadoTotal = $ecf->item('MontoGravadoTotal')) != null)
+                            RD$ {{Number::format($MontoGravadoTotal)}}
+                            @endif                            
                         </li>
                         <li>
                             <strong style="width: 300px; display: inline-block;">INDICADOR VALOR GRAVADO</strong>
-                            {{Number::format($ecf->item('IndicadorMontoGravado'))}}
+                            @if( ($IndicadorMontoGravado = $ecf->item('IndicadorMontoGravado')) != null)
+                            RD$ {{Number::format($IndicadorMontoGravado)}}
+                            @endif
                         </li>
                         <li>
                             <strong style="width: 300px; display: inline-block;">TOTAL ITBIS</strong>
-                            {{Number::format($ecf->item('TotalITBIS'))}} RD$
+                            RD$ {{Number::format($ecf->item('TotalITBIS'))}}
                         </li>
                         <li>
                             <strong style="width: 300px; display: inline-block;">MONTO TOTAL</strong>
-                            {{Number::format($ecf->item('MontoTotal'))}} RD$
+                            @if( ($MontoTotal = $ecf->item('MontoTotal')) != null )
+                            RD$ {{Number::format($MontoTotal)}} 
+                            @endif
                         </li>
                     </ul>
                </div>
