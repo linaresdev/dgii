@@ -134,6 +134,7 @@ return (new class {
             "words.date"            => "Fecha",
             "words.deny"            => "Denegado",
             "words.delete"          => "Eliminar",
+            "words.download"        => "Descargar",
             "words.eNCF"            => "eNCF",
             "words.entities"        => "Entidades",
             "words.entity"          => "Entidad",

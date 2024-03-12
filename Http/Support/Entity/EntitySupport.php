@@ -113,6 +113,11 @@ class EntitySupport
         return $data;
     }
 
+    public function downloadEcf( $entity, $ecf )
+    {
+        return response()->download($ecf->getOriginalEcf());
+    }
+
     public function getEcf($entity)
     {
         return $entity->arecf()->orderBY("id", "DESC")->get()->take(10);

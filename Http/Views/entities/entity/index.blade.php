@@ -66,10 +66,14 @@
                                     <Strong>Fecha Emision</Strong> {{$row->fechaEmision()}}
                                 </div>
                                 <div>
-                                    <Strong>Total</Strong> {{Number::format($row->montoTotal())}} $RD
-                                </div>
+                                    <Strong>Total</Strong> $RD {{Number::format($row->montoTotal())}} 
+                                </div>                                
                             </div>
                         </div>
+                        <a href="{{__url('{ecf}/download')}}" class="btn btn-sm bg-primary-subtle link-primary rounded-pill px-3">
+                            <span class="mdi mdi-download mdi-20px"></span>
+                            {{__("words.download")}}
+                        </a>
                     </div>
                 </article>
             </section>

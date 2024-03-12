@@ -14,9 +14,11 @@ Route::prefix("{rnc}")->group(function()
 
     Route::prefix("ecf")->group(function()
     {        
+
         Route::prefix("{ecfID}")->group(function()
         {
-
+            Route::get("download", "EntityController@downloadEcf");
+            
             ## ARECF
             Route::get("arecf", "EntityController@arecf");
             Route::get("arecf/download", "EntityController@downloadArecf");

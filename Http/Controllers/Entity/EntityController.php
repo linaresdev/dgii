@@ -22,6 +22,11 @@ class EntityController extends Controller
         return $this->render('entity.index', $this->app->index($entity));
     }
 
+    public function downloadEcf($entity, $ecf)
+    {
+        return $this->app->downloadEcf($entity, $ecf);
+    }
+
     public function setConfig( $entity, $key, $value )
     {
         return $this->app->setConfig($entity, $key, $value);        
