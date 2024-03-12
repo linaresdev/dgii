@@ -51,7 +51,9 @@
                         </li>
                         <li>
                             <strong style="width: 300px; display: inline-block;">TOTAL ITBIS</strong>
+                            @if(($TotalITBIS = $ecf->item('TotalITBIS')) != null )
                             RD$ {{Number::format($ecf->item('TotalITBIS'))}}
+                            @endif
                         </li>
                         <li>
                             <strong style="width: 300px; display: inline-block;">MONTO TOTAL</strong>
