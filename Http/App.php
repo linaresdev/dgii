@@ -44,7 +44,15 @@ if( env("APP_START") ):
 
     ## URLS
     Dgii::addUrl([
-        "{current}" => request()->path()
+        "{current}" => request()->path(),        
+    ]);
+
+    ## DGII PATH 
+    Dgii::addPath([
+        "{dgii}"                => env('DGII_DOMAIN').'/'.env('DGII_ENV'),
+        "{dgii_get_seed}"       => '{dgii}/'.env('DGII_URL_SEED'),
+        "{dgii_post_auth}"      => '{dgii}/'.env('DGII_URL_AUTH'),
+        "{dgii_client_info}"    => '{dgii}/'.env('DGII_CLIENT_INFO'),
     ]);
 
     ## MIDDLEWARE

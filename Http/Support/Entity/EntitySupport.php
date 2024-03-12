@@ -74,9 +74,7 @@ class EntitySupport
 
     public function index($entity)
     { 
-        
-        $config =           $entity->getConfig();
-
+        $config             = $entity->getConfig();
         $data               = $this->header($entity);
         $data["arecf"]      = $this->getEcf($entity); //$entity->arecf->take(10);
        
@@ -231,6 +229,7 @@ class EntitySupport
 
     public function sendACECF($entity, $ecf, $request)
     {
+        $user       = $request->user();       
         $estado     = $request->Estado;
         $razon      = $request->DetalleMotivoRechazo;
 
@@ -241,7 +240,7 @@ class EntitySupport
         } 
 
         $filePath   = "$PATHACECF/";
-        $filePath  .= $this->getNameEcf($ecf->getOriginalEcf());
+        $filePath  .= ($nameAcecf = $this->getNameEcf($ecf->getOriginalEcf()));
      
         $data           = $this->ecfData($ecf, $estado, $razon);
         $data["ecf"]    = $ecf->getOriginalEcf();  
@@ -274,71 +273,191 @@ class EntitySupport
         {
             return back()->withErrors($V)->withInput();
         }
-        
-        //$baseUrl    = "http://192.168.10.18";
 
-        $env        = env("DGII_ENV");
-        $acecf      = app("files")->get(__path("{xmlstub}/ACECF.txt"));
-        
-        foreach( $data as $key =>  $value )
+        ## Signed ACECF
+        if(($acecf = $this->getSignedAcecf($entity, $data)) == null )
         {
-            if( ($key == 'Estado') && ($value == 1) )
-            {
-                $acecf  = str_replace(
-                    '<DetalleMotivoRechazo>{DetalleMotivoRechazo}</DetalleMotivoRechazo>',"", $acecf
+            Alert::prefix("acecf")->danger(
+                "La plantilla de la aprobación comercial no existe"
+            );
+            return back();
+        }         
+        
+        ## DGII AUTH
+        if( ($dgiiAuth   = $this->getDgiiToken($entity)) == null )
+        {
+            Alert::prefix("acecf")->danger("Error al tratar de autenticar en la DGII");
+            return back();
+        } 
+
+        $remoteData = Http::acceptJson()->withToken($dgiiAuth->token)->get(
+            __path("{dgii_client_info}?RNC=".$ecf->item("RNCComprador"))
+        );
+
+        if( $remoteData->status() != 200 )
+        {
+            Alert::prefix("acecf")->danger("No fue posible acceder a la informaciones del cliente");
+            return back();
+        }
+
+        $remoteData = json_decode($remoteData->body());
+
+        if( array_key_exists(0, $remoteData) )
+        {
+            $clientData = (array) $remoteData[0];
+
+            ## Nos autenticamos en el cliente si es requerido
+            if( !empty($clientData["urlOpcional"]) )
+            { 
+                if( ($clientAuth = $this->getClientToken($entity, $clientData)) == null )
+                {
+                    Alert::prefix("acecf")->danger("Error al tratar de autenticar con el cliente");
+                    return back();
+                }
+
+                ## Enviar la Aprobacion Comercial
+                $clientUrlAcecf = $clientData['urlAceptacion'].'/'.env("DGII_RECEPCION_ARECF");
+                $aprobacionComercial = Http::withToken($clientAuth->token)->attach(
+                    'xml',$acecf, $nameAcecf, ["Content-Type" => "text/xml"]
+                )->post(
+                    $clientUrlAcecf
                 );
+
+                if($aprobacionComercial->status() == 200 )
+                {
+                    if(app("files")->put($filePath, $acecf) )
+                    {
+                        $acecfData          = (new \DGII\Support\ACECF)->load($filePath)->toArray();
+                        $acecfData["ecf"]   = $ecf->getOriginalEcf();
+                        $acecfData["acecf"] = $filePath;
+
+                        if($acecfStore = $entity->saveACECF($acecfData))
+                        {
+                            Alert::prefix("system")->success(
+                                "Aprobación comercial evianda correctamente"
+                            );
+                            $user->news("acecfSend", "Aprobación Comercial Enviada", [
+                                "acecf_id"          => $acecfStore->id,
+                                "path"              => request()->path(),
+                                "urlSeed"           => $clientAuth->urlSeed,
+                                "authUrl"           => $clientAuth->authUrl,
+                                "cleintUrlAcecf"    => $clientUrlAcecf
+                            ]);
+                            
+                            return redirect(__url("entity/{$entity->rnc}"));
+                        }
+                    }
+                }
+            }
+            else {
+                ## Enviar la Aprobacion Comercial
+                $aprobacionComercial = Http::attach(
+                    'xml',$acecf, $nameAcecf, ["Content-Type" => "text/xml"])->post(
+                        $clientData['urlAceptacion'].'/'.env("DGII_RECEPCION_ARECF")
+                );
+
+                if($aprobacionComercial->status() == 200 )
+                {
+                    if(app("files")->put($filePath, $acecf) )
+                    {
+                        $acecfData          = (new \DGII\Support\ACECF)->load($filePath)->toArray();
+                        $acecfData["ecf"]   = $ecf->getOriginalEcf();
+                        $acecfData["acecf"] = $filePath;
+
+                        $entity->saveACECF($acecfData);
+
+                        Alert::prefix("system")->success(
+                            "Aprobación comercial evianda correctamente"
+                        );
+
+                        $user->news("acecfSend", "Aprobación Comercial Enviada", [
+                            "acecf_id"          => $acecfStore->id,
+                            "path"              => request()->path(),
+                            "urlSeed"           => null,
+                            "authUrl"           => null,
+                            "cleintUrlAcecf"    => $clientUrlAcecf
+                        ]);
+                        
+                        return redirect(__url("entity/{$entity->rnc}"));
+                    }
+                }                
+            }            
+        }
+
+        $user->news("acecfError", "Error Aprobación Comercial", [
+            "rnc"       => $entity->rnc,
+            "object"    => "Ocurrió un error al tratar de enviar la aprobación comercial"
+        ]);
+
+        Alert::prefix("system")->danger("Error al tratar de enviar la aprobación comercial");
+        return back();
+    }
+
+    public function getSignedAcecf($entity, $data)
+    {
+        if( app("files")->exists(__path("{xmlstub}/ACECF.txt")) )
+        {        
+            $acecf      = app("files")->get(__path("{xmlstub}/ACECF.txt"));
+            
+            foreach( $data as $key =>  $value )
+            {
+                if( ($key == 'Estado') && ($value == 1) )
+                {
+                    $acecf  = str_replace(
+                        '<DetalleMotivoRechazo>{DetalleMotivoRechazo}</DetalleMotivoRechazo>',"", $acecf
+                    );
+                }
+
+                $acecf  = str_replace('{'.$key.'}', $value, $acecf);
             }
 
-            $acecf  = str_replace('{'.$key.'}', $value, $acecf);
-        }
-        
-        ## Aprobacion Firmada
-        $acecf = XLib::load($entity)->xml($acecf)->sign();        
+            return  XLib::load($entity)->xml($acecf)->sign();    
+        }    
+    }
 
-        // if(app("files")->put($filePath, $acecf))
-        // {
-        //     $data["acecf"]  = $PATHACECF."/".$this->getNameEcf($ecf->getOriginalEcf());
-            
-        //     if( $entity->saveACECF($data) )
-        //     {
-        //         return redirect(__url('entity/'.$entity->rnc));
-        //     }
-        // }        
+    public function getClientToken($entity, $clientData)
+    {
+        $urlSeed = $clientData['urlOpcional'].'/'.env('DGII_CLIENT_SEED');
 
+        if( ($clientSemilla = Http::get($urlSeed))->status() == 200 )
+        {
+            ## Firmar Semilla
+            $signerClientSemilla = XLib::load($entity)->xml($clientSemilla->body())->sign();
+
+            ## Solicitamos token
+            $authUrl = $clientData['urlOpcional'].'/'.env("DGII_CLIENT_AUTH");
+            $clientAuth = Http::attach(
+                'xml', $signerClientSemilla, "Certify.xml", ["Content-Type" => "text/xml"])->post($authUrl);
+
+            if( $clientAuth->status() == 200)
+            {
+                $data = json_decode($clientAuth->body());
+
+                $data->urlSeed = $urlSeed;
+                $data->authUrl = $authUrl;
+
+                return $data;
+            }            
+        }        
+    }
+
+    public function getDgiiToken($entity)
+    {
         ## Solicitar Semilla
-        $xmlSeed = Http::get(
-            "https://ecf.dgii.gov.do/$env/emisorreceptor/fe/autenticacion/api/semilla"
-        )->body();
-        dd($xmlSeed);
-        ## Firmar Semilla
-        $seedSigner = XLib::load($entity)->xml($xmlSeed)->sign();
-        
-        ## Solicitar Token
-        $urlAuth = "https://ecf.dgii.gov.do/$env/emisorreceptor/fe/autenticacion/a
-        pi/validacioncertificado";
-        
-        $auth = Http::attach(
-            'xml', $seedSigner, "Certify.xml", ["Content-Type" => "text/xml"])->post(
-            "https://ecf.dgii.gov.do/$env/emisorreceptor/fe/autenticacion/api/validacioncertificado"
-        )->body();
-        $auth = json_decode($auth);
+        if( ($xmlSeed = Http::get(__path('{dgii_get_seed}')))->status() == 200  )
+        {
+            ## Firmar Semilla
+            $seedSigner = XLib::load($entity)->xml($xmlSeed->body())->sign();        
+            
+            ## Solicitar Token         
+            $auth = Http::attach(
+                'xml', $seedSigner, "Certify.xml", ["Content-Type" => "text/xml"])->post(__path('{dgii_post_auth}')
+            );
 
-        
-        ## Enviar aprobacion a DGII
-        $url = "https://ecf.dgii.gov.do/$env/consultadirectorio/api/consultas/obtenerdirectorioporrnc?RNC";
-        $url = "$url=".$ecf->item("RNCComprador");
-        $url = "$url=130329737";
-       
-        $remoteData = Http::acceptJson()->withToken($auth->token)->get($url)->body();
-        $remoteData = json_decode($remoteData);
-        
-        dd($remoteData);
-
-        ## Enviar Aprobacion Al Comprodor;
-
-        //$urlAprobacion = 
-
-
-        return back();
+            if( $auth->status() == 200 )
+            {
+                return json_decode($auth->body());
+            }    
+        }         
     }
 }
