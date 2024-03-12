@@ -9,7 +9,7 @@ namespace DGII\Navy\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Navy extends Model {
+class Store extends Model {
 
     protected $table = 'navies';
 
