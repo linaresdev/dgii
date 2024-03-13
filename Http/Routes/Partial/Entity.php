@@ -6,6 +6,8 @@ Route::prefix("{rnc}")->group(function()
 {
     Route::get("/", "EntityController@index");
 
+    Route::get("search/{src?}", "EntityController@srcEcf");
+
     Route::get("/config/set/{key}/{value}", "EntityController@setConfig");
 
     //Route::get("/arecf", "EntityController@arecf");
@@ -17,8 +19,9 @@ Route::prefix("{rnc}")->group(function()
 
         Route::prefix("{ecfID}")->group(function()
         {
-            Route::get("download", "EntityController@downloadEcf");
             
+            Route::get("download", "EntityController@downloadEcf");
+
             ## ARECF
             Route::get("arecf", "EntityController@arecf");
             Route::get("arecf/download", "EntityController@downloadArecf");

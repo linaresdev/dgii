@@ -21,7 +21,8 @@
                         <input type="text" 
                             name="src" 
                             class="form-control form-control-lg border-0 rounded-0"
-                            placeholder="{{__('words.search')}}...">
+                            placeholder="{{__('words.search')}}..."
+                            onkeyup="srcData(this)">
                     </div>
 
                     <div class="py-1 px-3">
@@ -36,8 +37,8 @@
                                 <h6 class="dropdown-header">
                                     {{__("ecf.filters.by")}}:
                                </h6>
-                                <a href="{{__url('{current}/config/set/ecf-filter-by/RNC')}}" class="dropdown-item">
-                                    @if( $isFilter("RNC") )
+                                <a href="{{__url('{current}/config/set/ecf-filter-by/RNCComprador')}}" class="dropdown-item">
+                                    @if( $isFilter("RNCComprador") )
                                     <i class="mdi mdi-checkbox-intermediate mdi-20px"></i>
                                     @else
                                     <i class="mdi mdi-checkbox-blank-outline mdi-20px"></i>
@@ -52,8 +53,8 @@
                                     @endif
                                     eNCF
                                 </a>
-                                <a href="{{__url('{current}/config/set/ecf-filter-by/date')}}" class="dropdown-item">
-                                    @if( $isFilter("date") )
+                                <a href="{{__url('{current}/config/set/ecf-filter-by/FechaHoraAcuseRecibo')}}" class="dropdown-item">
+                                    @if( $isFilter("FechaHoraAcuseRecibo") )
                                     <i class="mdi mdi-checkbox-intermediate mdi-20px"></i>
                                     @else
                                     <i class="mdi mdi-checkbox-blank-outline mdi-20px"></i>

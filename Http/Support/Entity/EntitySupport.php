@@ -76,7 +76,7 @@ class EntitySupport
     { 
         $config             = $entity->getConfig();
         $data               = $this->header($entity);
-        $data["arecf"]      = $this->getEcf($entity); //$entity->arecf->take(10);
+        $data["arecf"]      = $this->getEcf($entity);
        
         $data["getConfig"]  = (function($key) use ($config) 
         {
@@ -113,14 +113,25 @@ class EntitySupport
         return $data;
     }
 
+    public function search( $entity, $src )
+    {
+        $field      = config("ecf.filter.by", 'id');
+        $results    = $entity->arecf()->where($field, "LIKE", '%'.$src.'%')->get()->take(6);
+        
+        return [
+            'rnc'       => $entity->rnc,
+            "results"   => $results,
+        ];
+    }
+
     public function downloadEcf( $entity, $ecf )
     {
         return response()->download($ecf->getOriginalEcf());
     }
 
-    public function getEcf($entity)
+    public function getEcf($entity, $perpage=6)
     {
-        return $entity->arecf()->orderBY("id", "DESC")->paginate(1);
+        return $entity->arecf()->orderBY("id", "DESC")->paginate($perpage);
     }
 
     public function setConfig( $entity, $key, $value )

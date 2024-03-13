@@ -22,6 +22,11 @@ class EntityController extends Controller
         return $this->render('entity.index', $this->app->index($entity));
     }
 
+    public function srcEcf( $entity, $src )
+    {
+        return $this->render("entity.search", $this->app->search($entity, $src));
+    }
+
     public function downloadEcf($entity, $ecf)
     {
         return $this->app->downloadEcf($entity, $ecf);

@@ -142,6 +142,7 @@ return (new class {
             "words.home"            => "Inicio",
             "words.identify"        => "Identificarse",
             "words.filters"         => "Filtrar",
+            "words.FechaHoraAcuseRecibo" => "Fecha",
             "words.groups"          => "Grupos",
             "words.login"           => "Acceder",
             "words.logout"          => "Salir",
@@ -154,7 +155,7 @@ return (new class {
             "words.registers"       => "Registros",
             "words.name"            => "Nombre",
             "words.rnc"             => "RNC",
-            "words.RNC"             => "RNC",
+            "words.RNCComprador"    => "RNC",
             "words.register"        => "Registro",
 
             "words.message"         => "Mensaje",
