@@ -17,12 +17,33 @@
         
             @includeIF("dgii::entities.entity.partial.search")
 
+            <section class="mb-3 d-flex aling-items-center p-0">           
+
+                <div class="me-3">
+                    {{__("words.to-lists")}}: 
+                    <span class="badge text-secondary">{{__("words.".$getConfig("ecf.lists.by"))}}</span>
+                </div>
+                
+                <div class="me-3">
+                    {{__("ecf.filters.by")}}: 
+                    <span class="badge text-secondary">{{__("words.".$getConfig("ecf.filter.by"))}}</span>
+                </div>
+
+                <div>
+                    # {{__("words.registers")}}: 
+                    <span class="badge text-secondary">
+                        {{$arecf->total()}}
+                    </span>
+                </div>
+                
+            </section>
+
             @foreach( $arecf as $row )
-            @php 
-                Dgii::addUrl([
-                    '{ecf}' => "{current}/ecf/$row->id"
-                ]);
-            @endphp
+                @php 
+                    Dgii::addUrl([
+                        '{ecf}' => "{current}/ecf/$row->id"
+                    ]);
+                @endphp
             <section class="card border-0 rounded-0 shadow-sm mb-2 p-0">
                 <article class="d-flex align-items-stretch">
                     
@@ -77,8 +98,12 @@
                     </div>
                 </article>
             </section>
-        @endforeach
+        @endforeach            
         </article>
+
+        <section class="pt-2">
+            {{$arecf->onEachSide(5)->links()}}
+        </section>
     @endif    
     
     @endsection

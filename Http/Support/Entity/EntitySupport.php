@@ -120,7 +120,7 @@ class EntitySupport
 
     public function getEcf($entity)
     {
-        return $entity->arecf()->orderBY("id", "DESC")->get()->take(10);
+        return $entity->arecf()->orderBY("id", "DESC")->paginate(1);
     }
 
     public function setConfig( $entity, $key, $value )

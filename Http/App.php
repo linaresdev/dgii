@@ -80,6 +80,9 @@ if( env("APP_START") ):
     ## Views 
     $this->loadViewsFrom(__DIR__.'/Views', 'dgii');
 
+    ## PAGIANATOR
+    Illuminate\Pagination\Paginator::useBootstrap();
+
     ## MENU ADMIN ENTITY
     Nav::save(function($nav)
     {

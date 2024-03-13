@@ -67,19 +67,4 @@
                 
             </section>
 
-            <section class="mb-3 d-flex aling-items-center p-0">           
-
-                <div class="me-3">
-                    {{__("words.to-lists")}}: 
-                    <span class="badge text-secondary">{{__("words.".$getConfig("ecf.lists.by"))}}</span>
-                </div>
-                <div class="me-3">
-                    {{__("ecf.filters.by")}}: 
-                    <span class="badge text-secondary">{{__("words.".$getConfig("ecf.filter.by"))}}</span>
-                </div>
-
-                <div>
-                    # {{__("words.registers")}}: <span class="badge text-secondary"> 0 </span>
-                </div>
-                
-            </section>
+            
