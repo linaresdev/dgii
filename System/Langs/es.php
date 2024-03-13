@@ -128,6 +128,7 @@ return (new class {
             "words.auth"            => "Autenticar",
             "words.authentication"  => "Autenticaión",
             "words.acecf"           => "Aprobación Comercial",
+            "words.back"            => "Retroceder",
             "words.certify"         => "Certificado",
             "words.close"           => "Cerrar",
             "words.credentials"     => "Credenciles",
