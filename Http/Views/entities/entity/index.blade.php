@@ -4,9 +4,9 @@
 
         <section class="mb-3 p-0">
             <h4 class="fx-bold fw-semibold fs-5 m-0 p-0">
-                ECF - Comprobantes Electronicos
+                ECF - Comprobantes Electrónicos
             </h4>
-            Listado de compbantes recibidos.
+            Listado de comprobantes recibidos.
         </section> 
     @endsection
 

@@ -6,7 +6,7 @@
             <h4 class="fx-bold fw-semibold fs-5 m-0 p-0">
                 ACECF - {{__("words.acecf")}}
             </h4>
-            Envío de  aprobación comercial
+            Envío de aprobación comercial
         </section> 
     @endsection
 
