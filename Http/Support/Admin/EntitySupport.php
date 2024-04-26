@@ -132,6 +132,35 @@ class EntitySupport {
         return back();
     }
 
+    public function postUpdateCertify($ent, $request)
+    {        
+        $validate = validator([], []);
+
+        if( openssl_pkcs12_read($request->getCertifyContent(), $data, $request->pwd) )
+        { 
+            if( ( $cert = (new P12Certify($data)) )->passes() ) 
+            { 
+                $update = $ent->update([
+                    "p12" => $request->getCertifyContent(), 
+                    "password" => $request->password
+                ]);
+
+                if( $update ) {
+
+                    $request->moveCertify(__path("{hacienda}/".$ent->rnc), 'certify.p12');
+
+                    Alert::prefix("system")->success(__("update.successfully"));
+
+                    return redirect('admin/entities');
+                }                           
+            }
+
+            $validate->errors()->add("certify", "No se pudo comprobar la integridad delcertificado"); 
+            
+            return back()->withErrors($validate)->withInput(); 
+        }
+    }
+
     public function setState( $ent, $state ) {
        
         if( in_array($state, [0,1,2,3,4]) ) {

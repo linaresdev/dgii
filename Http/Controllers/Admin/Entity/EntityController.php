@@ -9,8 +9,9 @@ namespace DGII\Http\Controllers\Admin\Entity;
 
 use DGII\Facade\Alert;
 use Illuminate\Http\Request;
-use DGII\Http\Request\Admin\EntityRequest;
 use DGII\Http\Support\Admin\EntitySupport;
+use DGII\Http\Request\Admin\EntityRequest;
+use DGII\Http\Request\Admin\UpdateCertifyRerquest;
 
 class EntityController extends Controller {
 
@@ -48,6 +49,13 @@ class EntityController extends Controller {
     }
     public function postUpdateName($entity, Request $request) {  
         return $this->app->postUpdateName($entity, $request);      
+    }
+
+    public function getUpdateCertify($entity) {
+        return $this->render("updateCertify", $this->app->entity($entity));        
+    }
+    public function postUpdateCertify($entity, UpdateCertifyRerquest $request) {  
+        return $this->app->postUpdateCertify($entity, $request);      
     }
 
     public function setState($ent, $state) {

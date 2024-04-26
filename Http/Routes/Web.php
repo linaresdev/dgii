@@ -41,6 +41,10 @@ Route::prefix("admin")->namespace("Admin")->group(function($route)
             Route::get("update", "EntityController@getUpdateName");
             Route::post("update", "EntityController@postUpdateName");
 
+            Route::get("update/certify", "EntityController@getUpdateCertify");
+            Route::post("update/certify", "EntityController@postUpdateCertify");
+
+
             Route::get("set-state/{state}", "EntityController@setState");
 
             Route::get("delete", "EntityController@getDelete");
@@ -52,22 +56,22 @@ Route::prefix("admin")->namespace("Admin")->group(function($route)
 Route::get("recepcion", function()
 {   
     //$host   = "https://ncf.vsdelta.com";
-    $host   = "http://192.168.10.18";
+    $host   = "http://192.168.10.7";
 
     $env    = env("DGII_ENV");
-    $url =  "$host/api/101011939/$env/fe/recepcion/api/ecf";
+    $url    =  "$host/api/101011939/$env/fe/recepcion/api/ecf";
     
     return view("dgii::form", [
         "title"     => "SOAP",
-        "url"   => $url,
+        "url"       => $url,
         "urlAuth"   => "101011939/$env/emisorreceptor/fe/Autenticacion/api/ValidacionCertificado" 
     ]);
 });
 
 // Route::get("aprobacion", function()
 // {   
-//     $host   = "https://ncf.vsdelta.com";
-//     $host   = "http://192.168.10.18";
+//     //$host   = "https://ncf.vsdelta.com";
+//     $host   = "http://192.168.10.7";
 
 //     $env    = env("DGII_ENV");
 //     $url =  "$host/api/101011939/$env/fe/aprobacioncomercial/api/ecf";

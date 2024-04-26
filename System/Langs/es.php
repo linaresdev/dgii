@@ -51,6 +51,7 @@ return (new class {
             "busuness.rnc"          => "Numero de contribuyente", 
 
             "business.update.name"  => "Actualizar nombre corporativo",
+            "business.update.certify"  => "Actualizar certificado corporativo",
 
             "confirm.password"  => "Confirmar contraseña",
             "command.unknown"   => "Comando o orden desconocida",

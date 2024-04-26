@@ -42,12 +42,9 @@ class UserSupport
     public function register()
     {
         $data['title']      = __("register.users");
-        $data["container"]  = "col-xl-6 offset-xl-3 col-lg-10 offset-md-1";
-        
-       
+        $data["container"]  = "col-xl-6 offset-xl-3 col-lg-10 offset-md-1";   
 
         return $data;
     }
-
    
 }

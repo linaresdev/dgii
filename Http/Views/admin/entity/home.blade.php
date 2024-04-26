@@ -75,11 +75,19 @@
                                             <h6 class="dropdown-header">Mantenimiento</h6>
                                             <a href="{{__url('{entity}/'.$entity->id.'/update')}}" 
                                                 class="dropdown-item">
+                                                <span class="mdi mdi-account-edit mdi-18px"></span>
                                                 {{__("business.update.name")}}
+                                            </a>
+
+                                            <a href="{{__url('{entity}/'.$entity->id.'/update/certify')}}" 
+                                                class="dropdown-item">
+                                                <span class="mdi mdi-file-certificate-outline mdi-18px"></span>
+                                                {{__("business.update.certify")}}
                                             </a>
 
                                             <a href="{{__url('{entity}/'.$entity->id.'/delete')}}" 
                                                 class="dropdown-item">
+                                                <span class="mdi mdi-delete-outline mdi-18px"></span>
                                                 {{__("business.delete.title")}}
                                             </a>
                                         </div>
