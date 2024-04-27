@@ -5,12 +5,13 @@
     <article class="card border-0">
         <section class="card-body">
             <h4 class="fs-4 my-3">
-                {{__('words.register')}}
+                {{ $user->fullname }}
             </h4>
 
             <article class="">
 
                 <form action="{{__url('{current}')}}" method="POST">
+
                     @if( $errors->any() )
                     <div class="mb-3 px-4 py-3 bg-light rounded-1">
                         @foreach($errors->all() as $error )
@@ -23,40 +24,32 @@
                     <div class="form-floating mb-2">
                         <input type="text"
                             name="firstname"
-                            value="{{old('firstname')}}"
+                            value="{{old('firstname', $user->firstname)}}"
                             id="firstname" 
                             class="form-control"
                             placeholder="{{__('words.firstname')}}">
                         <label for="firstname">{{__('words.firstname')}}</label>
                     </div>
-                    <div class="form-floating mb-2">
+
+                    <div class="form-floating mb-4">
                         <input type="text"
                             name="lastname"
-                            value="{{old('lastname')}}"
+                            value="{{old('lastname', $user->lastname)}}"
                             id="lastname" 
                             class="form-control"
                             placeholder="{{__('words.lastname')}}">
                         <label for="lastname">{{__('words.lastname')}}</label>
                     </div>
 
+                    
                     <div class="form-floating mb-2">
                         <input type="text"
-                            name="email"
-                            value="{{old('email')}}"
-                            id="email" 
+                            name="name"
+                            value="{{old('publicname', $user->name)}}"
+                            id="publicname" 
                             class="form-control"
-                            placeholder="{{__('words.email')}}">
-                        <label for="email">{{__('words.email')}}</label>
-                    </div>
-
-                    <div class="form-floating">
-                        <input type="password"
-                            name="password"
-                            value="{{old('password')}}"
-                            id="password" 
-                            class="form-control"
-                            placeholder="{{__('words.password')}}">
-                        <label for="password">{{__('words.password')}}</label>
+                            placeholder="{{__('public.name')}}">
+                        <label for="publicname">{{__('public.name')}}</label>
                     </div>
 
                     <div class="py-3">

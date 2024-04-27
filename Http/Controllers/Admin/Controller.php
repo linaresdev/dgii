@@ -26,8 +26,8 @@ class Controller extends BaseController {
         $this->app = $app;
 
         ## VAR LAYOUT
-        $data["icon"] = '<span class="mdi mdi-text"></span>';
-        $data["title"] = 'Title Page';
+        $data["icon"]       = '<span class="mdi mdi-text"></span>';
+        $data["title"]      = 'Title Page';        
 
         $this->share($data);
 

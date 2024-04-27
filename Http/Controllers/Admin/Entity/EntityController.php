@@ -69,4 +69,15 @@ class EntityController extends Controller {
     public function postDelete($ent, Request $request ) {
         return $this->app->delete($ent, $request);
     }
+
+    ## Users Support
+    public function getUsers( $ent ) {
+       return $this->render("users.home", $this->app->getUsers($ent));
+    }
+
+    public function getSourcesUsers($ent, $source ) {
+        return $this->render(
+            "users.sources", $this->app->getSourcesUsers($ent, $source)
+        );
+    }
 }

@@ -85,6 +85,14 @@
                                                 {{__("business.update.certify")}}
                                             </a>
 
+                                            <a href="{{__url('{entity}/'.$entity->id.'/users')}}" 
+                                                class="dropdown-item">
+                                                <span class="mdi mdi-account-multiple mdi-18px"></span>
+                                                {{__("users.manager")}}
+                                            </a>
+
+                                            <div class="border-bottom my-2"></div>
+
                                             <a href="{{__url('{entity}/'.$entity->id.'/delete')}}" 
                                                 class="dropdown-item">
                                                 <span class="mdi mdi-delete-outline mdi-18px"></span>

@@ -77,7 +77,7 @@ class Term extends Model {
     }
 
     public function users() {
-        return $this->belongsToMany(\DGII\User\Model\Store::class, "termstaxonomies", "id", "tax_id");
+        return $this->belongsToMany(\DGII\User\Model\Store::class, "termstaxonomies", "term_id", "tax_id");
     }
 
     public function getUserGroup($slug)

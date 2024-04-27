@@ -49,6 +49,12 @@ Route::prefix("admin")->namespace("Admin")->group(function($route)
 
             Route::get("delete", "EntityController@getDelete");
             Route::post("delete", "EntityController@postDelete");
+
+            Route::prefix("users")->group(function($route)
+            {
+                Route::get("/", "EntityController@getUsers");
+                Route::get("/sources/{usr}", "EntityController@getSourcesUsers");
+            });
         });
     });
 });

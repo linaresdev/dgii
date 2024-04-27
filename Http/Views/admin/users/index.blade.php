@@ -24,7 +24,8 @@
                 </div>
             </article>
 
-            <article class="table-responsive-md">
+            <article class="table-responsive-md">                
+
                 <table class="table table-striped table-borderless table-hover align-middle">
                     <thead>
                         <tr>
@@ -56,7 +57,7 @@
                                             {{trans_choice("state.$i", 1)}}
                                         </span>
                                         @else
-                                        <a href="#" 
+                                        <a href="{{__url('admin/users/show/'.$user->id.'/set-state/'.$i)}}" 
                                             class="dropdown-item">
                                             <span class="mdi mdi-checkbox-blank-outline"></span>
                                             {{trans_choice("state.$i", 2)}}
@@ -75,12 +76,12 @@
                                     </a>
                                     <div class="dropdown-menu">
                                         <h6 class="dropdown-header">{{$user->fullname}}</h6>
-                                        <a href="#" 
+                                        <a href="{{__url('admin/users/show/'.$user->id.'/update/credential')}}" 
                                             class="dropdown-item ms-3">
                                             {{__("update.credentials")}}
                                         </a>
 
-                                        <a href="#" 
+                                        <a href="{{__url('admin/users/show/'.$user->id.'/update/password')}}" 
                                             class="dropdown-item ms-3">
                                             {{__("update.password")}}
                                         </a>

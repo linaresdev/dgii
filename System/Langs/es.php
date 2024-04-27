@@ -93,11 +93,15 @@ return (new class {
             "update.account"        => "Actualizar cuenta",
             "update.credentials"    => "Actualizar credenciales",
             "update.from.email"     => "Correo electrónico de la cuenta que desea actualizar",
-            "update.password"       => "actualizar contraseña",
+            "update.password"       => "Actualizar contraseña",
             "update.successfully"   => "Actualización realizada exitosamente",
             "update.error"          => "Error al tratar de actualizar los datos",
 
             "user.fullname"         => "Nombre completo  para el usuario",
+            "users.group"           => "Grupos de usuarios",
+            "users.manager"         => "Gestionar usuarios",
+            "users.search"          => "Buscar usuarios",
+
 
             "lists.show"            => "Mostrar listas",
             "lists.encf.all"        => "Listar todos los comprobantes",
@@ -106,11 +110,13 @@ return (new class {
 
             "rol.empty"             => "No posee los permisos requeridos para esta operación",
             
+            "public.name"           => "Nombre público",
             "register.users"        => "Registros de usuarios",
 
             "validation.required"           => "El campo :attribute es requerido",
             "validation.bad.certify"        => "Certificado no válido o llave incorrecta",
             "validate.bad.name"             => "Nombre incorrecto",
+            "validate.bad.email"                => "El campo :attribute existe o no es valido",
             "validate.unique"               => "El :attribute existe en nuestros registros",
             "validation.has.entity"         => ":attribute no disponible",
             "validation.is_rnc"             => "RNC no es valido",
@@ -144,6 +150,8 @@ return (new class {
             "words.home"            => "Inicio",
             "words.identify"        => "Identificarse",
             "words.filters"         => "Filtrar",
+            "words.firstname"       => "Nombre",
+            "words.lastname"        => "Apellidos",
             "words.FechaHoraAcuseRecibo" => "Fecha",
             "words.groups"          => "Grupos",
             "words.login"           => "Acceder",
@@ -170,6 +178,7 @@ return (new class {
             "words.search"          => "Buscar",
             "words.subject"         => "Asunto",
             "words.slug"            => "Nombre amigable",
+            "words.save"            => "Guardar",
             "words.to-lists"        => "Listar",
 
             "send.xml"              => "Enviar XML",

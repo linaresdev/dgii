@@ -202,4 +202,36 @@ class EntitySupport {
         ($validate = validator([],[]))->errors()->add("entity", "Error credenciales");
         return back()->withErrors($validate)->withInput();        
     }
+
+    ## USERS GROUPS
+    public function getUsers( $ent )
+    {
+        //$term = (new Term)->where("slug", $ent->rnc)->first();
+
+        // request()->user()->syncGroup($term->id, [
+        //     "view"      => 1, 
+        //     "insert"    => 1, 
+        //     "update"    => 1, 
+        //     "delete"    => 0,
+        // ]);
+
+        $data['icon']   = '<span class="mdi mdi-bank"></span>';
+        $data["title"]  = $ent->name;
+        $data["ent"]    = $ent;
+        $data["term"]   = $ent->group;
+
+        $data["urlAjax"] = __url('{entity}/'.$ent->id.'/users/sources');
+
+       
+        return $data;
+    }
+
+    public function getSourcesUsers($ent, $source) {
+
+        $users = (new User)->where("fullname", 'LIKE', '%'.$source.'%');
+
+        $data["users"] =  $users->get()->take(6);
+
+        return $data;
+    }
 }
