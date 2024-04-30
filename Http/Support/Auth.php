@@ -73,7 +73,7 @@ class Auth
 
         $auth->logout();       
         
-        return redirect("/login");
+        return redirect()->to("/");
     }
 
     public function verifyXmlSchema($xml, $xsd)
