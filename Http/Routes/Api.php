@@ -24,7 +24,7 @@ Route::get("nologin", function(Request $request)
 });
 
 ## AUTH
-Route::get("/login-api","AuthController@noLogin")->name("login");
+//Route::get("/login-api","AuthController@noLogin")->name("login");
 
 Route::prefix("{rnc}")->group(function($route)
 {

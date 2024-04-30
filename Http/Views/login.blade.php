@@ -42,10 +42,10 @@
                                 {{__("words.login")}}
                             </button>
 
-                            <a href="{{__url('auth')}}" class="btn btn-sm btn-light rounded-pill px-3">
+                            {{-- <a href="{{__url('auth')}}" class="btn btn-sm btn-light rounded-pill px-3">
                                 <span class="mdi mdi-shield-lock-outline"></span>
                                 {{__("entity.access")}}
-                            </a>
+                            </a> --}}
                         </div>
                     </form>
                 </div>
