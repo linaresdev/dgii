@@ -57,7 +57,7 @@ class Auth
             }
             
             $user->news("login", "words.aprobed");
-            return redirect("admin");
+            return redirect("/");
         }
 
         $validator->errors()->add('login', __("auth.bad"));
@@ -73,7 +73,7 @@ class Auth
 
         $auth->logout();       
         
-        return redirect("login");
+        return redirect("/login");
     }
 
     public function verifyXmlSchema($xml, $xsd)

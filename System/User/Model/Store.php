@@ -157,6 +157,10 @@ class Store extends Authenticatable {
         return ($this->groups->where("slug", $slug)->count() > 0);
     }
 
+    public function isTypeGroup($type) {
+        return ($this->groups->where("type", $type)->count() > 0);
+    }
+
 
     /*
     * USERS TAXONOMIES */

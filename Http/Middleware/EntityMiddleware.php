@@ -18,19 +18,22 @@ class EntityMiddleware {
     public function handle( $request, Closure $next, $guard = 'web')
     { 
         if( ($AUTH = Auth::guard($guard))->guest() && !$this->isExert($request) )
-        {          
-                $errors = Alert::addErrors("warning", [
-                    __("auth.required")
-                ]);
-                
-                return redirect("login")->withErrors($errors)->withInput();
+        {
+            // $errors = Alert::addErrors("warning", [
+            //     __("auth.required")
+            // ]);
             
+            // return redirect("/login")->withErrors($errors)->withInput();
+        }
+        else{
+
+            // if( $request->user()->entities()->count() == 0 )
+            // {
+            //     return redirect("/");
+            // }
         }
 
-        if( $request->user()->entities()->count() == 0 )
-        {
-            return redirect("/");
-        }
+        
 
         return $next( $request );
     }

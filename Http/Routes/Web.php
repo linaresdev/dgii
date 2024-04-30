@@ -71,8 +71,6 @@ Route::prefix("admin")->namespace("Admin")->group(function($route)
 //     $env    = env("DGII_ENV");
 //     $url    =  "$host/api/101011939/$env/fe/recepcion/api/ecf";
 
-//     //dd($url);
-    
 //     return view("dgii::form", [
 //         "title"     => "SOAP",
 //         "url"       => $url,
