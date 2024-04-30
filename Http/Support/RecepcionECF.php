@@ -43,6 +43,7 @@ class RecepcionECF
     public function xmlARECF($ecf, $state=0, $code=0)
     {
         $stub = app("files")->get(__path("{xmlstub}/ARECF.txt"));
+
         $data = null;
         $srcs = [
             "RNCEmisor", 
@@ -153,9 +154,9 @@ class RecepcionECF
             {
                 ## Estructura de respuesta no recibido
                 $XML = $this->xmlARECF($ecf, 1, 3);
-
-                $firma = XLib::load($ent)->xml($XML)->sign();
                 
+                $firma = XLib::load($ent)->xml($XML)->sign();
+               
                 //$firma = (new XML($ent))->xml($XML)->sign();               
                 
                 //$firma = $this->firmador($ent, $XML);

@@ -63,20 +63,22 @@ Route::prefix("admin")->namespace("Admin")->group(function($route)
     });
 });
 
-Route::get("recepcion", function()
-{   
-    //$host   = "https://ncf.vsdelta.com";
-    $host   = "http://192.168.10.7";
+// Route::get("recepcion", function()
+// {   
+//     //$host   = "https://ncf.vsdelta.com";
+//     $host   = "http://192.168.10.7";
 
-    $env    = env("DGII_ENV");
-    $url    =  "$host/api/101011939/$env/fe/recepcion/api/ecf";
+//     $env    = env("DGII_ENV");
+//     $url    =  "$host/api/101011939/$env/fe/recepcion/api/ecf";
+
+//     //dd($url);
     
-    return view("dgii::form", [
-        "title"     => "SOAP",
-        "url"       => $url,
-        "urlAuth"   => "101011939/$env/emisorreceptor/fe/Autenticacion/api/ValidacionCertificado" 
-    ]);
-});
+//     return view("dgii::form", [
+//         "title"     => "SOAP",
+//         "url"       => $url,
+//         "urlAuth"   => "101011939/$env/emisorreceptor/fe/Autenticacion/api/ValidacionCertificado" 
+//     ]);
+// });
 
 // Route::get("aprobacion", function()
 // {   

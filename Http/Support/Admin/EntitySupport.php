@@ -58,6 +58,7 @@ class EntitySupport {
 
     public function postEntityRegister( $request )
     {         
+
         if( !$request->user()->can("insert", "admin") ) {
            return $request->news("rol", __("auth.rol.deny"));
         }         
@@ -65,7 +66,7 @@ class EntitySupport {
         if( openssl_pkcs12_read($request->getCertifyContent(), $data, $request->pwd) )
         { 
             if( ( $cert = (new P12Certify($data)) )->passes() ) 
-            {                 
+            { 
                 if( ($validate = $cert->dataValidate($request))->passes() )
                 {                    
                     
@@ -134,15 +135,17 @@ class EntitySupport {
 
     public function postUpdateCertify($ent, $request)
     {        
+
         $validate = validator([], []);
 
         if( openssl_pkcs12_read($request->getCertifyContent(), $data, $request->pwd) )
         { 
             if( ( $cert = (new P12Certify($data)) )->passes() ) 
             { 
+
                 $update = $ent->update([
                     "p12" => $request->getCertifyContent(), 
-                    "password" => $request->password
+                    "password" => $request->pwd
                 ]);
 
                 if( $update ) {

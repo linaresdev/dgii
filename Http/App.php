@@ -130,4 +130,5 @@ if( env("APP_START") ):
     ], "dgii");
 
 endif;
-
+//dd(openssl_get_md_methods(true));
+//RSA-SHA256

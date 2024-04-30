@@ -9,7 +9,7 @@ namespace DGII\Support;
 
 class XLib 
 {       
-    const ALGORITHM         = "SHA256";
+    const ALGORITHM    = "SHA256";
 
     protected $xmlNameSpace;
 
@@ -43,8 +43,9 @@ class XLib
 
     public function load($entity)
     {
+        
         if( openssl_pkcs12_read($entity->p12, $data, $entity->password) )
-        {
+        {                
             ## Autorizamos firmar
             self::$auth = true;
 
@@ -66,13 +67,16 @@ class XLib
 
             ## METHOD
             $this->loadMethods();
+
+            return $this;
         }
 
-        return $this;
+        abort(500, "Error de la credenciales del certificado");        
     }
 
     public function loadMethods()
     {
+
         switch(self::ALGORITHM)
         {
             case "SHA256":
@@ -88,7 +92,7 @@ class XLib
     }
 
     public function algorithm($method=0)
-    {
+    {        
         if( array_key_exists($method, ($methods = openssl_get_md_methods(true))) )
         {
             return $methods[$method];
@@ -101,7 +105,7 @@ class XLib
     }    
 
     public function xml($XML) 
-    {
+    { 
         $this->DOM = new \DOMDocument;
 
         $this->DOM->preserveWhiteSpace    = env("XML_SPACE", false);
@@ -116,7 +120,7 @@ class XLib
         $this->digestValue = base64_encode(
             openssl_digest( $this->stubs["c14nBase"], $this->algoMethod, true )
         );
-
+        
         return $this;
     }
 

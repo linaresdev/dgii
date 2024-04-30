@@ -14,7 +14,7 @@ use DGII\Http\Support\Recepcion\AprobacionData;
 class RecepcionComprobante {
 
     public function recepcionComprobante( $ent, $request )
-    {             
+    {           
         if( $request->hasFile("xml") )
         {      
             $xmlData    = (new AprobacionData($request->file("xml")));            
