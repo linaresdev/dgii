@@ -14,13 +14,16 @@ use Illuminate\Support\Facades\Auth;
 class Login {
 
     protected $exerts = [
-        "logout"
     ];
 
     public function handle( $request, Closure $next, $guard = 'web')    
     {
         if( ($AUTH = Auth::guard($guard))->guest() && !$this->isExert($request) )
         {
+            if( __segment(1, "logout") ) {
+                abort(404);
+            }
+            
             if( __segment(1, "admin") OR __segment(1, "entity") )
             {                
                 return redirect("login");
