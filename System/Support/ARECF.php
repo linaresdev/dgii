@@ -9,9 +9,9 @@ namespace DGII\Support;
 
 class ARECF
 {
-    protected $data;
+    protected $data=[];
 
-    protected $format;
+    protected $format=[];
 
     public function __construct($file)
     {

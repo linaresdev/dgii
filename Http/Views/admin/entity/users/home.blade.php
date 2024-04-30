@@ -43,8 +43,9 @@
         				<tr>
         					<td class="p-1 px-2">{{$user->name}}</td>
         					<td class="p-1 px-2 text-end">
-        						<a href="#" class="btn btn-light btn-sm rounded-pill px-3">
-        							Remover
+        						<a href="{{__url('{current}/remove-group/'.$user->id.'/'.$ent->getTermID())}}" 
+                                    class="btn btn-light btn-sm rounded-pill">
+        							<span class="mdi mdi-trash-can-outline mdi-20px"></span>
         						</a>
         					</td>
         				</tr>

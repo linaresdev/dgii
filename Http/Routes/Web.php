@@ -54,6 +54,10 @@ Route::prefix("admin")->namespace("Admin")->group(function($route)
             {
                 Route::get("/", "EntityController@getUsers");
                 Route::get("/sources/{usr}", "EntityController@getSourcesUsers");
+
+                Route::post("add-group", "EntityController@postAddUserEntity");
+                Route::get("remove-group/{usrID}/{termID}", "EntityController@getRemoveUserEntity");
+
             });
         });
     });

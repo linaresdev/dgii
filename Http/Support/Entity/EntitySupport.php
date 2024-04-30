@@ -142,7 +142,7 @@ class EntitySupport
     }
 
     public function arecf( $entity, $ecf )
-    {
+    { 
         $data           = $this->header($entity);
         $data["ecf"]    = $ecf;
         $data["arecf"]  = $ecf->arecf();
@@ -160,6 +160,8 @@ class EntitySupport
         $data               = $this->header($entity);
         $data["ecf"]        = $ecf;
         $data["acecf"]      = $ecf->acecf;
+
+
 
         return $data;
     }

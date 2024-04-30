@@ -24,6 +24,7 @@
                 </h4>
             </hgroup>          
         </article>
+        
         <article class="bg-white d-flex justify-content-center shadow-sm p-3">
             <ul class="m-0 p-0" style="list-style:none;">
                 <h4 class="fx-bold fw-semibold fs-6 mx-0 mb-3">

@@ -191,6 +191,12 @@ class Hacienda extends Model
         return $this->hasOne(Term::class, "slug", "rnc");
     }
 
+    public function getTermID() {
+        if( ($term = (new Term)->where( "slug", $this->rnc )->first()) ?? NULL ) {
+            return $term->id;
+        }
+    }
+
     public function getEcf($rnc, $encf)
     {
         return $this->Recepcion->where("RNCComprador", $rnc)->where("eNCF", $encf)->first() ?? null;

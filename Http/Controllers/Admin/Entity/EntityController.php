@@ -80,4 +80,13 @@ class EntityController extends Controller {
             "users.sources", $this->app->getSourcesUsers($ent, $source)
         );
     }
+
+    public function postAddUserEntity( $ent, Request $request ) {
+        return $this->app->postAddUserEntity( $ent, $request );
+    }
+
+    public function getRemoveUserEntity( $ent, $user, $termID ) 
+    {
+        return $this->app->removeUserFromEntity( $user, $termID );
+    }
 }

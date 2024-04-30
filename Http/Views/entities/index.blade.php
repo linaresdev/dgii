@@ -4,7 +4,7 @@
         
         @if(auth("web")->check())
         
-        <article class="row mx-1">            
+        <article class="row mx-1">          
             @foreach( $user->entities() as $entity )
             <div class="col d-flex align align-items-start p-3 border bg-white">
                 <span class="mdi mdi-bank" style="font-size: 3em;line-height: 90%;"></span>

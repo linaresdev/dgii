@@ -17,7 +17,7 @@ class EntityController extends Controller
         $this->boot($app);
     }
 
-    public function index($entity)
+    public function index($entity) 
     {
         return $this->render('entity.index', $this->app->index($entity));
     }
@@ -38,7 +38,7 @@ class EntityController extends Controller
     }
 
     public function arecf($entity, $ecf)
-    {
+    { 
         return $this->render("entity.arecf", $this->app->arecf($entity, $ecf));
     }
 
