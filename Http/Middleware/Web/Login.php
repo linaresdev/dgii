@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 class Login {
 
     protected $exerts = [
+        "logout"
     ];
 
     public function handle( $request, Closure $next, $guard = 'web')    
@@ -34,7 +35,7 @@ class Login {
             $user = $request->user();
 
             if( __segment(1, "login") ) {
-                return back();
+                return redirect()->to('/');
             }
 
             if( !$request->user()->isGroup("admin") && __segment(1, "admin") ) {
@@ -42,15 +43,21 @@ class Login {
             }
 
            
-            if( __segment(1, "entity") && ($user->isTypeGroup("entity-group") == true ) )
+            if( __segment(1, "entity")  )
             {
-                if( !$user->isGroup(__segment(2)) && (count(__segment()) > 1) ) { 
-                    return abort(404);
+
+                if( $user->isTypeGroup("entity-group") )
+                {
+                    if( count( __segment() ) > 1 ) { 
+                        if( !$user->isGroup(__segment(2)) )
+                        {
+                            abort(404);
+                        }
+                    }
                 }
-                
-            }
-            else {
-                return back();
+                else {
+                    abort(404);
+                }               
             }
 
         }
