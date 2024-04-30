@@ -3,7 +3,7 @@
 Route::get("/", "HomeController@index");
 
 ## ROUTES
-Route::get("login", "AuthController@getWebLogin");
+Route::get("login", "AuthController@getWebLogin")->name('login');
 Route::post("login", "AuthController@postWebLogin");
 
 Route::get("logout", "AuthController@getWebLogout");

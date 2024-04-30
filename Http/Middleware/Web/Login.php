@@ -22,12 +22,8 @@ class Login {
         if( ($AUTH = Auth::guard($guard))->guest() && !$this->isExert($request) )
         {
             if( __segment(1, "admin") OR __segment(1, "entity") )
-            {
-                $errors = Alert::addErrors("warning", [
-                    __("auth.required")
-                ]);
-                
-                return redirect("login")->withErrors($errors)->withInput();
+            {                
+                return redirect("login");
             }            
         }
         else {
