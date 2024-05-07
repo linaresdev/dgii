@@ -18,7 +18,7 @@ class EntityController extends Controller
     }
 
     public function index($entity) 
-    {
+    { 
         return $this->render('entity.index', $this->app->index($entity));
     }
 

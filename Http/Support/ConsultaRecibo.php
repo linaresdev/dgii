@@ -11,8 +11,17 @@ use DGII\Model\Hacienda;
 
 class ConsultaRecibo 
 {
-    public function consultaRecibo($entity, $request)
+    public function consultaRecibo($ent, $request)
     {
+        $entity = (new \DGII\Model\Hacienda)->where("rnc", $ent)->first() ?? null;
+       
+
+        if($entity == null ){
+            return response("Page no fund", 404, [
+                'Content-Type' => 'application/xml'
+            ]);
+        }
+
         $stub = app("files")->get(__path('{xmlstub}/Consulta.txt'));
 
         ## Parámetros de entrada válidos
@@ -55,7 +64,7 @@ class ConsultaRecibo
         else
         {            
             $stub = str_replace("<mensajes>{mensajes}</mensajes>\n", null, $stub);
-            //dd($stub);
+            
             $data["rnc"]        = $request->get("Rnc");
             $data["encf"]       = $request->get("Encf");
             $data["estado"]     = $query->Estado;        

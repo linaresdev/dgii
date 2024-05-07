@@ -26,6 +26,7 @@ class Hacienda
 
     public function seedSigner( $seed=null, $replace="</SemillaModel>", $format=false )
     {
+        
         if( ($sign = \Signer::entity($seed))->check()  )
         {
             return $sign->method(OPENSSL_ALGO_SHA256)->sign($replace, $format);

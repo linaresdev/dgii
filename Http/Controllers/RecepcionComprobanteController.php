@@ -17,7 +17,7 @@ class RecepcionComprobanteController extends Controller {
     }
 
     public function index( $ent, Request $request )
-    {        
+    {
         return $this->app->recepcionComprobante( $ent, $request );
     }
 }

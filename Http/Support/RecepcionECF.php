@@ -123,12 +123,13 @@ class RecepcionECF
     }
 
     public function recepcionECF($ent, $request)
-    {        
+    {
         if( $request->hasFile("xml") )
         {
             $xmlData    = ($file = $request->file("xml"))->getContent();
             $xsd        = __path('{wvalidate}/RecepcionComercial.xsd');
             $ecf        = ECF::load($xmlData);
+            $ent        = (new \DGII\Model\Hacienda)->where("rnc", $ent)->first() ?? abort(404);
 
             ## signer
 
@@ -166,7 +167,7 @@ class RecepcionECF
 
                 //$firma = (new XML($ent))->xml($XML)->sign();
                // $firma = $xmlSigner->signXml($XML);
-                app("files")->put($PATHARECF.'/'.$fileName, $firma);
+                app("files")->put( $PATHARECF.'/'.$fileName, $firma );
 
                 return response($firma, 400, [
                     'Content-Type' => 'application/xml'
@@ -242,7 +243,7 @@ class RecepcionECF
             {              
                 $XML  = $this->xmlARECF($ecf, 0); 
                 app("files")->put($PATHARECF.'/Acuse.xml', $XML);
-
+                
                 $ent->saveARECF($this->arecf);
 
                 //$firma = (new XML($ent))->xml($XML)->sign();

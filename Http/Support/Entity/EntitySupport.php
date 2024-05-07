@@ -325,7 +325,7 @@ class EntitySupport
             $clientData = (array) $remoteData[0];
 
             ## Nos autenticamos en el cliente si es requerido
-            if( !empty($clientData["urlOpcional"]) )
+            if( !empty($clientData["urlOpcional"]) && $clientData["urlOpcional"] != "https://" )
             { 
                 if( ($clientAuth = $this->getClientToken($entity, $clientData)) == null )
                 {

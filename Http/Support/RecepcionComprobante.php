@@ -21,6 +21,9 @@ class RecepcionComprobante {
             $xml        = $request->file("xml");
             $fileName   = $xmlData->get("RNCComprador").$xmlData->get("eNCF").".xml";
 
+            $ent = (new \DGII\Model\Hacienda)->where("rnc", $ent)->first() ?? abort(404);
+
+
             if( !app("files")->exists(($path = __path("{AprobacionComercial}"))) )
             {
                 app("files")->makeDirectory($path, 0775, true);

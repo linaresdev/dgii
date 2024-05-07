@@ -14,6 +14,7 @@ class EnviarComprobante
         $ruls["rnc"]                = "required";
         $ruls["tipoEncf"]           = "required";
         $ruls["urlRecepcion"]       = "required";
+        
         //$ruls["urlAutenticcion"]    = "required";
 
         $checkData = validator($request->all(), $ruls);

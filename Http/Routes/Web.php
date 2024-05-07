@@ -94,57 +94,63 @@ Route::prefix("admin")->namespace("Admin")->group(function($route)
 // });
 
 
+Route::get("mona/{item}", function($item=null)
+{
+    $host = "192.168.10.7";
+    //$host = "https://ncf.vsdelta.com";
+    $envEcf = env("DGII_ENV");
 
-// Route::get("mona/{item}", function($item=null)
-// {
-//     $host = "192.168.10.18";
-//     $host = "https://ncf.vsdelta.com";
-//     $envEcf = env("DGII_ENV");    
+    // if( $item = "EnviarAprobacionComercial")
+    // {
+    //     $url = "$host/api/101011939/$envEcf/emisorreceptor/fe/Autenticacion/api/Semilla";
+    //     dd($url);
+    // }    
 
-//     ## AUTH
-//     if( $item == "auth" )
-//     {        
-//         $seed =  Http::get(
-//             "$host/api/101011939/$envEcf/emisorreceptor/fe/Autenticacion/api/Semilla"    
-//         )->body();
+    // ## AUTH
+    // if( $item == "auth" )
+    // {   
+    //     $seed =  Http::get(
+    //         "$host/api/101011939/$envEcf/emisorreceptor/fe/Autenticacion/api/Semilla"    
+    //     )->body();
 
-//         $signer = Hacienda::seedSigner($seed, '</SemillaModel>', true);
+    //     $signer = Hacienda::seedSigner($seed, '</SemillaModel>', true);
 
-//         app("files")->put(__path("{hacienda}/101011939/SeedSigner.xml"), $signer);
+    //     app("files")->put(__path("{hacienda}/101011939/SeedSigner.xml"), $signer);
         
-//         $token = Http::attach(
-//             "xml",
-//             $signer,
-//             "SemillaSigner.xml"
-//         )->post(
-//             "$host/api/101011939/$envEcf/emisorreceptor/fe/Autenticacion/api/ValidacionCertificado"
-//         )->body();
+    //     $token = Http::attach(
+    //         "xml",
+    //         $signer,
+    //         "SemillaSigner.xml"
+    //     )->post(
+    //         "$host/api/101011939/$envEcf/emisorreceptor/fe/Autenticacion/api/ValidacionCertificado"
+    //     )->body();
 
-//         return $token;
-//     }
+    //     return $token;
+    // }
 
 //     $token = "1|4TuunxuRpHvYwpfovm3msfoqsqrJ4psZoktcTIZP6cfb0702";
 //     $token = "32|qcKs6jNg0abATI1cmPNAUhmltyGUcS0xSDHK3GSo41a0d960";
 //     $token = "2|DzD5dtqu0STWhWwrp9zc98d927HgPBZDkNaVXILa4d071c61"; 
 //     $token = "42|KEsEBPphmwnuRn6b6Q8PMyURjcT30jJR1WMb5Z5Sb99916cb";
+//     $token = "1|PLaduDkx6Cqe1MfodnrigsrRLfBxFj03MfbgFAQN87efe86c";
 
 //     ## Emision Comprobante Electronico
-//     if( $item == "EmisionComprobantes")
-//     {       
-//         $url = "$host/api/101011939/$envEcf/emisorreceptor/api/Emision/EmisionComprobantes";
+    // if( $item == "EmisionComprobantes")
+    // {       
+    //     $url = "$host/api/101011939/$envEcf/emisorreceptor/api/Emision/EmisionComprobantes";
+       
+    //     return Http::withToken($token)->post($url, [
+    //         "rnc"               => "string",
+    //         "tipoEncf"          => "string",
+    //         "urlRecepcion"      => "string",
+    //         "urlAutenticacion"  => "string"
+    //     ])->body();
 
-//         return Http::withToken($token)->post($url, [
-//             "rnc"               => "string",
-//             "tipoEncf"          => "string",
-//             "urlRecepcion"      => "string",
-//             "urlAutenticacion"  => "string"
-//         ])->body();
-
-//         // return view("dgii::form", [
-//         //     "url" => "101011939/testecf/emisorreceptor/api/Emision/EmisionComprobantes",
-//         //     "urlRecepcion" => "101011939/testecf/emisorreceptor/fe/Recepcion/api/ecf"
-//         // ]);
-//     }
+    //     // return view("dgii::form", [
+    //     //     "url" => "101011939/testecf/emisorreceptor/api/Emision/EmisionComprobantes",
+    //     //     "urlRecepcion" => "101011939/testecf/emisorreceptor/fe/Recepcion/api/ecf"
+    //     // ]);
+    // }
 
 //     ## Emision Aprobacion Comercial
 //     if( $item == "EmisionAprobacionComercial" )
@@ -200,18 +206,18 @@ Route::prefix("admin")->namespace("Admin")->group(function($route)
 //         // ]);
 //     }
 
-//     if( $item == "Consulta" )
-//     {
-//         $url = "$host/api/101011939/$envEcf/emisorreceptor/api/Emision/ConsultaAcuseRecibo";
+    // if( $item == "Consulta" )
+    // {
+    //     $url = "$host/api/101011939/$envEcf/emisorreceptor/api/Emision/ConsultaAcuseRecibo";
         
-//         $data =  Http::withToken($token)->get($url, [
-//             "Rnc"   => "130976805",
-//             "Encf"  => "E310000000058"
-//         ])->body();
+    //     $data =  Http::withToken($token)->get($url, [
+    //         "Rnc"   => "130976805",
+    //         "Encf"  => "E310000000058"
+    //     ])->body();
 
-//         // /return $data;
+    //     return $data;
 
-//         dd($data);
-//     }
+    //     dd($data);
+    // }
 
-// });
+});

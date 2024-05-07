@@ -16,7 +16,7 @@ class EnviarAprobacionComercialController extends Controller {
         $this->boot($app);
     }
 
-    public function index( $ent, Request $request ) {
+    public function index( $ent, Request $request ) {       
         return $this->app->enviarAprobacionComercial($ent, $request);
     }
 }

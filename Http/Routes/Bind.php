@@ -5,7 +5,7 @@ Route::bind("usrID", function($ID){
 });
 
 ## BIND FROM ENTITY ID
-Route::bind("entID", function($ID) {
+Route::bind("entID", function($ID) { 
     return (new \DGII\Model\Hacienda)->find($ID) ?? abort(404); 
 });
 

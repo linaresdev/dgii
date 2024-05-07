@@ -216,10 +216,13 @@ class Auth
     
 
     public function getSeed($ent)
-    { 
-        return response(Hacienda::load($ent)->makeSeed(), 200, [
-            'Content-Type' => 'application/xml'
-        ]);
+    {        
+        if( ($ent = (new \DGII\Model\Hacienda)->where("rnc", $ent)->first() ?? null) != null )
+        {
+            return response(Hacienda::load($ent)->makeSeed(), 200, [
+                'Content-Type' => 'application/xml'
+            ]);            
+        }
 
        // $xml = Hacienda::seedSigner($xmlSeed, '</SemillaModel>', true);
 
