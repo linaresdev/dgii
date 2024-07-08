@@ -41,6 +41,7 @@ Route::prefix("admin")->namespace("Admin")->group(function($route)
 
                 ## Facturas
                 Route::get('/ecf', "EntityController@getEcf");
+                Route::get('/ecf/download/{arecfID}', "EntityController@getEcfDownload");
             });
         });
 

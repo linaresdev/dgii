@@ -94,4 +94,8 @@ class EntityController extends Controller {
     public function getECF($ent) {
         return $this->render("ecf", $this->app->getECF($ent));
     }
+
+    public function getEcfDownload($ent, $store) {
+        return $this->app->getEcfDownload($store->getOriginalEcf());
+    }
 }

@@ -9,6 +9,10 @@ Route::bind("entID", function($ID) {
     return (new \DGII\Model\Hacienda)->find($ID) ?? abort(404); 
 });
 
+Route::bind("arecfID", function($ID) { 
+    return (new \DGII\Model\ARECF)->find($ID) ?? abort(404); 
+});
+
 Route::bind('rnc', function( $rnc ) {
     $data = (new \DGII\Model\Hacienda)->where("rnc", $rnc)->first() ?? abort(404);
     

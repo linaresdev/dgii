@@ -39,7 +39,7 @@
 											<span class="mdi mdi-text-short mdi-20px"></span>
 											{{__("words.information")}}
 										</a>
-										<a href="#" class="dropdown-item">
+										<a href="{{__url('{entity}/show/'.$entity->id.'/ecf/download/'.$row->id)}}" class="dropdown-item">
 											<span class="mdi mdi-download mdi-20px"></span>
 											{{__("download.xml")}}
 										</a>

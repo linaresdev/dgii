@@ -258,8 +258,17 @@ class EntitySupport {
         $data["title"]      = $ent->name;
         $data["entity"]     = $ent;
 
-        $data["arecf"]       = $ent->arecf()->paginate(3);
-        //dd($data["arecf"][0]->pathECF);
+        $data["arecf"]      = $this->getPaginateArecf($ent);
+        
         return $data;
+    }
+
+    public function getPaginateArecf($ent, $perpage=10) {
+        $data = $ent->arecf();
+        return $data->orderBy("id", "DESC")->paginate($perpage);
+    }
+
+    public function getEcfDownload( $path ) {
+        return response()->download($path);
     }
 }
