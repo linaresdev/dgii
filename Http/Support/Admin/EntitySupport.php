@@ -251,4 +251,15 @@ class EntitySupport {
         $user->groups()->detach($termID);
         return back();
     }
+
+    ## SHOW ECF
+    public function getECF($ent)
+    {
+        $data["title"]      = $ent->name;
+        $data["entity"]     = $ent;
+
+        $data["arecf"]       = $ent->arecf()->paginate(3);
+        //dd($data["arecf"][0]->pathECF);
+        return $data;
+    }
 }

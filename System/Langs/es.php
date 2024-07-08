@@ -56,7 +56,7 @@ return (new class {
             "confirm.password"  => "Confirmar contraseña",
             "command.unknown"   => "Comando o orden desconocida",
             "corporate.group"   => "Grupo corporativo",
-
+            "date.isue"         => "Fecha de emisión",
             "delete.successfully"   => "Datos elimininados correctamente",
             "delete.errors"         => "Error al tratar de eliminar los datos",
 
@@ -108,6 +108,7 @@ return (new class {
             "lists.encf.processed"  => "Listar comprobantes procesados",
             "lists.encf.complete"   => "Listar comprobantes sin procesados",
 
+            "trade.name"            => "Nombre comercial",
             "rol.empty"             => "No posee los permisos requeridos para esta operación",
             
             "public.name"           => "Nombre público",
@@ -149,6 +150,7 @@ return (new class {
             "words.entity"          => "Entidad",
             "words.email"           => "Correo Electrónico",
             "words.home"            => "Inicio",
+            "words.information"     => "Información",
             "words.insert"          => "Insertar",
             "words.identify"        => "Identificarse",
             "words.filters"         => "Filtrar",
@@ -164,6 +166,7 @@ return (new class {
             'words.pending'         => "Pendientes",
             'words.processing'      => "Procesando",
             'words.processed'       => "Procesados",
+            "words.recf"            => "Recepción",
             "words.registers"       => "Registros",
             "words.name"            => "Nombre",
             "words.rnc"             => "RNC",

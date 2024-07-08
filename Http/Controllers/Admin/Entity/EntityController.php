@@ -89,4 +89,9 @@ class EntityController extends Controller {
     {
         return $this->app->removeUserFromEntity( $user, $termID );
     }
+
+    ## RECEPCION FACTURAS ECF
+    public function getECF($ent) {
+        return $this->render("ecf", $this->app->getECF($ent));
+    }
 }

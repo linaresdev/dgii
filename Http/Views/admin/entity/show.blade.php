@@ -11,7 +11,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">ECF</a>
+                <a href="{{__url('{entity}/show/'.$entity->id."/ecf")}}" class="nav-link">ECF</a>
             </li>
             <li class="nav-item">
                 <a href="#" class="nav-link">ARECF</a>

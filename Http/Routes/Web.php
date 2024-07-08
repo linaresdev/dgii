@@ -31,8 +31,18 @@ Route::prefix("admin")->namespace("Admin")->group(function($route)
     {
         Route::get('/', "EntityController@index");
 
-        Route::get('/show/{entID}', "EntityController@show");
-        Route::post('/show/{entID}/set-env', "EntityController@setEnv");
+        //Route::get('/show/{entID}', "EntityController@show");
+        //Route::post('/show/{entID}/set-env', "EntityController@setEnv");
+
+        Route::prefix("show")->group(function($route){
+            Route::prefix("{entID}")->group(function($route){
+                Route::get('/', "EntityController@show");
+                Route::post('/set-env', "EntityController@setEnv");
+
+                ## Facturas
+                Route::get('/ecf', "EntityController@getEcf");
+            });
+        });
 
         Route::get('/register', "EntityController@getEntityRegister");
         Route::post('/register', "EntityController@postEntityRegister");
