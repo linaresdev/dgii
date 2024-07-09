@@ -23,7 +23,7 @@
 						@foreach($arecf as $row)
 						<tr>
 							<td class="">{{$row->eNCF}}</td>
-							<td>{{$row->razonSocialComprador()}}</td>
+							<td>{{$row->razonSocialEmisor()}}</td>
 							<td class="text-center">
 								{{$row->fechaEmision()}}
 							</td>
