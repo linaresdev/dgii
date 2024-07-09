@@ -23,7 +23,7 @@
 						@foreach($arecf as $row)
 						<tr>
 							<td class="">{{$row->eNCF}}</td>
-							<td>{{$row->razonSocialEmisor()}}</td>
+							<td>{{$row->razonSocialComprador()}}</td>
 							<td class="text-center">
 								{{$row->fechaEmision()}}
 							</td>
@@ -35,11 +35,11 @@
 										<span class="mdi mdi-progress-wrench"></span>
 									</button>
 									<div class="dropdown-menu">
-										<a href="#" class="dropdown-item">
+										<a href="{{__url('{ecf}/info/'.$row->id)}}" class="dropdown-item">
 											<span class="mdi mdi-text-short mdi-20px"></span>
 											{{__("words.information")}}
 										</a>
-										<a href="{{__url('{entity}/show/'.$entity->id.'/ecf/download/'.$row->id)}}" class="dropdown-item">
+										<a href="{{__url('{ecf}/download/'.$row->id)}}" class="dropdown-item">
 											<span class="mdi mdi-download mdi-20px"></span>
 											{{__("download.xml")}}
 										</a>

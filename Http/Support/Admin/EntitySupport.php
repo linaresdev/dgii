@@ -6,8 +6,8 @@ namespace DGII\Http\Support\Admin;
 * ©IIPEC
 *---------------------------------------------------------
 */
-
 use DGII\Model\Term;
+use DGII\Facade\Dgii;
 use DGII\Facade\Alert;
 use DGII\Model\Hacienda;
 use DGII\Support\P12Certify;
@@ -259,7 +259,27 @@ class EntitySupport {
         $data["entity"]     = $ent;
 
         $data["arecf"]      = $this->getPaginateArecf($ent);
-        
+
+        Dgii::addUrl([
+            "{ecf}" => "{entity}/show/$ent->id/ecf",
+        ]);
+
+        return $data;
+    }
+
+    public function getInfoECF($ent, $info)
+    {
+        $data["title"]      = $ent->name;
+        $data["entity"]     = $ent;
+
+        $data["ecf"]        = $info;
+        $data["data"]       = $info->pathECF;
+        $data["item"]       = $info->pathECF->get("Item");
+
+        Dgii::addUrl([
+            "{ecf}" => "{entity}/show/$ent->id/ecf",
+        ]);
+        //dd( $info->pathECF );
         return $data;
     }
 
