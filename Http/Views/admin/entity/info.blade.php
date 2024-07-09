@@ -22,6 +22,7 @@
 					</tr>
 				</thead>
 				<tbody>
+					@foreach( $items as $item )
 					<tr>
 						<td class="text-center">
 							{{$item->CantidadItem}}
@@ -31,6 +32,7 @@
 						<td class="text-center">{{$item->PrecioUnitarioItem}}</td>
 						<td class="text-center">{{$item->MontoItem}}</td>
 					</tr>
+					@endforeach
 				</tbody>
 			</table>
 

@@ -274,12 +274,12 @@ class EntitySupport {
 
         $data["ecf"]        = $info;
         $data["data"]       = $info->pathECF;
-        $data["item"]       = $info->pathECF->get("Item");
+        $data["items"]       = $info->pathECF->getItems();
 
         Dgii::addUrl([
             "{ecf}" => "{entity}/show/$ent->id/ecf",
         ]);
-        //dd( $info->pathECF );
+        //dd( $info->pathECF->getItems() );
         return $data;
     }
 

@@ -39,6 +39,16 @@ class ECF {
         }
     }
 
+    public function getItems() {
+        if( !empty( ($items = $this->get("Item"))) ) {
+            if( is_array($items) ) {
+                return $items;
+            }
+
+            return [$items];
+        }
+    }
+
     public function getOriginData()
     {
         return $this->original;

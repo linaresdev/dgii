@@ -21,6 +21,7 @@
 					</thead>
 					<tbody>
 						@foreach($arecf as $row)
+						
 						<tr>
 							<td class="">{{$row->eNCF}}</td>
 							<td>{{$row->razonSocialEmisor()}}</td>
