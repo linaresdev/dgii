@@ -132,8 +132,10 @@ class RecepcionECF
             $ent        = (new \DGII\Model\Hacienda)->where("rnc", $ent)->first() ?? abort(404);
 
             ## signer
-
-            $ecf->add("fileName", ($fileName = $file->getClientOriginalName()));
+            $fileName   = $ecf->get("RNCEmisor");
+            $fileName  .= $ecf->get("eNCF").".xml";
+            
+            $ecf->add("fileName", $fileName);
             $ecf->add("pathECF", __path("{Recepcion}/$fileName"));
 
             if( !app("files")->exists(($PATHARECF = __path("{ARECF}"))) )
@@ -169,6 +171,12 @@ class RecepcionECF
                // $firma = $xmlSigner->signXml($XML);
                 app("files")->put( $PATHARECF.'/'.$fileName, $firma );
 
+                stack("warning", "ECF : ".$ecf->get("eNCF"), [
+                    "code"      => 3,
+                    "status"    => "Envío duplicado",
+                    "path"      => $PATHARECF.'/'.$fileName,
+                ]);
+
                 return response($firma, 400, [
                     'Content-Type' => 'application/xml'
                 ]);
@@ -194,6 +202,12 @@ class RecepcionECF
                     $ent->saveARECF($this->arecf);
                 }
 
+                stack("error", "ECF : ".$ecf->get("eNCF"), [
+                    "code"  => 1,
+                    "status" => "Error de especificación",
+                    "path"  => $PATHARECF.'/'.$fileName,
+                ]);
+
                 return response($firma, 400, [
                     'Content-Type' => 'application/xml'
                 ]);
@@ -205,9 +219,15 @@ class RecepcionECF
             {
                 $XML = $this->xmlARECF($ecf, 0, 2);
                 // $firma = $this->firmador($ent, $XML);
-                $firma = XLib::load($ent)->xml($XML)->sign();
+                $firma = XLib::load($ent)->xml($XML)->sign();             
 
                 //app("files")->put($PATHARECF.'/'.$fileName, $XML);
+
+                stack("error", "ECF : ".$ecf->get("eNCF"), [
+                    "code"      => 2,
+                    "status"    => "Error de Firma Digital"
+                ]);
+
                 return response($firma, 400, [
                     'Content-Type' => 'application/xml'
                 ]);
@@ -232,6 +252,12 @@ class RecepcionECF
                     ## REGISTRAMOS LOS RESULTADOS
                     $ent->saveARECF($this->arecf);
                 }
+
+                stack("error", "ECF : ".$ecf->get("eNCF"), [
+                    "code"      => 4,
+                    "status"    => "Error de Firma Digital",
+                    "path"      => $PATHARECF.'/'.$fileName,
+                ]);
 
                 return response($firma, 400, [
                     'Content-Type' => 'application/xml'

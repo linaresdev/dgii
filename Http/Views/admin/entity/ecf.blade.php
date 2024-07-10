@@ -2,7 +2,7 @@
 	
 	@section("content")
 
-		<article class="p-3 mb-3 bg-white rounded-1">
+		<article class="p-3 mb-2 mt-4 bg-white rounded-1">
 
 			<h4 class="fs-5 pt-3">{{__("words.recf")}}</h4>
 			<article>
@@ -21,7 +21,7 @@
 					</thead>
 					<tbody>
 						@foreach($arecf as $row)
-						
+
 						<tr>
 							<td class="">{{$row->eNCF}}</td>
 							<td>{{$row->razonSocialEmisor()}}</td>

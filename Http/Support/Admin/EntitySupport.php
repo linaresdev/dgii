@@ -6,13 +6,17 @@ namespace DGII\Http\Support\Admin;
 * ©IIPEC
 *---------------------------------------------------------
 */
+
 use DGII\Model\Term;
 use DGII\Facade\Dgii;
 use DGII\Facade\Alert;
+use DGII\Support\Guard;
 use DGII\Model\Hacienda;
 use DGII\Support\P12Certify;
 use DGII\User\Model\Store as User;
 use DGII\Write\Facade\Signer;
+
+use DGII\User\Model\UserStack;
 
 class EntitySupport {
 
@@ -279,7 +283,7 @@ class EntitySupport {
         Dgii::addUrl([
             "{ecf}" => "{entity}/show/$ent->id/ecf",
         ]);
-        //dd( $info->pathECF->getItems() );
+        
         return $data;
     }
 
