@@ -13,9 +13,10 @@
 				<table class="table table-hover align-middle">
 					<thead>
 						<tr>
-							<th>eNCF</th>
 							<th>{{__("trade.name")}}</th>
-							<th class="text-center">{{__("date.isue")}}</th>
+							<th>eNCF</th>
+							<th class="text-center">{{__("words.isue")}}</th>
+							<th class="text-center">{{__("words.register")}}</th>
 							<th class="text-end">{{__("words.actions")}}</th>
 						</tr>
 					</thead>
@@ -23,10 +24,13 @@
 						@foreach($arecf as $row)
 
 						<tr>
-							<td class="">{{$row->eNCF}}</td>
 							<td>{{$row->razonSocialEmisor()}}</td>
+							<td class="">{{$row->eNCF}}</td>
 							<td class="text-center">
 								{{$row->fechaEmision()}}
+							</td>
+							<td>
+								{{$row->created_at->diffForHumans()}}
 							</td>
 							<td class="text-end py-0"> 
 								<div class="dropdown dropstart">

@@ -56,10 +56,12 @@ return (new class {
             "confirm.password"  => "Confirmar contraseña",
             "command.unknown"   => "Comando o orden desconocida",
             "corporate.group"   => "Grupo corporativo",
-            "date.isue"         => "Fecha de emisión",
             "delete.successfully"   => "Datos elimininados correctamente",
             "delete.errors"         => "Error al tratar de eliminar los datos",
 
+
+            "date.isue"         => "Fecha emisión",
+            "date.register"     => "Fecha registro",
             "download.xml"      => "Descargar XML",
 
             "entity.access"     => "Acceso empresarial",
@@ -153,6 +155,7 @@ return (new class {
             "words.information"     => "Información",
             "words.insert"          => "Insertar",
             "words.identify"        => "Identificarse",
+            "words.isue"            => "Emisión",
             "words.filters"         => "Filtrar",
             "words.firstname"       => "Nombre",
             "words.lastname"        => "Apellidos",
