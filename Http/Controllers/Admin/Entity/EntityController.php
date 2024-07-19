@@ -15,7 +15,8 @@ use DGII\Http\Request\Admin\UpdateCertifyRerquest;
 
 class EntityController extends Controller {
 
-    public function __construct( EntitySupport $app ) {
+    public function __construct( EntitySupport $app )
+    {
         $this->boot($app);
         
         app("dgii")->addUrl([
@@ -23,7 +24,14 @@ class EntityController extends Controller {
         ]);        
     }
 
-    public function index() {
+    public function index() 
+    {
+        stack("Web-Requests", "Admin Entity", [
+            "code"      => 200,
+            "status"    => "Solicitud ",
+            "path"      => request()->path()
+        ]);
+
         return $this->render('home', $this->app->home());
     }
 

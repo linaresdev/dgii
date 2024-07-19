@@ -38,7 +38,7 @@ class UserStack extends Model
         );
     }
 
-    public function add( $type=null, $header=null, $message=[] )
+    public function add( $type=null, $header=null, $message=[])
     {
         return $this->create([
             "type"      => $type,

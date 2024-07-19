@@ -124,11 +124,18 @@ class RecepcionECF
 
     public function recepcionECF($ent, $request)
     {
+        stack("Api-Requests", "Recepcion-$ent", [
+            "code"      => 200,
+            "status"    => "Solicitud ",
+            "path"      => request()->path()
+        ]);
+
         if( $request->hasFile("xml") )
         {
             $xmlData    = ($file = $request->file("xml"))->getContent();
             $xsd        = __path('{wvalidate}/RecepcionComercial.xsd');
             $ecf        = ECF::load($xmlData);
+
             $ent        = (new \DGII\Model\Hacienda)->where("rnc", $ent)->first() ?? abort(404);
 
             ## signer
