@@ -189,6 +189,7 @@ return (new class {
             "words.subject"         => "Asunto",
             "words.slug"            => "Nombre amigable",
             "words.save"            => "Guardar",
+            "words.security"        => "Seguridad",
             "words.to-lists"        => "Listar",
 
             "send.xml"              => "Enviar XML",

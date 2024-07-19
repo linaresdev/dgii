@@ -4,6 +4,10 @@ Route::bind("usrID", function($ID){
     return (new \DGII\User\Model\Store)->find($ID) ?? abort(404);
 });
 
+Route::bind("stackID", function($ID){
+    return (new \DGII\User\Model\UserStack)->find($ID) ?? abort(404);
+});
+
 ## BIND FROM ENTITY ID
 Route::bind("entID", function($ID) { 
     return (new \DGII\Model\Hacienda)->find($ID) ?? abort(404); 

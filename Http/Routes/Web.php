@@ -23,6 +23,11 @@ Route::prefix("admin")->namespace("Admin")->group(function($route)
 {
     Route::get("/", "DashboardController@index");
 
+    Route::get("/stacks", "StackController@index");
+
+    Route::get("/stacks/show/{stackID}", "StackController@show");
+    
+
     ## ACCOUNT
     Route::prefix("users")->group(__DIR__."/Partial/AdminUsers.php");
 

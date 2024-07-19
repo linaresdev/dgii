@@ -17,6 +17,12 @@ return (new class {
         $user["label"]  = __("words.users");
         $user["url"]    = __url("admin/users");
         $items[]        = $user;
+
+        ## SEGURIDAD
+        $guard["icon"]   = "shield-link-variant-outline";
+        $guard["label"]  = __("words.security");
+        $guard["url"]    = __url("admin/stacks");
+        $items[]         = $guard;
        
        return $items;
     }

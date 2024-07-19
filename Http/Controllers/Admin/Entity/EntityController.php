@@ -25,7 +25,7 @@ class EntityController extends Controller {
     }
 
     public function index() 
-    {
+    { 
         stack("Web-Requests", "Admin Entity", [
             "code"      => 200,
             "status"    => "Solicitud ",
