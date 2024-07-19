@@ -33,7 +33,7 @@
                                         </a>
                                         <div class="dropdown-menu">
                                             <h6 class="dropdown-header">
-                                            	{{$stack->header}}
+                                            	{{__($stack->header)}}
                                             </h6>
 
                                             <a href="{{__url('admin/stacks/show/'.$stack->id)}}" class="dropdown-item">
