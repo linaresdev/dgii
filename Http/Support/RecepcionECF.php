@@ -124,15 +124,29 @@ class RecepcionECF
 
     public function recepcionECF($ent, $request)
     {
-        stack("Api-Requests", "Recepcion-$ent", [
-            "code"      => 200,
-            "status"    => "Solicitud ",
-            "path"      => request()->path()
-        ]);
+
 
         if( $request->hasFile("xml") )
         {
             $xmlData    = ($file = $request->file("xml"))->getContent();
+            
+            if( $file->clientExtension() != "xml" )
+            { 
+                $errors = $this->xmlNews([
+                    "Documento no valido"
+                ]);
+
+                stack("Api-Requests", "Recepcion-$ent", [
+                    "code"      => 400,
+                    "status"    => "Documento no valido",
+                    "path"      => $file->clientExtension()
+                ]); 
+
+                return response($errors, 400, [
+                    'Content-Type' => 'application/xml'
+                ]);
+            }
+
             $xsd        = __path('{wvalidate}/RecepcionComercial.xsd');
             $ecf        = ECF::load($xmlData);
 
@@ -294,11 +308,17 @@ class RecepcionECF
             return response($this->xmlARECF($ecf, 0, 1), 400, [
                 'Content-Type' => 'application/xml'
             ]);
-        }        
+        }               
 
         $errors = $this->xmlNews([
-            "Autenticacion requerida"
+            "Ups!"
         ]);
+
+        stack("Api-Requests", "Recepcion-$ent", [
+            "code"      => 400,
+            "status"    => "No existe un documento xml",
+            "path"      => $errors
+        ]); 
 
         return response($errors, 400, [
             'Content-Type' => 'application/xml'
