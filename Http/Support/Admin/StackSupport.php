@@ -34,7 +34,7 @@ class StackSupport
 	public function getAtacks($perpage=10) {
 		$data  = (new UserStack)
 			->orderBy("id", "DESC");
-
+			
 		return $data->paginate($perpage);
 	}
 

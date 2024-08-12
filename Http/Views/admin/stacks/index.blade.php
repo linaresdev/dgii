@@ -11,6 +11,8 @@
 					<thead>
 						<tr>
 							<th>ID</th>
+							<th>Fecha</th>
+							<th>Type</th>
 							<th>Host</th>
 							<th>Descripcion</th>
 							<th>Ruta</th>
@@ -21,6 +23,12 @@
 						@foreach( $stacks as $stack )
 						<tr>
 							<td class="py-1">{{$stack->id}}</td>
+							<td width="180" class="py-1">
+								{{$stack->created_at->diffForHumans()}}
+							</td>
+							<td width="180" class="py-1">
+								{{$stack->type}}
+							</td>
 							<td class="py-1">{{$stack->host}}</td>
 							<td class="py-1">{{$stack->header}}</td>
 							<td class="py-1">{{$stack->path}}</td>
@@ -33,7 +41,7 @@
                                         </a>
                                         <div class="dropdown-menu">
                                             <h6 class="dropdown-header">
-                                            	{{__($stack->header)}}
+                                            	{{$stack->header}}
                                             </h6>
 
                                             <a href="{{__url('admin/stacks/show/'.$stack->id)}}" class="dropdown-item">
