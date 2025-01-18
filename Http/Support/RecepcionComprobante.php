@@ -21,19 +21,19 @@ class RecepcionComprobante {
             $xml        = $request->file("xml");
             $fileName   = $xmlData->get("RNCComprador").$xmlData->get("eNCF").".xml";
 
-            $ent = (new \DGII\Model\Hacienda)->where("rnc", $ent)->first() ?? abort(404);
-
-
+            $ent        = (new \DGII\Model\Hacienda)->where("rnc", $ent)->first() ?? abort(404);
+            $entData    = $xmlData->all();
+            
             if( !app("files")->exists(($path = __path("{AprobacionComercial}"))) )
             {
                 app("files")->makeDirectory($path, 0775, true);
             } 
-
+            
             $data["Estado"]                         = 1;
             
             $ruls["Version"] 						= "required";
             $ruls["RNCEmisor"] 						= ["required", new \DGII\Rules\RNC];
-            $ruls["eNCF"] 							= ["required","unique:\DGII\Model\AprobacionComercial,eNCF", new \DGII\Rules\Encf];
+            $ruls["eNCF"] 							= ["required",new \DGII\Rules\UniqueENCF($entData), new \DGII\Rules\Encf];
             $ruls["FechaEmision"] 					= "required";
             $ruls["MontoTotal"] 					= "required|numeric";
             $ruls["RNCComprador"] 					= "required";
@@ -42,15 +42,15 @@ class RecepcionComprobante {
             $ruls["FechaHoraAprobacionComercial"] 	= "";
 
             $messages["unique"] = __("validate.unique");
-            $attrs["eNCF"] = "comprobante";
-        
-            $validate = validator($xmlData->all(), $ruls, $messages, $attrs);
+            $attrs["eNCF"] = "comprobante"; 
 
+            $validate = validator($entData, $ruls, $messages, $attrs);
+            
             if( ($errors = $validate->errors())->any() )
             {
                 return response("Insatisfactorio", 400);
             }                     
-        
+           
             if( $xml->move($path, $fileName) ) 
             {
                 $storData               = $xmlData->all();

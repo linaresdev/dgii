@@ -115,9 +115,9 @@ Route::prefix("admin")->namespace("Admin")->group(function($route)
 
 // Route::get("mona/{item}", function($item=null)
 // {
-    //$host = "192.168.10.7";
+   // $host = "192.168.10.7";
     //$host = "https://ncf.vsdelta.com";
-    //$envEcf = env("DGII_ENV");
+  //  $envEcf = env("DGII_ENV");
 
     // if( $item = "EnviarAprobacionComercial")
     // {
@@ -151,7 +151,7 @@ Route::prefix("admin")->namespace("Admin")->group(function($route)
 //     $token = "32|qcKs6jNg0abATI1cmPNAUhmltyGUcS0xSDHK3GSo41a0d960";
 //     $token = "2|DzD5dtqu0STWhWwrp9zc98d927HgPBZDkNaVXILa4d071c61"; 
 //     $token = "42|KEsEBPphmwnuRn6b6Q8PMyURjcT30jJR1WMb5Z5Sb99916cb";
-//     $token = "1|PLaduDkx6Cqe1MfodnrigsrRLfBxFj03MfbgFAQN87efe86c";
+//    $token = "1|PLaduDkx6Cqe1MfodnrigsrRLfBxFj03MfbgFAQN87efe86c";
 
 //     ## Emision Comprobante Electronico
     // if( $item == "EmisionComprobantes")
@@ -189,19 +189,20 @@ Route::prefix("admin")->namespace("Admin")->group(function($route)
 //     }
 
 //     ## Aprobacion Comercial
-//     if($item == "AprobacionComercial")
-//     {  
-//         $xsd        = app("files")->get(__path('{wvalidate}/AprobacionComercial.xsd'));
-//         $xml    = app("files")->get(base_path('XML/AprobacionComercial.xml'));
+    // if($item == "AprobacionComercial")
+    // {  
+    //     $xsd    = app("files")->get(__path('{wvalidate}/AprobacionComercial.xsd'));
+    //     $xml    = app("files")->get(base_path('XML/AprobacionComercial.xml'));
         
-//         $url =  "$host/api/101011939/$envEcf/fe/aprobacioncomercial/api/ecf";
-//         return Http::withToken($token)->attach(
-//             "xml", 
-//             $xml, 
-//             "ACECF.xml", 
-//             ["Content-Type" => "text/xml;charset=utf-8"]
-//         )->post($url)->body(); 
-//     }
+    //     $url =  "$host/api/101011939/$envEcf/fe/aprobacioncomercial/api/ecf";
+
+    //     return Http::withToken($token)->attach(
+    //         "xml", 
+    //         $xml, 
+    //         "ACECF.xml", 
+    //         ["Content-Type" => "text/xml;charset=utf-8"]
+    //     )->post($url)->body(); 
+    // }
 
 //     if( $item == "Recepcion" )
 //     {  

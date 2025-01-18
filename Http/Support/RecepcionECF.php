@@ -124,8 +124,6 @@ class RecepcionECF
 
     public function recepcionECF($ent, $request)
     {
-
-
         if( $request->hasFile("xml") )
         {
             $xmlData    = ($file = $request->file("xml"))->getContent();

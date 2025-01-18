@@ -7,6 +7,8 @@ namespace DGII\Http\Support\Entity;
 *---------------------------------------------------------
 */
 
+use DGII\Model\Term;
+
 class Home
 {
 
@@ -19,7 +21,7 @@ class Home
         $data['title']      = __("entity.owner");
         $data["container"]  = "col-xl-6 offset-xl-3 col-lg-10 offset-lg-1";
         $data["user"]       = request()->user();
-        
+
         return $data;
     }
 
